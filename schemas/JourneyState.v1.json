@@ -1,0 +1,36 @@
+{
+  "$id": "ataraxia.JourneyState.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JourneyState",
+  "type": "object",
+  "required": ["stage", "gates"],
+  "properties": {
+    "stage": {
+      "enum": [
+        "consent",
+        "soma_stabilize",
+        "profile_optional",
+        "evidence_help",
+        "reintegration",
+        "profession"
+      ]
+    },
+    "gates": {
+      "type": "object",
+      "required": ["consent_ok", "soma_stable"],
+      "properties": {
+        "consent_ok": { "type": "boolean" },
+        "soma_stable": { "type": "boolean" },
+        "clinician_present": { "type": "boolean" }
+      }
+    },
+    "scales": {
+      "type": "object",
+      "properties": {
+        "PCL5": { "type": ["number", "null"] },
+        "PHQ9": { "type": ["number", "null"] }
+      }
+    },
+    "blocked_reason": { "type": ["string", "null"] }
+  }
+}

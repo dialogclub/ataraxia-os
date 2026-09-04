@@ -1,0 +1,49 @@
+{
+  "$id": "ataraxia.CompatibilityArtifact.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CompatibilityArtifact",
+  "type": "object",
+  "required": ["members", "metrics", "disclaimer"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "members": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "Cr", "Sr", "Of", "Sc"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "Cr": { "type": "number" },
+          "Sr": { "type": "number" },
+          "Of": { "type": "number" },
+          "Sc": { "type": "number" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["n", "Gcc_formula", "formula"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 2 },
+        "geometric_mean_CrSr": { "type": "number" },
+        "sigma2_Of": { "type": "number" },
+        "Gcc_formula": { "type": "number" },
+        "Gcc_artifact_claimed": { "type": ["number", "null"] },
+        "formula": { "const": "prod(Cr_i*Sr_i)**(1/n) * (1 - pvariance(Of))" }
+      }
+    },
+    "love_modes": {
+      "type": "array",
+      "items": { "enum": ["Eros", "Ludus", "Storge", "Philia", "Pragma", "Agape", "Philautia"] }
+    },
+    "resonance_score": { "type": ["number", "null"] },
+    "disclaimer": {
+      "type": "string",
+      "const": "Functional complementarity heuristic. Hormones/genes are vocabulary, not assays. Not a clinical compatibility test."
+    }
+  }
+}

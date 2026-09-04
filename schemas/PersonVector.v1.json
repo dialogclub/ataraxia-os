@@ -1,0 +1,60 @@
+{
+  "$id": "ataraxia.PersonVector.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PersonVector",
+  "type": "object",
+  "required": ["id", "consent", "maturity"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "display_name": { "type": "string" },
+    "lang": { "enum": ["uk", "ru", "en"] },
+    "maturity": { "enum": ["R", "D", "P"] },
+    "consent": {
+      "type": "object",
+      "required": ["identity", "audio", "psychometrics", "neurodata", "medical_research"],
+      "properties": {
+        "identity": { "type": "boolean" },
+        "audio": { "type": "boolean" },
+        "psychometrics": { "type": "boolean" },
+        "neurodata": { "type": "boolean" },
+        "medical_research": { "type": "boolean" },
+        "revoked_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "psychometrics": {
+      "type": "object",
+      "properties": {
+        "big_five": {
+          "type": "object",
+          "properties": {
+            "O": { "type": "number" },
+            "C": { "type": "number" },
+            "E": { "type": "number" },
+            "A": { "type": "number" },
+            "N": { "type": "number" }
+          }
+        },
+        "leonhard": { "type": "object", "additionalProperties": { "type": "number" } },
+        "pmai": { "type": "object", "additionalProperties": { "type": "number" } },
+        "belbin": { "type": "object", "additionalProperties": { "type": "number" } },
+        "incomplete": { "type": "boolean" }
+      }
+    },
+    "voice": { "$ref": "SpectrogramCard.v1.json" },
+    "journey": { "$ref": "JourneyState.v1.json" },
+    "smfk": {
+      "type": "object",
+      "properties": {
+        "Cr": { "type": "number", "minimum": 0, "maximum": 1 },
+        "Sr": { "type": "number", "minimum": 0, "maximum": 1 },
+        "Of": { "type": "number", "minimum": 0, "maximum": 1 },
+        "Sc": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "disclaimer": {
+      "type": "string",
+      "default": "Research profile. Not a diagnosis. Not a medical device."
+    }
+  }
+}

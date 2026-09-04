@@ -1,0 +1,31 @@
+{
+  "$id": "ataraxia.SessionReport.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SessionReport",
+  "type": "object",
+  "required": ["session_id", "agent_trace", "disclaimer"],
+  "properties": {
+    "session_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "contour": { "type": "array", "items": { "type": "string" } },
+    "agent_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent_id", "harness_id", "status"],
+        "properties": {
+          "agent_id": { "type": "string" },
+          "harness_id": { "type": "string" },
+          "status": { "enum": ["ok", "degraded", "fail_closed"] },
+          "latency_ms": { "type": "number" },
+          "evidence": { "type": "array" }
+        }
+      }
+    },
+    "person_vector_id": { "type": ["string", "null"] },
+    "spectrogram_id": { "type": ["string", "null"] },
+    "notes": { "type": "string" },
+    "crisis_handoff": { "type": "boolean" },
+    "disclaimer": { "type": "string" }
+  }
+}

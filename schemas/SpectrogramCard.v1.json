@@ -1,0 +1,99 @@
+{
+  "$id": "ataraxia.SpectrogramCard.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SpectrogramCard",
+  "type": "object",
+  "required": ["quality", "maturity", "disclaimer"],
+  "properties": {
+    "sample_rate": { "type": "integer" },
+    "duration_s": { "type": "number" },
+    "quality": {
+      "type": "object",
+      "required": ["snr_db", "usable"],
+      "properties": {
+        "snr_db": { "type": "number" },
+        "usable": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "f0": {
+      "type": "object",
+      "properties": {
+        "method": { "const": "autocorr" },
+        "range_hz": { "const": [75, 500] },
+        "mean_hz": { "type": ["number", "null"] },
+        "series_hz": { "type": "array", "items": { "type": ["number", "null"] } }
+      }
+    },
+    "formants_lpc": {
+      "type": "object",
+      "properties": {
+        "F1": { "type": ["number", "null"] },
+        "F2": { "type": ["number", "null"] },
+        "F3": { "type": ["number", "null"] },
+        "F4": { "type": ["number", "null"] }
+      }
+    },
+    "perturbation": {
+      "type": "object",
+      "properties": {
+        "jitter": { "type": ["number", "null"] },
+        "shimmer": { "type": ["number", "null"] },
+        "hnr_db": { "type": ["number", "null"] }
+      }
+    },
+    "mfcc": { "type": "array", "items": { "type": "number" } },
+    "spectral": {
+      "type": "object",
+      "properties": {
+        "centroid": { "type": ["number", "null"] },
+        "spread": { "type": ["number", "null"] },
+        "skew": { "type": ["number", "null"] },
+        "kurtosis": { "type": ["number", "null"] },
+        "rolloff": { "type": ["number", "null"] },
+        "flatness": { "type": ["number", "null"] },
+        "flux": { "type": ["number", "null"] }
+      }
+    },
+    "oscillators_12": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["id", "hz", "label"],
+        "properties": {
+          "id": { "type": "string" },
+          "hz": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }] },
+          "label": { "type": "string" },
+          "energy": { "type": ["number", "null"] },
+          "vocabulary_only": { "const": true }
+        }
+      }
+    },
+    "autonomic": {
+      "type": "object",
+      "properties": {
+        "stress": { "type": ["number", "null"] },
+        "arousal": { "type": ["number", "null"] },
+        "valence": { "type": ["number", "null"] },
+        "energy": { "type": ["number", "null"] },
+        "tension": { "type": ["number", "null"] },
+        "sympathetic": { "type": ["number", "null"] },
+        "parasympathetic": { "type": ["number", "null"] },
+        "breath_rate": { "type": ["number", "null"] },
+        "breath_depth": { "type": ["number", "null"] },
+        "breath_regularity": { "type": ["number", "null"] }
+      }
+    },
+    "smfk_confidence_band": {
+      "description": "80-120 Hz energy used as SMFK confidence marker",
+      "type": ["number", "null"]
+    },
+    "maturity": { "const": "R" },
+    "disclaimer": {
+      "type": "string",
+      "const": "Research vocabulary. Not a medical device. Not a diagnosis. Oscillator labels are metaphorical, not clinical."
+    }
+  }
+}
