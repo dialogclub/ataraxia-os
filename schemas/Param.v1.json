@@ -1,0 +1,18 @@
+{
+  "$id": "atmaraksi.Param.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Param — числовой параметр SCP (голых чисел нет)",
+  "type": "object",
+  "required": ["value", "unit", "range", "badge", "source", "tool", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "value": { "type": ["number", "null"], "description": "null допустим только с бейджем ⛔" },
+    "unit": { "type": "string" },
+    "range": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2 },
+    "badge": { "enum": ["🟢", "🟡", "🔵", "⛔"] },
+    "source": { "enum": ["tool", "agent", "reconstruction", "scale", "none"] },
+    "tool": { "type": "string" },
+    "version": { "type": "string" },
+    "note": { "type": "string", "description": "калибровочная оговорка или причина ⛔" }
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "generated": "2026-09-04T03:43:57.207Z",
+  "system": "ATMARAKSI OS",
+  "green": 6,
+  "red": 0,
+  "functions": [
+    {
+      "fn": "cascadeEngine",
+      "type": "deterministic",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.7
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · phi-zero · all-ones · out-of-range · nan-input · cbrt-form",
+          "ms": 0.4
+        },
+        {
+          "name": "монотонность по каждому аргументу",
+          "ok": true,
+          "detail": "4 аргумента × 21 шаг, неубывание",
+          "ms": 1.9
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.18 мс < 5 мс",
+          "ms": 26
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "konstantin-2026-08-27=0.34",
+          "ms": 0.1
+        }
+      ],
+      "total_ms": 29.1
+    },
+    {
+      "fn": "chronometry",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×4",
+          "ok": true,
+          "detail": "empty · zero · negative · nan",
+          "ms": 0.1
+        },
+        {
+          "name": "обратимость минуты ↔ годы",
+          "ok": true,
+          "detail": "120 мин → 19.71 лет → 120.000000 мин",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.04 мс < 1 мс",
+          "ms": 2.5
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "240min=39.43",
+          "ms": 0
+        }
+      ],
+      "total_ms": 2.9
+    },
+    {
+      "fn": "gccEngine",
+      "type": "deterministic",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.5
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "empty · single · identical · one-invalid · extremes",
+          "ms": 0.2
+        },
+        {
+          "name": "фикстура: Gcc_formula совпадает с claimed-разрывом",
+          "ok": true,
+          "detail": "Gcc = 0.842491 🟢 · заявлено артефактом 0.928 🔵 (расхождение задокументировано, не усредняется)",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.26 мс < 2 мс",
+          "ms": 14
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "smfk100.core-team.v1=0.842491",
+          "ms": 0.1
+        }
+      ],
+      "total_ms": 14.9
+    },
+    {
+      "fn": "memorySearchTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 2.3
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "empty-query · empty-index · filters · mixed-ru-ua · mcp-unplugged",
+          "ms": 0.4
+        },
+        {
+          "name": "◇ MCP-SWAP: один и тот же контракт",
+          "ok": true,
+          "detail": "поля ответа: hits,mode,query,reason,total,version",
+          "ms": 0.5
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 5.45 мс < 50 мс",
+          "ms": 45.6
+        },
+        {
+          "name": "golden: «выгорание, нет смысла» → C002 первым",
+          "ok": true,
+          "detail": "C002 score=0.6183 · далее C001=0.0698, C005=0.0654",
+          "ms": 0.1
+        }
+      ],
+      "total_ms": 48.9
+    },
+    {
+      "fn": "stimulusGate",
+      "type": "stimulus",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "empty · band-edges · nan · negative · night",
+          "ms": 0.3
+        },
+        {
+          "name": "предел громкости 85 дБ",
+          "ok": true,
+          "detail": "85 ✓ · 85,1 ✗ · 80 ⚠",
+          "ms": 0
+        },
+        {
+          "name": "гейт непроходим программно",
+          "ok": true,
+          "detail": "нет методов обхода; правила заморожены; режим pro блокирует 15–25 Гц",
+          "ms": 0.2
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.33 мс < 2 мс",
+          "ms": 7.8
+        },
+        {
+          "name": "аварийный стоп < 100 мс (×100)",
+          "ok": true,
+          "detail": "100 стопов · худшая 0.006 мс < 100 мс",
+          "ms": 0.3
+        }
+      ],
+      "total_ms": 8.8
+    },
+    {
+      "fn": "ui",
+      "type": "ui",
+      "layer": "L4",
+      "version": "0.1.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "статический сканер (node --check · скобки · запреты · id)",
+          "ok": true,
+          "detail": "✓ node --check · баланс скобок · запретные конструкции · id-сканер — чисто",
+          "ms": 1052.1
+        },
+        {
+          "name": "сборка single-file",
+          "ok": true,
+          "detail": "dist/atmaraksi-os.html · 212 КБ · 18 модулей · 10 файлов данных",
+          "ms": 52.8
+        },
+        {
+          "name": "рендер 440×956 · 393×852 · 1280×800 + сценарий (скриншоты в docs/screenshots)",
+          "ok": true,
+          "detail": "116 проверок ✓",
+          "ms": 8134.8
+        }
+      ],
+      "total_ms": 9239.7
+    }
+  ]
+}

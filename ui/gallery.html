@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ATMARAKSI OS v0.1 · Галерея компонентов</title>
+<link rel="stylesheet" href="tokens.css">
+</head>
+<body>
+<main class="gallery" id="gallery">
+  <header class="module-head">
+    <h1 class="module-title">Галерея компонентов</h1>
+    <p class="sub">Каждый компонент — с фикстурами пусто · один · экстремум · NaN. Скриншоты — часть харнесса UI.</p>
+  </header>
+</main>
+<script type="module">
+import { h } from './components/base.mjs';
+import { Badge } from './components/badge.mjs';
+import { DynamicIsland } from './components/island.mjs';
+import { SegmentControl, Composer, HarnessStatus, Sheet } from './components/controls.mjs';
+import { EvidenceQuote } from './components/evidence.mjs';
+import { Radar } from './components/radar.mjs';
+import { RingGauge, TrafficScale7 } from './components/gauges.mjs';
+import { CascadeWaterfall, PhiControl } from './components/cascade.mjs';
+import { Czi8Ring } from './components/czi8.mjs';
+import { ResultCard } from './components/card.mjs';
+import { CascadeEngine } from '../core/engines/cascadeEngine.mjs';
+
+const P = (value, unit, range, badge) => ({ value, unit, range, badge: badge === undefined ? '🟢' : badge, source: 'tool', tool: 'fixture', version: '1.0', note: 'фикстура галереи' });
+const MISSING = (unit, range) => ({ value: null, unit, range, badge: '⛔', source: 'none', tool: 'fixture', version: '1.0', note: 'нет канала' });
+const root = document.getElementById('gallery');
+const section = (title, cells) => {
+  const grid = h('div', { class: 'grid' });
+  cells.forEach(([name, fill]) => { const cell = h('div', { class: 'cell' }, h('h4', { text: name })); fill(cell); grid.append(cell); });
+  root.append(h('section', { class: 'section' }, h('h2', { text: title }), grid));
+};
+
+section('Badge', [['все четыре', (el) => { ['🟢', '🟡', '🔵', '⛔'].forEach((b) => new Badge(b).render(el)); }], ['неизвестный → ⛔', (el) => new Badge('??').render(el)]]);
+
+section('DynamicIsland', [
+  ['idle', (el) => new DynamicIsland(() => {}, () => {}).render(el)],
+  ['running', (el) => { const i = new DynamicIsland(() => {}, () => {}); i.render(el); i.update({ phase: 'running', layer: 'L1', agent: 'cascadeEngine', percent: 40, model: 'без модели' }); }],
+  ['done · откат', (el) => { const i = new DynamicIsland(() => {}, () => {}); i.render(el); i.update({ phase: 'done', text: 'Анализ завершён · 0 агентов · Sonnet 5 (откат)' }); }],
+  ['error', (el) => { const i = new DynamicIsland(() => {}, () => {}); i.render(el); i.update({ phase: 'error', text: 'Ошибка: шлюз недоступен' }); }],
+  ['NaN percent', (el) => { const i = new DynamicIsland(() => {}, () => {}); i.render(el); i.update({ phase: 'running', layer: 'L2', percent: Number.NaN }); }]
+]);
+
+section('SegmentControl · HarnessStatus · Composer', [
+  ['режимы', (el) => new SegmentControl([{ id: 'session', label: 'Сессия' }, { id: 'meeting', label: 'Совещание' }, { id: 'game', label: 'Игра' }, { id: 'full', label: 'Полный' }], 'session', () => {}).render(el)],
+  ['один вариант', (el) => new SegmentControl([{ id: 'a', label: 'Единственный' }], 'a', () => {}).render(el)],
+  ['статусы харнесса', (el) => { new HarnessStatus('green').render(el); new HarnessStatus('red', 'стресс: NaN').render(el); new HarnessStatus('hidden_by_harness').render(el); }],
+  ['композер', (el) => new Composer('Вставьте транскрипт…', () => {}, () => {}).render(el)],
+  ['лист', (el) => el.append(h('button', { type: 'button', class: 'btn secondary', text: 'Открыть лист', onClick: () => new Sheet('Пример листа').open(h('p', { class: 'sub', text: 'Содержимое листа. Esc — закрыть.' })) }))]
+]);
+
+section('EvidenceQuote', [
+  ['цитата', (el) => new EvidenceQuote({ quote: 'Я просто устал, ничего не хочу', speaker: 'К.', t: '14:32' }, () => {}).render(el)],
+  ['смещённая речь (сильный голос)', (el) => new EvidenceQuote({ quote: 'Давайте лучше про работу поговорим', speaker: 'К.', t: '15:01', strong: true, away_from: 'вопрос о матери' }).render(el)],
+  ['пусто', (el) => new EvidenceQuote({}).render(el)]
+]);
+
+section('Radar', [
+  ['6 осей + нормы', (el) => { const r = new Radar(240); r.render(el); r.update(['SEEKING', 'RAGE', 'FEAR', 'LUST', 'CARE', 'PLAY'].map((l, i) => ({ label: l, param: P([0.7, 0.3, 0.55, 0.4, 0.8, 0.2][i], 'share', [0, 1]), norm: P(0.5, 'share', [0, 1]) }))); }],
+  ['8 осей, одна ⛔', (el) => { const r = new Radar(240); r.render(el); r.update(['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8'].map((l, i) => ({ label: l, param: i === 3 ? MISSING('level', [0, 1]) : P(0.2 + i * 0.1, 'level', [0, 1]) }))); }],
+  ['экстремум (все 1)', (el) => { const r = new Radar(240); r.render(el); r.update(['A', 'B', 'C', 'D', 'E', 'F'].map((l) => ({ label: l, param: P(1, 'index', [0, 1]) }))); }],
+  ['пусто / NaN', (el) => { const r = new Radar(240); r.render(el); r.update([{ label: 'A', param: P(Number.NaN, 'x', [0, 1]) }, { label: 'B', param: MISSING('x', [0, 1]) }, { label: 'C', param: MISSING('x', [0, 1]) }]); }]
+]);
+
+section('RingGauge · TrafficScale7', [
+  ['Health Score 72', (el) => { const g = new RingGauge(160); g.render(el); g.update(P(72, 'балл', [0, 100]), 'Health Score'); }],
+  ['экстремум 0 и 100', (el) => { const a = new RingGauge(120); a.render(el); a.update(P(0, 'балл', [0, 100])); const b = new RingGauge(120); b.render(el); b.update(P(100, 'балл', [0, 100])); }],
+  ['⛔', (el) => { const g = new RingGauge(160); g.render(el); g.update(MISSING('балл', [0, 100]), 'Health Score'); }],
+  ['PHQ-9 = 11', (el) => { const t = new TrafficScale7(); t.render(el); t.update(P(11, 'балл', [0, 27]), 'PHQ-9'); }],
+  ['границы 0 и 27', (el) => { const a = new TrafficScale7(); a.render(el); a.update(P(0, 'балл', [0, 27])); const b = new TrafficScale7(); b.render(el); b.update(P(27, 'балл', [0, 27])); }],
+  ['NaN', (el) => { const t = new TrafficScale7(); t.render(el); t.update(P(Number.NaN, 'балл', [0, 27]), 'GAD-7'); }]
+]);
+
+section('CascadeWaterfall · PhiControl (живой пересчёт движком)', [
+  ['Константин 27.08.2026', (el) => { const engine = new CascadeEngine('none'); const w = new CascadeWaterfall(); const base = { A: 0.85, D: 0.78, C: 0.79 }; const phi = new PhiControl(0.65, (v) => w.update(engine.run({ ...base, phi: v }))); phi.render(el); w.render(el); w.update(engine.run({ ...base, phi: 0.65 })); }],
+  ['форма ∛', (el) => { const w = new CascadeWaterfall(); w.render(el); w.update(new CascadeEngine('cbrt').run({ A: 0.5, D: 0.5, C: 0.5, phi: 1 })); }],
+  ['пусто', (el) => { const w = new CascadeWaterfall(); w.render(el); w.update(new CascadeEngine('none').run({})); }],
+  ['NaN', (el) => { const w = new CascadeWaterfall(); w.render(el); w.update(new CascadeEngine('none').run({ A: Number.NaN, D: 1, C: 1, phi: 1 })); }]
+]);
+
+section('Czi8Ring', [
+  ['разрыв K2', (el) => { const r = new Czi8Ring(220); r.render(el); const levels = {}; ['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8'].forEach((k, i) => { levels[k] = P([0.9, 0.2, 0.6, 0.7, 0.5, 0.4, 0.3, 0.8][i], 'level', [0, 1]); }); r.update({ levels, gap: 'K2' }); }],
+  ['один уровень', (el) => { const r = new Czi8Ring(220); r.render(el); r.update({ levels: { K5: P(1, 'level', [0, 1]) }, gap: '' }); }],
+  ['⛔', (el) => { const r = new Czi8Ring(220); r.render(el); r.update({ levels: {}, gap: '' }); }]
+]);
+
+section('ResultCard (грамматика 4.3)', [
+  ['герой · синтез', (el) => new ResultCard({ id: 'g1', hero: true, title: 'Синтез-рефлектор', badge: '🟡', source: 'агент Reflector · Opus 5', verdict: 'Запрос о смысле маскирует конфликт с матерью', anchors: [{ quote: 'Ничего не хочу', speaker: 'К.', t: '14:32' }, { quote: 'Давайте про работу', speaker: 'К.', t: '15:01', strong: true, away_from: 'вопрос о матери' }], next: { label: 'В план Тера-навигатора', onClick: () => {} }, json: { demo: true }, onRetry: () => {} }).render(el)],
+  ['инструмент 🟢', (el) => new ResultCard({ id: 'g2', title: 'Каскад АВС', badge: '🟢', source: 'cascadeEngine v1.0', verdict: 'B = 0,34 при Φ = 0,65', params: [{ label: 'A', param: P(0.85, 'index', [0, 1]), kind: 'index' }, { label: 'B', param: P(0.34, 'index', [0, 1]), kind: 'index' }], next: { label: 'Подобрать дыхание', onClick: () => {} } }).render(el)],
+  ['частичность ⛔', (el) => new ResultCard({ id: 'g3', title: 'ХРОНОС · просодика', badge: '⛔', source: 'prosodyTool', verdict: 'Канал недоступен', params: [{ label: 'F0', param: MISSING('Hz', [60, 500]), kind: 'freq' }], limit: 'нет аудио — просодика ⛔' }).render(el)],
+  ['NaN в параметре', (el) => new ResultCard({ id: 'g4', title: 'Защита от NaN', badge: '🔵', source: 'фикстура', params: [{ label: 'x', param: P(Number.NaN, 'z', [-100, 100]), kind: 'index' }] }).render(el)]
+]);
+
+section('Состояния', [
+  ['пусто', (el) => el.append(h('div', { class: 'state empty' }, h('strong', { text: 'Пока пусто' }), h('span', { text: 'Вставьте транскрипт или нажмите «Демо-транскрипт».' })))],
+  ['загрузка', (el) => el.append(h('div', { class: 'skeleton' }, h('div', { class: 'bar w60' }), h('div', { class: 'bar w80' }), h('div', { class: 'bar w40' })))],
+  ['ошибка', (el) => el.append(h('div', { class: 'state error' }, h('span', { class: 'title', text: 'Шлюз не ответил за 90 с' }), h('span', { text: 'Проверьте сеть и повторите. Результаты других агентов сохранены.' }), h('button', { type: 'button', class: 'btn small', text: 'Повторить' })))],
+  ['частично', (el) => el.append(h('div', { class: 'state partial' }, h('span', { text: '⛔ просодика: нет аудио · отчёт собран из транскрипта' })))]
+]);
+</script>
+</body>
+</html>

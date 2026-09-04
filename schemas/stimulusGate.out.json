@@ -1,0 +1,3 @@
+{ "$id": "atmaraksi.stimulusGate.out", "type": "object", "required": ["allowed", "mode", "blocks", "warnings", "flicker_hz", "spl_db", "version"], "properties": {
+  "allowed": { "type": "boolean" }, "mode": { "enum": ["wellness", "pro"] }, "blocks": { "type": "array", "items": { "type": "string" } }, "warnings": { "type": "array", "items": { "type": "string" } },
+  "flicker_hz": { "$ref": "Param.v1.json" }, "spl_db": { "$ref": "Param.v1.json" }, "version": { "type": "string" } } }

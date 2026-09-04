@@ -1,0 +1,3 @@
+{ "$id": "atmaraksi.cascade.out", "type": "object", "required": ["status", "reason", "form", "formula_version", "B", "contributions", "drives"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "reason": { "type": "string" }, "form": { "enum": ["none", "cbrt"] }, "formula_version": { "type": "string" },
+  "B": { "$ref": "Param.v1.json" }, "contributions": { "type": "object", "additionalProperties": { "$ref": "Param.v1.json" } }, "drives": { "type": "object", "additionalProperties": { "$ref": "Param.v1.json" } } } }

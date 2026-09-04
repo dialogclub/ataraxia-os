@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ATMARAKSI OS v0.1 «Каркас»</title>
+<!--
+  CHANGELOG
+  v0.1 «Каркас» · 04.09.2026 · Спринт 0: SCP v1, реестры (агенты/инструменты/параметры/модели/рамки), шина событий,
+  харнесс-фреймворк + раннер + отчёт, токены и галерея компонентов, оболочка Телефон/Студия, Dynamic Island, композер,
+  состояния пусто/загрузка/ошибка/частично. Инструменты с зелёным харнессом: cascadeEngine, stimulusGate, chronometry,
+  gccEngine, memorySearchTool (LOCAL). Агенты L2 — ⛔ до Спринта 2 (нет харнесса типа llm-agent).
+-->
+<link rel="stylesheet" href="tokens.css">
+</head>
+<body>
+<div class="shell" id="shell">
+  <aside class="sidebar" id="sidebar" aria-label="Домены и модули"></aside>
+  <div id="island-host"></div>
+  <main class="main" id="main">
+
+    <section class="page" id="page-home" data-active="true" aria-labelledby="home-title">
+      <header class="module-head">
+        <h1 class="module-title" id="home-title" data-i18n="nav.home">Домой</h1>
+        <div class="meta"><span class="chip blue" id="home-version">v0.1 «Каркас»</span><span class="chip grey" id="home-harness-chip">харнессы</span></div>
+      </header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="analysis.empty">Вставьте транскрипт или нажмите «Демо-транскрипт».</span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div><div class="bar w40"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="tiles" id="home-tiles"></div>
+      <section class="section"><h3 data-i18n="home.continue">Продолжить кейс</h3><div id="home-continue"></div></section>
+      <section class="section"><h3 data-i18n="home.quick">Быстрые действия</h3><div class="hstack" id="home-quick"></div></section>
+    </section>
+
+    <section class="page" id="page-launch" aria-labelledby="launch-title">
+      <header class="module-head"><h1 class="module-title" id="launch-title" data-i18n="launch.title">Запуск</h1></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="analysis.empty">Вставьте транскрипт или нажмите «Демо-транскрипт».</span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span><button type="button" class="btn small" id="launch-error-retry" data-i18n="analysis.retry">Повторить</button></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card">
+        <div class="field"><label data-i18n="launch.mode">Режим</label><div id="launch-mode"></div></div>
+        <div class="field"><label for="launch-focus" data-i18n="launch.focus">Фокус-участник</label><input type="text" id="launch-focus" value="К." maxlength="24"></div>
+        <div class="field"><label data-i18n="launch.agents">Состав агентов</label><div class="hstack" id="launch-agents"></div></div>
+        <div class="field"><label for="launch-model" data-i18n="launch.model">Модель</label><select id="launch-model"></select></div>
+      </div>
+      <div class="card">
+        <div class="field"><label for="launch-transcript" data-i18n="launch.transcript">Транскрипт</label><textarea id="launch-transcript" data-i18n-placeholder="launch.placeholder" placeholder="Спикер: реплика — по строке на реплику"></textarea></div>
+        <div class="field"><label data-i18n="launch.cascade">Вход каскада АВС (A, D, C, Φ)</label>
+          <div class="grid2">
+            <input type="number" id="launch-A" min="0" max="1" step="0.01" value="0.85" aria-label="A">
+            <input type="number" id="launch-D" min="0" max="1" step="0.01" value="0.78" aria-label="D">
+            <input type="number" id="launch-C" min="0" max="1" step="0.01" value="0.79" aria-label="C">
+            <input type="number" id="launch-phi" min="0" max="1" step="0.01" value="0.65" aria-label="Φ">
+          </div>
+          <select id="launch-form" aria-label="Форма каскада"><option value="none">B = Φ × (A·D·C)</option><option value="cbrt">B = Φ × ∛(A·D·C)</option></select>
+        </div>
+        <div class="field"><label for="launch-minutes" data-i18n="launch.game_minutes">Игровое время, мин</label><input type="number" id="launch-minutes" min="0" max="600" step="1" value="240"></div>
+        <div class="card-actions">
+          <button type="button" class="btn secondary" id="launch-demo" data-i18n="launch.demo">Демо-транскрипт</button>
+          <button type="button" class="btn" id="launch-run" data-i18n="launch.run">Запустить анализ</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-analysis" aria-labelledby="analysis-title">
+      <header class="module-head"><h1 class="module-title" id="analysis-title" data-i18n="nav.analysis">Анализ</h1><div class="meta" id="analysis-meta"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="analysis.empty">Вставьте транскрипт или нажмите «Демо-транскрипт».</span><button type="button" class="btn secondary small" id="analysis-go-launch" data-i18n="analysis.go_launch">К запуску</button></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div><div class="bar w40"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="analysis.error">Анализ прерван</span><span class="msg"></span><button type="button" class="btn small" id="analysis-retry" data-i18n="analysis.retry">Повторить</button></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="feed" id="analysis-feed"></div>
+    </section>
+
+    <section class="page" id="page-synthesis" aria-labelledby="synthesis-title">
+      <header class="module-head"><h1 class="module-title" id="synthesis-title" data-i18n="synthesis.title">Синтез</h1></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="synthesis.empty">Синтез появится после анализа.</span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div id="synthesis-hero"></div>
+      <section class="section"><h3 data-i18n="synthesis.axes">Оси синтеза</h3><div class="card quiet" id="synthesis-axes"></div></section>
+      <section class="section"><h3 data-i18n="synthesis.plan">План Тера-навигатора</h3><div class="card quiet" id="synthesis-plan"></div></section>
+      <section class="section"><h3 data-i18n="synthesis.risks">Риски</h3><div class="card quiet" id="synthesis-risks"></div></section>
+    </section>
+
+    <section class="page" id="page-profile" aria-labelledby="profile-title">
+      <header class="module-head"><h1 class="module-title" id="profile-title" data-i18n="nav.profile">Профиль</h1><div id="profile-tabs"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="stack" id="profile-content"></div>
+    </section>
+
+    <section class="page" id="page-body" aria-labelledby="body-title">
+      <header class="module-head"><h1 class="module-title" id="body-title" data-i18n="nav.body">Тело</h1></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="stack" id="body-content"></div>
+    </section>
+
+    <section class="page" id="page-more" aria-labelledby="more-title">
+      <header class="module-head"><h1 class="module-title" id="more-title" data-i18n="tab.more">Ещё</h1></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="list" id="more-list"></div>
+    </section>
+
+    <section class="page" id="page-practice" aria-labelledby="practice-title">
+      <header class="module-head"><h1 class="module-title" id="practice-title" data-i18n="practice.title">Практика</h1><div class="meta"><span class="chip grey">PNEUMA · Спринт 5</span></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card" id="practice-gate" data-gate-panel>
+        <div class="card-head"><div><h3 data-i18n="practice.gate">Панель гейта</h3><div class="card-source">stimulusGate v1.0</div></div><span id="practice-harness"></span></div>
+        <div class="grid2">
+          <div class="field"><label for="practice-flicker" data-i18n="practice.flicker">Мигание, Гц</label><input type="number" id="practice-flicker" min="0" max="60" step="0.5" value="8"></div>
+          <div class="field"><label for="practice-spl" data-i18n="practice.spl">Громкость, дБ</label><input type="number" id="practice-spl" min="0" max="120" step="1" value="60"></div>
+        </div>
+        <div id="practice-decision" aria-live="polite"></div>
+        <div class="card-actions"><button type="button" class="btn danger" id="practice-stop" data-i18n="practice.stop">Аварийный стоп</button><span class="caption" id="practice-session"></span></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-clinic" aria-labelledby="clinic-title">
+      <header class="module-head"><h1 class="module-title" id="clinic-title" data-i18n="clinic.title">Клиника</h1><div class="meta"><span class="chip grey">vMed · CDS Phase 0 · Спринт 6</span></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card">
+        <p class="sub" data-i18n="clinic.welcome">Это инструмент клинициста, не чат-бот.</p>
+        <div class="field"><label data-i18n="clinic.mode">Режим</label><div id="clinic-mode"></div></div>
+        <div class="card-actions"><button type="button" class="btn" id="clinic-start">Начать сессию</button><span class="caption" id="clinic-locked"></span></div>
+        <div class="limit"><span aria-hidden="true">⛔</span><span>Гипотеза, не диагноз; решение принимает врач. Intake, стимулы, графология — Спринт 6.</span></div>
+      </div>
+      <div class="crisis-bar" id="clinic-crisis-bar"><button type="button" class="btn danger" id="clinic-crisis" data-crisis-button data-i18n="clinic.crisis">Кризис</button><span class="caption">Stanley-Brown · 4 шага · всегда на экране</span></div>
+    </section>
+
+    <section class="page" id="page-memory" aria-labelledby="memory-title">
+      <header class="module-head"><h1 class="module-title" id="memory-title" data-i18n="memory.title">Память</h1><div id="memory-mode"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="memory.empty">Введите запрос — например, «выгорание, нет смысла».</span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card"><div class="field"><label for="memory-query" data-i18n="memory.search">Поиск похожих кейсов</label><input type="text" id="memory-query" placeholder="выгорание, нет смысла"></div></div>
+      <div class="stack" id="memory-results"></div>
+    </section>
+
+    <section class="page" id="page-agents" aria-labelledby="agents-title">
+      <header class="module-head"><h1 class="module-title" id="agents-title" data-i18n="agents.title">Агенты</h1><div class="meta" id="agents-meta"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card table-wrap"><table class="table" id="agents-table"></table></div>
+      <section class="section"><h3 data-i18n="agents.tools">Инструменты L1/L3</h3><div class="card table-wrap"><table class="table" id="tools-table"></table></div></section>
+      <section class="section"><h3 data-i18n="agents.log">Журнал прогона</h3><div class="card quiet" id="agents-log"></div></section>
+    </section>
+
+    <section class="page" id="page-stub" aria-labelledby="stub-title">
+      <header class="module-head"><h1 class="module-title" id="stub-title">Модуль</h1><div class="meta" id="stub-meta"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="stack" id="stub-content"></div>
+    </section>
+
+    <section class="page" id="page-settings" aria-labelledby="settings-title">
+      <header class="module-head"><h1 class="module-title" id="settings-title" data-i18n="settings.title">Настройки</h1></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="list">
+        <div class="item"><span data-i18n="settings.locale">Язык</span><select id="settings-locale"><option value="ru">Русский</option><option value="uk">Українська</option><option value="en">English</option></select></div>
+        <div class="item"><span data-i18n="settings.model">Модель по умолчанию</span><select id="settings-model"></select></div>
+        <div class="item"><span data-i18n="settings.export">Экспорт SCP (JSON)</span><button type="button" class="btn secondary small" id="settings-export">JSON</button></div>
+        <div class="item"><span data-i18n="settings.import">Импорт SCP</span><label class="btn secondary small" for="settings-import-file">Файл<input type="file" id="settings-import-file" accept=".json" style="display:none"></label></div>
+        <div class="item"><span data-i18n="settings.print">Печать A4</span><button type="button" class="btn secondary small" id="settings-print">Печать</button></div>
+        <div class="item"><span data-i18n="settings.privacy">Приватность</span><span class="caption">локально; наружу — только Claude API</span></div>
+      </div>
+      <section class="section"><h3 data-i18n="settings.gates">Гейты (только просмотр)</h3><div class="list" id="settings-gates"></div></section>
+    </section>
+
+    <div class="composer-dock" id="composer-host"></div>
+  </main>
+  <aside class="inspector" id="inspector" aria-label="Инспектор"></aside>
+  <nav class="tabbar" id="tabbar" aria-label="Вкладки"></nav>
+</div>
+<div id="toast-host"></div>
+<div class="print-footer" id="print-footer"></div>
+<script type="module" src="app.mjs"></script>
+</body>
+</html>

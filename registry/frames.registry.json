@@ -1,0 +1,500 @@
+{
+  "version": "1.0",
+  "note": "Реестр рамок интерпретации (Приложение F). Грейд по умолчанию — доказательность рамки как инструмента, не диагноза.",
+  "frames": [
+    {
+      "id": "lowen",
+      "author": "А. Лоуэн",
+      "axes": [
+        "шизоидная",
+        "оральная",
+        "психопатическая",
+        "мазохистская",
+        "ригидная"
+      ],
+      "tool": "",
+      "agent": "Lowen",
+      "ui_encoding": "radar",
+      "default_grade": "C",
+      "source": "Bioenergetics (1975)"
+    },
+    {
+      "id": "reich",
+      "author": "В. Райх",
+      "axes": [
+        "глаза",
+        "рот",
+        "шея",
+        "грудь",
+        "диафрагма",
+        "живот",
+        "таз"
+      ],
+      "tool": "",
+      "agent": "Reich",
+      "ui_encoding": "bodymap",
+      "default_grade": "D",
+      "source": "Character Analysis (1933)"
+    },
+    {
+      "id": "berne",
+      "author": "Э. Берн",
+      "axes": [
+        "сценарии",
+        "игры",
+        "матрица игнорирования"
+      ],
+      "tool": "lexisTool",
+      "agent": "Berne",
+      "ui_encoding": "chip",
+      "default_grade": "C",
+      "source": "Games People Play (1964)"
+    },
+    {
+      "id": "karpman",
+      "author": "С. Карпман",
+      "axes": [
+        "преследователь",
+        "спасатель",
+        "жертва"
+      ],
+      "tool": "lexisTool",
+      "agent": "Berne",
+      "ui_encoding": "chip",
+      "default_grade": "C",
+      "source": "Fairy Tales and Script Drama Analysis (1968)"
+    },
+    {
+      "id": "gottman",
+      "author": "Дж. Готтман",
+      "axes": [
+        "критика",
+        "презрение",
+        "защита",
+        "стена",
+        "ремонт"
+      ],
+      "tool": "lexisTool",
+      "agent": "Gottman",
+      "ui_encoding": "traffic",
+      "default_grade": "B",
+      "source": "The Seven Principles (1999)"
+    },
+    {
+      "id": "vaillant",
+      "author": "Дж. Вейлант",
+      "axes": [
+        "психотические",
+        "незрелые",
+        "невротические",
+        "зрелые защиты"
+      ],
+      "tool": "",
+      "agent": "Vaillant",
+      "ui_encoding": "chip",
+      "default_grade": "B",
+      "source": "Adaptation to Life (1977)"
+    },
+    {
+      "id": "grof",
+      "author": "С. Гроф",
+      "axes": [
+        "БПМ I",
+        "БПМ II",
+        "БПМ III",
+        "БПМ IV"
+      ],
+      "tool": "",
+      "agent": "Archetype",
+      "ui_encoding": "timeline",
+      "default_grade": "D",
+      "source": "Realms of the Human Unconscious (1975)"
+    },
+    {
+      "id": "panksepp",
+      "author": "Я. Панксепп",
+      "axes": [
+        "SEEKING",
+        "RAGE",
+        "FEAR",
+        "LUST",
+        "CARE",
+        "PANIC",
+        "PLAY"
+      ],
+      "tool": "prosodyTool",
+      "agent": "Panksepp",
+      "ui_encoding": "radar",
+      "default_grade": "B",
+      "source": "Affective Neuroscience (1998)"
+    },
+    {
+      "id": "frankl",
+      "author": "В. Франкл",
+      "axes": [
+        "смысл",
+        "экзистенциальный вакуум",
+        "самотрансценденция"
+      ],
+      "tool": "",
+      "agent": "Insight",
+      "ui_encoding": "chip",
+      "default_grade": "C",
+      "source": "Man's Search for Meaning (1946)"
+    },
+    {
+      "id": "graves",
+      "author": "К. Грейвз / СД",
+      "axes": [
+        "бежевый",
+        "фиолетовый",
+        "красный",
+        "синий",
+        "оранжевый",
+        "зелёный",
+        "жёлтый",
+        "бирюзовый"
+      ],
+      "tool": "",
+      "agent": "Persona6",
+      "ui_encoding": "traffic",
+      "default_grade": "D",
+      "source": "Spiral Dynamics (1996)"
+    },
+    {
+      "id": "jung",
+      "author": "К. Юнг / Болен / Вулф / Эстес",
+      "axes": [
+        "архетипы",
+        "анима/анимус",
+        "тень",
+        "самость"
+      ],
+      "tool": "memorySearchTool",
+      "agent": "Archetype",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Archetypes and the Collective Unconscious (1934)"
+    },
+    {
+      "id": "campbell",
+      "author": "Дж. Кэмпбелл / М. Мёрдок",
+      "axes": [
+        "17 стадий пути героя",
+        "путь героини"
+      ],
+      "tool": "",
+      "agent": "HeroPath",
+      "ui_encoding": "timeline",
+      "default_grade": "D",
+      "source": "The Hero with a Thousand Faces (1949)"
+    },
+    {
+      "id": "erikson",
+      "author": "Э. Эриксон",
+      "axes": [
+        "8 стадий психосоциального развития"
+      ],
+      "tool": "",
+      "agent": "EriksonMarcia",
+      "ui_encoding": "timeline",
+      "default_grade": "C",
+      "source": "Childhood and Society (1950)"
+    },
+    {
+      "id": "marcia",
+      "author": "Дж. Марсиа",
+      "axes": [
+        "диффузия",
+        "предрешённость",
+        "мораторий",
+        "достижение"
+      ],
+      "tool": "",
+      "agent": "EriksonMarcia",
+      "ui_encoding": "chip",
+      "default_grade": "B",
+      "source": "Development and validation of ego-identity status (1966)"
+    },
+    {
+      "id": "zimbardo",
+      "author": "Ф. Зимбардо",
+      "axes": [
+        "прошлое−",
+        "прошлое+",
+        "настоящее гедонистическое",
+        "настоящее фаталистическое",
+        "будущее"
+      ],
+      "tool": "lexisTool",
+      "agent": "Chronotope",
+      "ui_encoding": "radar",
+      "default_grade": "B",
+      "source": "ZTPI (1999)"
+    },
+    {
+      "id": "anokhin",
+      "author": "П. Анохин",
+      "axes": [
+        "афферентный синтез",
+        "принятие решения",
+        "акцептор результата",
+        "обратная афферентация"
+      ],
+      "tool": "",
+      "agent": "Chronotope",
+      "ui_encoding": "timeline",
+      "default_grade": "C",
+      "source": "Биология и нейрофизиология условного рефлекса (1968)"
+    },
+    {
+      "id": "leonhard",
+      "author": "К. Леонгард",
+      "axes": [
+        "10 акцентуаций"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "traffic",
+      "default_grade": "B",
+      "source": "Akzentuierte Persönlichkeiten (1968)"
+    },
+    {
+      "id": "cattell16pf",
+      "author": "Р. Кеттелл",
+      "axes": [
+        "16 факторов"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "16PF (1949)"
+    },
+    {
+      "id": "ocean",
+      "author": "Big Five",
+      "axes": [
+        "O",
+        "C",
+        "E",
+        "A",
+        "N"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "Costa & McCrae (1992)"
+    },
+    {
+      "id": "mbti",
+      "author": "MBTI",
+      "axes": [
+        "E/I",
+        "S/N",
+        "T/F",
+        "J/P"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Myers-Briggs (1962)"
+    },
+    {
+      "id": "enneagram",
+      "author": "Эннеаграмма",
+      "axes": [
+        "9 типов"
+      ],
+      "tool": "",
+      "agent": "Persona6",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Riso & Hudson (1996)"
+    },
+    {
+      "id": "rokeach",
+      "author": "М. Рокич",
+      "axes": [
+        "терминальные",
+        "инструментальные ценности"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "chip",
+      "default_grade": "B",
+      "source": "The Nature of Human Values (1973)"
+    },
+    {
+      "id": "mbi",
+      "author": "К. Маслач",
+      "axes": [
+        "истощение",
+        "деперсонализация",
+        "редукция достижений"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Risk",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "MBI (1981)"
+    },
+    {
+      "id": "scl90",
+      "author": "SCL-90",
+      "axes": [
+        "9 шкал симптомов",
+        "GSI"
+      ],
+      "tool": "scaleScorer",
+      "agent": "ICD11Contour",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "Derogatis (1977)"
+    },
+    {
+      "id": "tas20",
+      "author": "TAS-20",
+      "axes": [
+        "трудность идентификации",
+        "трудность описания",
+        "внешне-ориентированное мышление"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Somatics",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "Bagby (1994)"
+    },
+    {
+      "id": "maddi",
+      "author": "С. Мадди",
+      "axes": [
+        "вовлечённость",
+        "контроль",
+        "принятие риска"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Qualitas",
+      "ui_encoding": "traffic",
+      "default_grade": "B",
+      "source": "Hardiness (1984)"
+    },
+    {
+      "id": "belbin",
+      "author": "М. Белбин",
+      "axes": [
+        "9 командных ролей"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Belbin",
+      "ui_encoding": "chip",
+      "default_grade": "C",
+      "source": "Management Teams (1981)"
+    },
+    {
+      "id": "gallup34",
+      "author": "Gallup",
+      "axes": [
+        "34 таланта",
+        "4 домена"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Gallup34",
+      "ui_encoding": "board",
+      "default_grade": "B",
+      "source": "CliftonStrengths (2007)"
+    },
+    {
+      "id": "amthauer",
+      "author": "Р. Амтхауэр",
+      "axes": [
+        "9 субтестов IST"
+      ],
+      "tool": "scaleScorer",
+      "agent": "Persona6",
+      "ui_encoding": "traffic",
+      "default_grade": "A",
+      "source": "IST (1953)"
+    },
+    {
+      "id": "gardner",
+      "author": "Г. Гарднер",
+      "axes": [
+        "8 интеллектов"
+      ],
+      "tool": "",
+      "agent": "Persona6",
+      "ui_encoding": "radar",
+      "default_grade": "D",
+      "source": "Frames of Mind (1983)"
+    },
+    {
+      "id": "abhidharma",
+      "author": "Абхидхарма",
+      "axes": [
+        "52 фактора"
+      ],
+      "tool": "",
+      "agent": "Abhidharma52",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Abhidhammattha Sangaha"
+    },
+    {
+      "id": "icd11",
+      "author": "МКБ-11",
+      "axes": [
+        "главы 6, 7, 17",
+        "контур на цикле переработки"
+      ],
+      "tool": "scaleScorer",
+      "agent": "ICD11Contour",
+      "ui_encoding": "chip",
+      "default_grade": "A",
+      "source": "WHO ICD-11 (2022)"
+    },
+    {
+      "id": "krol",
+      "author": "Л. Кроль",
+      "axes": [
+        "касты"
+      ],
+      "tool": "",
+      "agent": "Fincast",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Кастовая теория"
+    },
+    {
+      "id": "maslow_fin",
+      "author": "А. Маслоу (финансовые уровни)",
+      "axes": [
+        "выживание",
+        "безопасность",
+        "принадлежность",
+        "признание",
+        "самоактуализация"
+      ],
+      "tool": "",
+      "agent": "Fincast",
+      "ui_encoding": "traffic",
+      "default_grade": "D",
+      "source": "Motivation and Personality (1954), адаптация"
+    },
+    {
+      "id": "berezkin",
+      "author": "Ю. Березкин",
+      "axes": [
+        "мотивы фольклора"
+      ],
+      "tool": "",
+      "agent": "Motif",
+      "ui_encoding": "chip",
+      "default_grade": "D",
+      "source": "Тематическая классификация мотивов"
+    }
+  ]
+}

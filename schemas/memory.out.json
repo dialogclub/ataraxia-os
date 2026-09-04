@@ -1,0 +1,4 @@
+{ "$id": "atmaraksi.memory.out", "type": "object", "required": ["mode", "query", "hits", "total", "version", "reason"], "properties": {
+  "mode": { "enum": ["LOCAL", "MCP"] }, "query": { "type": "string" }, "total": { "type": "integer" }, "version": { "type": "string" }, "reason": { "type": "string" },
+  "hits": { "type": "array", "items": { "type": "object", "required": ["id", "archetype", "crisis", "score", "outcome"], "properties": {
+    "id": { "type": "string" }, "archetype": { "type": "string" }, "crisis": { "type": "boolean" }, "age_band": { "type": "string" }, "tags": { "type": "array" }, "outcome": { "type": "string" }, "score": { "$ref": "Param.v1.json" } } } } } }
