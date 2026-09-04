@@ -1,0 +1,17 @@
+{
+  "id": "smfk100.core-team.v1",
+  "members": [
+    {"id": "kovalevsky", "name": "Сергей Ковалевский", "Cr": 0.89, "Sr": 0.97, "Of": 0.95, "Sc": 0.92},
+    {"id": "grebentsov", "name": "Ян Гребенцов", "Cr": 0.94, "Sr": 0.91, "Of": 0.98, "Sc": 0.95},
+    {"id": "belaya", "name": "Анна Белая", "Cr": 0.91, "Sr": 0.89, "Of": 0.82, "Sc": 0.94},
+    {"id": "zelenin", "name": "Евгений Зеленин", "Cr": 0.95, "Sr": 0.92, "Of": 0.87, "Sc": 0.93},
+    {"id": "matvievskaya", "name": "Наталья Матвиевская", "Cr": 0.88, "Sr": 0.94, "Of": 0.96, "Sc": 0.91}
+  ],
+  "metrics": {
+    "Gcc_formula": 0.842491,
+    "Gcc_artifact_claimed": 0.928,
+    "geometric_mean_CrSr": 0.845623,
+    "sigma2_Of": 0.003704,
+    "formula": "prod(Cr_i*Sr_i)**(1/n) * (1 - pvariance(Of))"
+  }
+}
