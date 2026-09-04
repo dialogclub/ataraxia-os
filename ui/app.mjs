@@ -4,7 +4,9 @@ import { Badge } from './components/badge.mjs';
 import { DynamicIsland } from './components/island.mjs';
 import { SegmentControl, Sheet, Composer, Toast, HarnessStatus } from './components/controls.mjs';
 import { Radar } from './components/radar.mjs';
-import { RingGauge } from './components/gauges.mjs';
+import { RingGauge, TrafficScale7 } from './components/gauges.mjs';
+import { Spectrogram, Envelope } from './components/spectrogram.mjs';
+import { Heatmap24 } from './components/heatmap.mjs';
 import { CascadeWaterfall, PhiControl } from './components/cascade.mjs';
 import { Czi8Ring } from './components/czi8.mjs';
 import { ResultCard } from './components/card.mjs';
@@ -15,9 +17,14 @@ import { CascadeEngine } from '../core/engines/cascadeEngine.mjs';
 import { StimulusGate, StimulusSession } from '../core/engines/stimulusGate.mjs';
 import { Chronometry } from '../core/engines/chronometry.mjs';
 import { memoryFor } from '../core/engines/memorySearchTool.mjs';
+import { ProsodyTool } from '../core/engines/prosodyTool.mjs';
+import { LexisTool } from '../core/engines/lexisTool.mjs';
+import { PhonoSemTool, SCALE_MAP } from '../core/engines/phonoSemTool.mjs';
+import { GroundingClassifier, LEVELS } from '../core/engines/groundingClassifier.mjs';
+import { ScaleScorer } from '../core/engines/scaleScorer.mjs';
 
-const VERSION = '0.1.0';
-const VERSION_LABEL = 'v0.1 «Каркас»';
+const VERSION = '0.2.0';
+const VERSION_LABEL = 'v0.2 «Инструменты»';
 const byId = (id) => document.getElementById(id);
 
 // Данные: в single-file сборке лежат в window.__ATM_DATA, иначе грузятся по относительному пути.
@@ -54,18 +61,18 @@ class I18n {
 
 // Демо-транскрипт: синтетический, составлен для демонстрации конвейера. Не данные клиента.
 const DEMO_TRANSCRIPT = [
-  'Т.: С чего начнём сегодня?',
-  'К.: Не знаю. Я просто устал. Ничего не хочу, даже утром вставать.',
-  'Т.: Когда это началось?',
-  'К.: Наверное, месяца три назад. На работе всё сыпется, а я делаю вид, что держу.',
-  'Т.: Вы сказали «делаю вид». Перед кем?',
-  'К.: Перед всеми. Перед женой особенно. Она думает, что я справляюсь.',
-  'Т.: А что было бы, если бы она узнала?',
-  'К.: Давайте лучше про работу поговорим, там хотя бы понятно, что делать.',
-  'Т.: Хорошо. Что понятно про работу?',
-  'К.: Что надо уйти. Но я должен тянуть, у нас кредит и мама болеет.',
-  'Т.: «Должен» — чьё это слово?',
-  'К.: Отца. Он всегда так говорил. Я и не заметил, как стал им.'
+  '[10:02] Т.: С чего начнём сегодня?',
+  '[10:02] К.: Не знаю. Я просто устал. Ничего не хочу, даже утром вставать.',
+  '[10:03] Т.: Когда это началось?',
+  '[10:03] К.: Наверное, месяца три назад. На работе всё сыпется, а я делаю вид, что держу.',
+  '[10:05] Т.: Вы сказали «делаю вид». Перед кем?',
+  '[10:05] К.: Перед всеми. Перед женой особенно. Она думает, что я справляюсь.',
+  '[10:07] Т.: А что было бы, если бы она узнала?',
+  '[10:07] К.: Давайте лучше про работу поговорим, там хотя бы понятно, что делать.',
+  '[10:09] Т.: Хорошо. Что понятно про работу?',
+  '[10:09] К.: Что надо уйти. Но я должен тянуть, у нас кредит и мама болеет.',
+  '[10:12] Т.: «Должен» — чьё это слово?',
+  '[10:12] К.: Отца. Он всегда так говорил. Я и не заметил, как стал им.'
 ].join('\n');
 
 async function sha256(text) {
@@ -83,9 +90,12 @@ async function sha256(text) {
 class Transcript {
   constructor(text) {
     const lines = String(text === undefined ? '' : text).split('\n').map((l) => l.trim()).filter((l) => l !== '');
+    // Формат строки: «[HH:MM] Спикер: реплика» либо «HH:MM:SS Спикер: реплика» либо «Спикер: реплика».
     this.lines = Object.freeze(lines.map((l, i) => {
-      const m = l.match(/^([^:]{1,24}):\s*(.+)$/);
-      return Object.freeze({ n: i + 1, t: `#${i + 1}`, speaker: m ? m[1].trim() : '?', text: m ? m[2].trim() : l });
+      const tm = l.match(/^\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?\s+(.*)$/);
+      const body = tm ? tm[2] : l;
+      const m = body.match(/^([^:]{1,24}):\s*(.+)$/);
+      return Object.freeze({ n: i + 1, t: tm ? `[${tm[1]}]` : `#${i + 1}`, speaker: m ? m[1].trim() : '?', text: m ? m[2].trim() : body });
     }));
     Object.freeze(this);
   }
@@ -98,6 +108,14 @@ class Transcript {
 
   textOf(speaker) {
     return this.lines.filter((l) => speaker === undefined || l.speaker === speaker).map((l) => l.text).join(' ');
+  }
+
+  statementsOf(speaker) {
+    return this.lines.filter((l) => speaker === undefined || l.speaker === speaker).map((l) => l.text);
+  }
+
+  lexisLines() {
+    return this.lines.map((l) => ({ speaker: l.speaker, text: l.text, t: l.t }));
   }
 
   empty() {
@@ -157,8 +175,55 @@ class Pipeline {
         return { badge: out.hits.length ? '🟢' : '⛔', title: 'L1 · Память кейсов', source: `memorySearchTool v${out.version} · ${out.mode}`, verdict: out.hits.length ? `Ближайший кейс ${out.hits[0].id} · ${out.hits[0].archetype} · score ${fmt(out.hits[0].score)}` : (out.reason || app.i18n.t('memory.none')),
           params: out.hits.map((hit) => ({ label: `${hit.id} · ${hit.archetype} · ${hit.outcome}`, param: hit.score, kind: 'index' })), next: { label: app.i18n.t('memory.title'), onClick: () => app.go('memory') }, json: out, limit: `индекс ${out.total} синтетических демо-кейсов; боевой архив — ◇ MCP-SWAP` };
       } },
-      { id: 'prosody', layer: 'L1', label: 'prosodyTool', run: async () => ({ badge: '⛔', title: 'L1 · ХРОНОС · просодика', source: 'prosodyTool', verdict: 'Канал недоступен: нет аудио', params: ['prosody.f0', 'prosody.pause_share', 'prosody.hnr'].map((id) => { const p = app.registry.parameters.find((x) => x.id === id); return { label: p.label_ru, param: Param.missing(p.unit, p.range, 'prosodyTool', '—', 'нет аудио').json(), kind: p.type }; }), limit: app.i18n.t('limit.noaudio') }) },
-      { id: 'lexis', layer: 'L1', label: 'lexisTool', run: async () => ({ badge: '⛔', title: 'L1 · ЛЕКСИС', source: 'lexisTool · hidden_by_harness', verdict: 'Инструмент скрыт: нет зелёного харнесса (Спринт 1)', limit: app.i18n.t('limit.notool') }) }
+      { id: 'prosody', layer: 'L1', label: 'prosodyTool', run: async () => {
+        const audio = app.state.audio;
+        if (audio === undefined) {
+          return { badge: '⛔', title: 'L1 · ХРОНОС · просодика', source: 'prosodyTool v1.0', verdict: 'Канал недоступен: нет аудио', params: ['prosody.f0', 'prosody.pause_share', 'prosody.hnr'].map((id) => { const p = app.registry.parameters.find((x) => x.id === id); return { label: p.label_ru, param: Param.missing(p.unit, p.range, 'prosodyTool', '1.0', 'нет аудио').json(), kind: p.type }; }), limit: `${app.i18n.t('limit.noaudio')} — полный пайплайн измерил бы F0, паузы, темп, F1–F4, HNR, джиттер, шиммер`, next: { label: app.i18n.t('nav.speech'), onClick: () => app.go('speech') } };
+        }
+        const out = app.prosody.run({ pcm: audio.pcm, sr: audio.sr });
+        app.state.prosody = out;
+        app.state.scp = app.state.scp.with('signals.prosody', { f0: out.f0.mean, f0_sd: out.f0.sd, rms: out.rms.mean, pause_share: out.pause_share, onset_rate: out.onset_rate, hnr: out.hnr, jitter: out.jitter, shimmer: out.shimmer, f1: out.formants.f1, f2: out.formants.f2, f3: out.formants.f3, f4: out.formants.f4, centroid: out.centroid, tilt: out.tilt, proxies: out.proxies }, 'tool:prosodyTool');
+        if (present(out.f0.mean)) app.state.scp = app.state.scp.withEvidence({ claim_id: 'prosody.f0', type: 'measure', ref: { tool: 'prosodyTool', path: 'signals.prosody.f0', unit: 'Hz' }, badge: '🟢' }, 'tool:prosodyTool');
+        return { badge: present(out.f0.mean) ? '🟢' : '⛔', title: 'L1 · ХРОНОС · просодика', source: `prosodyTool v${out.version} · ${audio.name}`, verdict: present(out.f0.mean) ? `F0 ${fmt(out.f0.mean, 'freq')} Гц ± ${fmt(out.f0.sd, 'freq')} · паузы ${fmt(out.pause_share, 'percent')} % · HNR ${fmt(out.hnr, 'freq')} дБ` : 'Вокализованных кадров нет',
+          params: [{ label: 'Темп онсетов', param: out.onset_rate, kind: 'index' }, { label: 'Джиттер', param: out.jitter, kind: 'index' }, { label: 'Шиммер', param: out.shimmer, kind: 'index' }, { label: 'F1', param: out.formants.f1, kind: 'freq' }, { label: 'F2', param: out.formants.f2, kind: 'freq' }],
+          next: { label: app.i18n.t('nav.speech'), onClick: () => app.go('speech') }, json: { ...out, spectrogram: { ...out.spectrogram, data: `[${out.spectrogram.frames}×${out.spectrogram.bins}]` }, f0: { ...out.f0, track: `[${out.f0.track.length}]` }, rms: { ...out.rms, track: `[${out.rms.track.length}]` } }, limit: 'акустические прокси — не диагноз и не верификация личности' };
+      } },
+      { id: 'lexis', layer: 'L1', label: 'lexisTool', run: async () => {
+        const tr = app.state.transcript;
+        const out = app.lexis.run({ lines: tr.lexisLines(), focus: input.focus });
+        app.state.lexis = out;
+        app.state.scp = app.state.scp.with('lexis', { pronouns: out.pronouns, modality: out.modality, zimbardo: out.zimbardo, balance: out.balance, heatmap: out.heatmap }, 'tool:lexisTool');
+        if (out.status === 'ok') app.state.scp = app.state.scp.withEvidence({ claim_id: 'lexis.pronouns', type: 'measure', ref: { tool: 'lexisTool', path: 'lexis.pronouns' }, badge: '🟢' }, 'tool:lexisTool');
+        return { badge: out.status === 'ok' ? '🟢' : '⛔', title: 'L1 · ЛЕКСИС', source: `lexisTool v${out.version} · фокус ${out.focus || 'все'}`, verdict: out.status === 'ok' ? `«я» ${fmt(out.pronouns.i, 'percent')} % · «мы» ${fmt(out.pronouns.we, 'percent')} % · долженствование ${fmt(out.modality.must, 'percent')} ‰ · доля речи ${out.balance[input.focus] ? fmt(out.balance[input.focus].share, 'percent') : '—'} %` : out.reason,
+          params: [{ label: 'Возможность', param: out.modality.can, kind: 'percent' }, { label: 'Доля долженствования', param: out.modality.ratio, kind: 'index' }, { label: 'Zimbardo: будущее 🔵', param: out.zimbardo.future, kind: 'index' }, { label: 'Zimbardo: прошлое− 🔵', param: out.zimbardo.past_negative, kind: 'index' }],
+          next: { label: app.i18n.t('nav.speech'), onClick: () => app.go('speech') }, json: out, limit: out.heatmap.badge === '⛔' ? `⛔ ${out.heatmap.reason}` : '' };
+      } },
+      { id: 'vaal', layer: 'L1', label: 'phonoSemTool', run: async () => {
+        const tr = app.state.transcript;
+        const out = app.phono.run({ text: tr.textOf(input.focus) || tr.textOf() });
+        app.state.vaal = out;
+        app.state.scp = app.state.scp.with('lexis.vaal', { scales: out.scales.map((x) => ({ id: x.id, left: x.left, right: x.right, value: x.value, significant: x.significant })), significant: out.significant, blocks: out.blocks, polarity: out.polarity, plutchik: out.plutchik, belyanin: out.belyanin, ttr: out.ttr, hapax: out.hapax, lang: out.lang }, 'tool:phonoSemTool');
+        return { badge: out.status === 'ok' ? '🔵' : '⛔', title: 'L1 · VAAL-lite · фоносемантика', source: `phonoSemTool v${out.version} · ${out.lang} · ${out.words} слов`, verdict: out.status === 'ok' ? `Полярность ${fmt(out.polarity, 'score')} · значимые: ${out.significant.slice(0, 5).join(', ') || 'нет'}` : out.reason,
+          params: [{ label: 'TTR', param: out.ttr, kind: 'index' }, { label: 'Hapax', param: out.hapax, kind: 'index' }], next: { label: app.i18n.t('nav.speech'), onClick: () => app.go('speech') }, json: out, limit: 'таблица PHON — методологическая реконструкция; точная таблица Журавлёва подставляется без изменения логики' };
+      } },
+      { id: 'grounding', layer: 'L1', label: 'groundingClassifier', run: async () => {
+        const tr = app.state.transcript;
+        const out = app.grounding.run({ statements: tr.statementsOf(input.focus).length ? tr.statementsOf(input.focus) : tr.statementsOf() });
+        app.state.grounding = out;
+        app.state.scp = app.state.scp.with('czi8', { levels: out.levels, gap: out.gap, liberty_mode: out.liberty_mode, badge: out.badge, classified: out.classified, n: out.n }, 'tool:groundingClassifier');
+        return { badge: out.status === 'ok' && out.classified > 0 ? '🔵' : '⛔', title: 'L1 · ЦЗИ-8 · контуры K1–K8', source: `groundingClassifier v${out.version} · ${out.classified}/${out.n} высказываний`, verdict: out.classified > 0 ? `Разрыв: ${out.gap ? `${out.gap} · ${out.gap_label}` : 'нет'} · модус свободы воли: ${out.liberty_mode ? `${out.liberty_mode} — ${out.liberty_label}` : '—'}` : 'Маркеров контуров нет',
+          viz: (el) => { const r = new Czi8Ring(200); r.render(el); r.update(out); }, next: { label: 'ЦЗИ-8 в профиле', onClick: () => app.go('profile', 'czi8') }, json: out, limit: out.note };
+      } },
+      { id: 'scales', layer: 'L1', label: 'scaleScorer', run: async () => {
+        const filled = Object.keys(app.state.scales);
+        if (filled.length === 0) return { badge: '⛔', title: 'L1 · Шкалы', source: 'scaleScorer v1.0', verdict: 'Опросники не заполнены', limit: 'заполните PHQ-9/GAD-7 в «Тестах» или импортируйте ответы', next: { label: app.i18n.t('nav.tests'), onClick: () => app.go('tests') } };
+        const results = filled.map((id) => app.state.scales[id]);
+        app.state.scp = app.state.scp.with('clinic.scales', Object.fromEntries(results.map((r) => [r.scale, { total: r.total, band: r.band, subscales: r.subscales, flags: r.flags, grade: r.grade }])), 'tool:scaleScorer');
+        results.forEach((r) => { app.state.scp = app.state.scp.withEvidence({ claim_id: `clinic.${r.scale}`, type: 'scale', ref: { tool: 'scaleScorer', scale: r.scale, band: r.band }, badge: '🟢' }, 'tool:scaleScorer'); });
+        const flags = results.flatMap((r) => r.flags);
+        if (flags.length) app.state.scp = app.state.scp.with('clinic.crisis', { pathway: 'stanley-brown', shown: true, flags }, 'system:Safety');
+        return { badge: '🟢', title: 'L1 · Шкалы', source: `scaleScorer v1.0 · ${results.map((r) => r.label).join(', ')}`, verdict: results.map((r) => `${r.label} ${fmt(r.total, 'score')} (${r.band || 'без нормы'})`).join(' · '), params: results.map((r) => ({ label: r.label, param: r.total, kind: 'score' })), next: { label: app.i18n.t('nav.tests'), onClick: () => app.go('tests') }, json: results, limit: flags.length ? `‼ ${flags.join('; ')}` : '' };
+      } }
     ];
     input.agents.forEach((id) => {
       const card = app.registry.agents.find((a) => a.id === id);
@@ -247,11 +312,16 @@ class App {
     this.i18n = new I18n(dicts, 'ru');
     this.bus = new EventBus();
     this.memory = memoryFor(corpus.cases); // ◇ MCP-SWAP: memoryFor(corpus.cases, mcpClient)
+    this.prosody = new ProsodyTool({ maxSeconds: 90 });
+    this.lexis = new LexisTool();
+    this.phono = new PhonoSemTool();
+    this.grounding = new GroundingClassifier();
+    this.scorer = new ScaleScorer();
     this.pipeline = new Pipeline(this);
     this.toast = new Toast(byId('toast-host'));
     this.sheet = new Sheet('ATMARAKSI OS');
     this.island = new DynamicIsland(() => this.pipeline.cancel(), () => this.commandPalette());
-    this.state = { page: 'home', sub: '', scp: Scp.fresh({ mode: 'session', model: '', created: new Date().toISOString(), input_hash: '', alias: 'К.' }), steps: [], transcript: undefined, agents: new Set(), agentTasks: {}, clinicLocked: false, profileTab: 'overview', memoryMode: 'LOCAL' };
+    this.state = { page: 'home', sub: '', scp: Scp.fresh({ mode: 'session', model: '', created: new Date().toISOString(), input_hash: '', alias: 'К.' }), steps: [], transcript: undefined, agents: new Set(), agentTasks: {}, clinicLocked: false, profileTab: 'overview', memoryMode: 'LOCAL', audio: undefined, prosody: undefined, lexis: undefined, vaal: undefined, grounding: undefined, scales: {}, testsTab: 'phq9' };
     Object.freeze(this);
   }
 
@@ -285,6 +355,8 @@ class App {
     if (page === 'body') this.setState('body', 'empty', 'Health Score, PPG, меридианы, риски, биопаспорт — Спринт 4. Каналов нет.');
     if (page === 'practice') this.renderGate();
     if (page === 'synthesis') this.renderSynthesis();
+    if (page === 'speech') this.renderSpeech();
+    if (page === 'tests') this.renderTests();
     this.renderNav();
     this.renderInspector();
     window.scrollTo(0, 0);
@@ -498,7 +570,9 @@ class App {
     if (tab === 'czi8') {
       const card = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h3', { text: 'ЦЗИ-8 · контуры K1–K8' }), new Badge('⛔').render(h('span'))));
       const ring = new Czi8Ring(220); ring.render(card); ring.update(scp.czi8);
-      card.append(h('div', { class: 'limit' }, h('span', { text: '⛔ groundingClassifier — Спринт 1; модус свободы воли А/Б/В/Г — после классификации' })));
+      card.querySelector('.badge').replaceWith(new Badge(scp.czi8.badge === undefined ? '⛔' : scp.czi8.badge).render(h('span')));
+      if (scp.czi8.gap !== undefined && scp.czi8.classified > 0) card.append(h('div', { class: 'stack' }, LEVELS.map(([k, label]) => h('div', { class: 'row' }, h('span', { text: `${k} · ${label}${scp.czi8.gap === k ? ' · разрыв' : ''}` }), h('span', { class: 'value', text: fmt(scp.czi8.levels[k], 'index') }, h('span', { class: 'unit', text: 'share' })))), h('p', { class: 'sub', text: scp.czi8.liberty_mode ? `Модус свободы воли ${scp.czi8.liberty_mode}: ${{ 'А': 'вернуться к восприятию и чувству', 'Б': 'переосмыслить значение и потребность', 'В': 'решить и действовать', 'Г': 'принять результат и осознать себя' }[scp.czi8.liberty_mode]}` : 'Разрыва нет — все контуры представлены' })));
+      card.append(h('div', { class: 'limit' }, h('span', { text: scp.czi8.classified > 0 ? '🔵 имена контуров и модусы — методологическая реконструкция; словари маркеров расширяются' : '⛔ запустите анализ: ЦЗИ-8 считается по высказываниям фокус-участника' })));
       content.append(card);
       return;
     }
@@ -622,11 +696,160 @@ class App {
     this.setState('more', 'content');
   }
 
+
+  // Вложение: аудио → Web Audio (офлайн-декодер) → моно PCM; текст → транскрипт.
+  attach(file) {
+    if (/^audio\//.test(file.type) || /\.(wav|mp3|m4a|ogg|flac|webm)$/i.test(file.name)) { this.decodeAudio(file); return; }
+    file.text().then((t) => { byId('launch-transcript').value = t; this.go('launch'); this.toast.show(`Вложение ${file.name}`); });
+  }
+
+  async decodeAudio(file) {
+    this.setState('speech', 'loading');
+    this.island.update({ phase: 'running', layer: 'L0', agent: 'decodeAudio', percent: 10 });
+    try {
+      const buf = await file.arrayBuffer();
+      const Ctx = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext;
+      if (Ctx === undefined) throw new Error('Web Audio недоступен в этом браузере');
+      const ctx = new Ctx(1, 44100, 44100);
+      const decoded = await ctx.decodeAudioData(buf);
+      const n = decoded.length; const mono = new Float32Array(n);
+      for (let c = 0; c < decoded.numberOfChannels; c += 1) { const ch = decoded.getChannelData(c); for (let i = 0; i < n; i += 1) mono[i] += ch[i] / decoded.numberOfChannels; }
+      this.loadPcm(mono, decoded.sampleRate, file.name);
+    } catch (e) {
+      this.island.update({ phase: 'error', text: `аудио: ${e.message}` });
+      this.setState('speech', 'error', `Не удалось декодировать аудио: ${e.message}. Поддерживаются WAV/MP3/M4A/OGG.`);
+    }
+  }
+
+  // PCM в состояние; просодика считается сразу (детерминированно, без LLM).
+  loadPcm(pcm, sr, name) {
+    this.state.audio = { pcm, sr, name };
+    this.island.update({ phase: 'running', layer: 'L1', agent: 'prosodyTool', percent: 50 });
+    const out = this.prosody.run({ pcm, sr });
+    this.state.prosody = out;
+    this.state.scp = this.state.scp.with('inputs', this.state.scp.data.inputs.filter((i) => i.kind !== 'audio').concat([{ kind: 'audio', hash: `${name}:${pcm.length}@${sr}`, ref: name }]), 'tool:intake');
+    this.bus.emit('audio.loaded', { name, sr, seconds: Number((pcm.length / sr).toFixed(2)) });
+    this.island.update({ phase: 'done', text: `${name} · ${(pcm.length / sr).toFixed(1)} с · F0 ${fmt(out.f0.mean, 'freq')} Гц` });
+    if (this.state.page === 'speech') this.renderSpeech(); else this.go('speech');
+  }
+
+  demoTone() {
+    const sr = 44100; const n = sr * 3; const pcm = new Float32Array(n);
+    for (let i = 0; i < n; i += 1) pcm[i] = i > sr && i < sr * 1.5 ? 0 : 0.5 * Math.sin((2 * Math.PI * 150 * i) / sr);
+    this.loadPcm(pcm, sr, 'синтетический тон 150 Гц (демо, не речь)');
+  }
+
+  // --- Речь: спектрограмма, RMS, VAAL, ЛЕКСИС, тепловая карта ---
+  renderSpeech() {
+    const audioInput = byId('speech-audio-file');
+    audioInput.onchange = (e) => { const f = e.target.files[0]; if (f) this.decodeAudio(f); e.target.value = ''; };
+    byId('speech-demo-tone').onclick = () => this.demoTone();
+    const hs = byId('speech-harness'); clear(hs); new HarnessStatus(this.harnessOf('prosodyTool')).render(hs);
+    const meta = byId('speech-meta'); clear(meta);
+    const host = byId('speech-prosody'); clear(host);
+    const out = this.state.prosody;
+    byId('speech-audio-name').textContent = this.state.audio === undefined ? '' : `${this.state.audio.name} · ${(this.state.audio.pcm.length / this.state.audio.sr).toFixed(1)} с · ${this.state.audio.sr} Гц`;
+    if (out === undefined) {
+      host.append(h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h3', { text: 'Спектрограмма 0–5 кГц' }), new Badge('⛔').render(h('span'))), h('div', { class: 'viz-empty', text: '⛔ нет аудио — полный пайплайн измерил бы F0, паузы, темп, F1–F4, HNR, джиттер, шиммер' })));
+    } else {
+      const card = h('div', { class: 'card hero' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: 'Спектрограмма 0–5 кГц' }), h('div', { class: 'card-source', text: `prosodyTool v${out.version} · ${out.frames} кадров · ${out.duration_s} с` })), new Badge(present(out.f0.mean) ? '🟢' : '⛔').render(h('span'))));
+      const sg = new Spectrogram(220); sg.render(card); sg.update(out);
+      const env = new Envelope(60); env.render(card); env.update(out.rms.track);
+      const chips = h('div', { class: 'hstack' });
+      [['возбуждение/агитация', out.proxies.agitation], ['уплощённый аффект', out.proxies.flat_affect], ['сдержанность', out.proxies.restraint]].forEach(([label, p]) => chips.append(h('span', { class: `chip ${present(p) ? (p.value > 0.5 ? 'blue' : 'grey') : 'grey'}`, title: p.note, text: `${label} ${fmt(p, 'index')} 🔵` })));
+      card.append(chips, h('span', { class: 'caption', text: 'акустические прокси — не диагноз, не верификация личности; пороги — калибровочная реконструкция' }));
+      const rows = [['F0 средняя', out.f0.mean, 'freq'], ['Вариативность F0', out.f0.sd, 'freq'], ['RMS средняя', out.rms.mean, 'index'], ['Доля пауз', out.pause_share, 'percent'], ['Темп онсетов', out.onset_rate, 'index'], ['HNR', out.hnr, 'freq'], ['Джиттер', out.jitter, 'index'], ['Шиммер', out.shimmer, 'index'], ['F1', out.formants.f1, 'freq'], ['F2', out.formants.f2, 'freq'], ['F3', out.formants.f3, 'freq'], ['F4', out.formants.f4, 'freq'], ['Центроид', out.centroid, 'freq'], ['Наклон спектра', out.tilt, 'index']];
+      const list = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h3', { text: 'Просодика' }), new Badge('🟢').render(h('span'))));
+      rows.forEach(([label, p, kind]) => list.append(h('div', { class: 'row' }, h('span', { text: label }), h('span', { class: 'value', title: p.note }, fmt(p, kind), h('span', { class: 'unit', text: present(p) ? p.unit : '' }), ' ', h('span', { class: 'cap2', text: p.badge })))));
+      list.append(h('details', { class: 'json' }, h('summary', { text: 'JSON' }), h('pre', { text: JSON.stringify({ ...out, spectrogram: `[${out.spectrogram.frames}×${out.spectrogram.bins}]`, f0: { ...out.f0, track: `[${out.f0.track.length}]` }, rms: { ...out.rms, track: `[${out.rms.track.length}]` } }, null, 2) })));
+      host.append(card, list);
+      meta.append(h('span', { class: 'chip green', text: `F0 ${fmt(out.f0.mean, 'freq')} Гц` }), h('span', { class: 'chip grey', text: `паузы ${fmt(out.pause_share, 'percent')} %` }));
+    }
+    // VAAL и ЛЕКСИС — по транскрипту из «Запуска» (пересчёт детерминированный, без LLM).
+    const tr = new Transcript(byId('launch-transcript').value);
+    const focus = byId('launch-focus').value.trim() || 'К.';
+    const vaalHost = byId('speech-vaal'); clear(vaalHost);
+    const lexHost = byId('speech-lexis'); clear(lexHost);
+    if (tr.empty()) {
+      vaalHost.append(h('div', { class: 'state empty' }, h('span', { text: this.i18n.t('limit.novaal') })));
+      lexHost.append(h('div', { class: 'state empty' }, h('span', { text: this.i18n.t('limit.novaal') })));
+    } else {
+      const v = this.phono.run({ text: tr.textOf(focus) || tr.textOf() });
+      const vc = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: `25 шкал Журавлёва · ${v.lang} · ${v.words} слов` }), h('div', { class: 'card-source', text: `phonoSemTool v${v.version} · полярность ${fmt(v.polarity, 'score')}` })), new Badge('🔵').render(h('span'))));
+      const grid = h('div', { class: 'vaal-list' });
+      v.scales.forEach((sc) => { const val = present(sc.value) ? sc.value.value : 0; const left = val < 0 ? 50 + val / 2 : 50; const w = Math.abs(val) / 2; grid.append(h('span', { class: sc.significant && val >= 0 ? 'sig' : '', text: sc.left }), h('div', { class: 'bar', title: `${fmt(sc.value, 'score')} · z ${sc.z}` }, h('i', { style: `left:${left}%;width:${w}%` })), h('span', { class: sc.significant && val < 0 ? 'sig' : '', style: 'text-align:right', text: sc.right })); });
+      vc.append(grid, h('div', { class: 'hstack' }, v.blocks.positive.map((p) => h('span', { class: 'chip green', text: p })), v.blocks.negative.map((p) => h('span', { class: 'chip orange', text: p })), v.blocks.neutral.map((p) => h('span', { class: 'chip grey', text: p }))));
+      const radar = new Radar(240); radar.render(vc); radar.update(Object.keys(v.plutchik).map((k) => ({ label: k, param: v.plutchik[k] })));
+      vc.append(h('div', { class: 'hstack' }, Object.keys(v.belyanin).map((k) => h('span', { class: 'chip grey', text: `Белянин: ${k} ${fmt(v.belyanin[k], 'index')}` }))), h('div', { class: 'row' }, h('span', { text: 'TTR · hapax' }), h('span', { class: 'value', text: `${fmt(v.ttr)} · ${fmt(v.hapax)}` })), h('div', { class: 'limit' }, h('span', { text: '🔵 таблица PHON и категории — методологическая реконструкция; точные таблицы подставляются без изменения логики' })));
+      vaalHost.append(vc);
+      const l = this.lexis.run({ lines: tr.lexisLines(), focus });
+      const lc = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: `Местоимения и модальность · фокус ${l.focus || 'все'}` }), h('div', { class: 'card-source', text: `lexisTool v${l.version} · ${l.scope_words} слов` })), new Badge(l.status === 'ok' ? '🟢' : '⛔').render(h('span'))));
+      [['«я»', l.pronouns.i, 'percent'], ['«мы»', l.pronouns.we, 'percent'], ['«ты/вы»', l.pronouns.you, 'percent'], ['«они»', l.pronouns.they, 'percent'], ['Долженствование', l.modality.must, 'percent'], ['Возможность', l.modality.can, 'percent']].forEach(([label, p, kind]) => lc.append(h('div', { class: 'row' }, h('span', { text: label }), h('span', { class: 'value', title: p.note }, fmt(p, kind), h('span', { class: 'unit', text: present(p) ? p.unit : '' })))));
+      const zr = new Radar(220); zr.render(lc); zr.update([['прошлое−', 'past_negative'], ['прошлое+', 'past_positive'], ['гедонизм', 'present_hedonistic'], ['фатализм', 'present_fatalistic'], ['будущее', 'future']].map(([label, k]) => ({ label, param: l.zimbardo[k] })));
+      lc.append(h('span', { class: 'caption', text: 'Zimbardo-прокси 🔵 — лексические маркеры, не опросник ZTPI' }));
+      const bal = h('div', { class: 'hstack' }); Object.keys(l.balance).forEach((name) => bal.append(h('span', { class: 'chip blue', text: `${name}: ${fmt(l.balance[name].share, 'percent')} % · ${l.balance[name].turns} реплик · вопросов ${fmt(l.balance[name].questions, 'count')}` })));
+      lc.append(bal);
+      const hm = new Heatmap24(); hm.render(lc); hm.update(l.heatmap);
+      lexHost.append(lc);
+    }
+    this.setState('speech', out === undefined ? 'partial' : 'content', this.i18n.t('speech.empty'));
+  }
+
+  // --- Тесты: PHQ-9 и GAD-7 (открытые ключи), импорт ответов для остальных ---
+  renderTests() {
+    const tabsHost = byId('tests-tabs'); clear(tabsHost);
+    new SegmentControl([{ id: 'summary', label: this.i18n.t('tests.summary') }, { id: 'phq9', label: 'PHQ-9' }, { id: 'gad7', label: 'GAD-7' }, { id: 'import', label: this.i18n.t('tests.import') }], this.state.testsTab, (v) => { this.state.testsTab = v; this.renderTests(); }).render(tabsHost);
+    const content = byId('tests-content'); clear(content);
+    const tab = this.state.testsTab;
+    const PHQ9 = ['Мало интереса или удовольствия от дел', 'Подавленность, депрессия, безнадёжность', 'Трудности с засыпанием, сном или избыточный сон', 'Усталость, мало энергии', 'Плохой аппетит или переедание', 'Плохое отношение к себе: неудачник, подвёл семью', 'Трудно сосредоточиться', 'Заторможенность или, наоборот, беспокойность', 'Мысли, что лучше умереть или причинить себе вред'];
+    const GAD7 = ['Нервозность, тревога, взвинченность', 'Не удаётся прекратить или контролировать беспокойство', 'Слишком сильное беспокойство о разном', 'Трудно расслабиться', 'Беспокойство такое, что трудно усидеть на месте', 'Раздражительность', 'Страх, будто может случиться что-то ужасное'];
+    const OPTS = ['0 · ни разу', '1 · несколько дней', '2 · более половины дней', '3 · почти каждый день'];
+    const form = (id, items) => {
+      const card = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: `${id === 'PHQ9' ? 'PHQ-9' : 'GAD-7'} · за последние 2 недели` }), h('div', { class: 'card-source', text: 'scaleScorer · открытый ключ · Grade A' })), new Badge('🟢').render(h('span'))));
+      const list = h('div', { class: 'scale-list' });
+      const prev = this.state.answers === undefined ? {} : this.state.answers;
+      items.forEach((text, i) => { const opts = h('div', { class: 'opts', role: 'radiogroup', 'aria-label': text }); OPTS.forEach((o, v) => { const input = h('input', { type: 'radio', name: `${id}-${i}`, value: String(v) }); if (prev[id] !== undefined && prev[id][i] === v) input.checked = true; opts.append(h('label', { title: o }, input, h('span', { text: String(v) }))); }); list.append(h('div', { class: 'scale-row' }, h('span', { text: `${i + 1}. ${text}` }), opts)); });
+      const result = h('div');
+      const score = h('button', { type: 'button', class: 'btn', text: this.i18n.t('tests.score'), onClick: () => {
+        const answers = items.map((_, i) => { const c = card.querySelector(`input[name="${id}-${i}"]:checked`); return c === null ? null : Number(c.value); });
+        this.state.answers = { ...(this.state.answers === undefined ? {} : this.state.answers), [id]: answers };
+        const out = this.scorer.run({ scale: id, answers });
+        clear(result);
+        if (out.status !== 'ok') { this.setState('tests', 'error', `${out.reason}. ${this.i18n.t('tests.empty')}`); return; }
+        this.setState('tests', 'content');
+        this.state.scales[id] = out;
+        this.bus.emit('scale.scored', { scale: id, total: out.total.value, band: out.band });
+        const ts = new TrafficScale7(); ts.render(result); ts.update(out.total, out.label);
+        result.append(h('p', { class: 'sub', text: `${out.label}: ${fmt(out.total, 'score')} из ${out.total.range[1]} · ${out.band}` }));
+        if (out.flags.length) { result.append(h('div', { class: 'state error' }, h('span', { class: 'title', text: '‼ Кризисный путь' }), h('span', { text: out.flags.join('; ') }), h('button', { type: 'button', class: 'btn danger small', text: 'Открыть Stanley-Brown', onClick: () => byId('clinic-crisis').dispatchEvent(new MouseEvent('click', { bubbles: true })) }))); this.state.scp = this.state.scp.with('clinic.crisis', { pathway: 'stanley-brown', shown: true, flags: out.flags }, 'system:Safety'); }
+        result.append(h('span', { class: 'caption', text: 'гипотеза, не диагноз; решение принимает врач' }));
+      } });
+      card.append(list, h('div', { class: 'card-actions' }, score), result);
+      if (this.state.scales[id] !== undefined) { const ts = new TrafficScale7(); ts.render(result); ts.update(this.state.scales[id].total, this.state.scales[id].label); result.append(h('p', { class: 'sub', text: `${this.state.scales[id].label}: ${fmt(this.state.scales[id].total, 'score')} · ${this.state.scales[id].band}` })); }
+      return card;
+    };
+    this.setState('tests', 'content');
+    if (tab === 'phq9') { content.append(form('PHQ9', PHQ9)); return; }
+    if (tab === 'gad7') { content.append(form('GAD7', GAD7)); return; }
+    if (tab === 'import') {
+      const area = h('textarea', { rows: '6', placeholder: this.i18n.t('tests.answers_json'), style: 'width:100%;font-family:var(--mono);font-size:12px;border:1px solid var(--line-soft);border-radius:10px;padding:10px' });
+      const result = h('div');
+      const btn = h('button', { type: 'button', class: 'btn', text: this.i18n.t('tests.score'), onClick: () => {
+        clear(result);
+        try { const obj = JSON.parse(area.value); const out = this.scorer.run(obj); if (out.status !== 'ok') { this.setState('tests', 'error', out.reason); return; } this.setState('tests', 'content'); this.state.scales[out.scale] = out; this.bus.emit('scale.scored', { scale: out.scale, total: out.total.value }); result.append(h('div', { class: 'card quiet' }, h('h4', { text: `${out.label}: ${fmt(out.total, 'score')} ${out.band}` }), Object.keys(out.subscales).map((k) => h('div', { class: 'row' }, h('span', { text: k }), h('span', { class: 'value', text: `${fmt(out.subscales[k].score, 'score')} ${out.subscales[k].score.unit} ${out.subscales[k].band}` }))), out.indices ? h('div', { class: 'row' }, h('span', { text: 'GSI · PST · PSDI' }), h('span', { class: 'value', text: `${fmt(out.indices.GSI)} · ${fmt(out.indices.PST, 'count')} · ${fmt(out.indices.PSDI)}` })) : null)); } catch (e) { this.setState('tests', 'error', `JSON не разобран: ${e.message}`); }
+      } });
+      const avail = h('div', { class: 'hstack' }, ScaleScorer.scales().map((s) => h('span', { class: `chip ${s.available ? 'green' : 'grey'}`, title: s.reason, text: `${s.label}${s.available ? '' : ' ⛔'}` })));
+      content.append(h('div', { class: 'card' }, h('h3', { text: 'Импорт ответов (JSON)' }), avail, area, h('div', { class: 'card-actions' }, btn), result, h('div', { class: 'limit' }, h('span', { text: '⛔ 16PF, IST, Белбин, Леонгард, Мадди — ключи проприетарные/не загружены; Gallup-34 — импорт рейтинга тем' }))));
+      return;
+    }
+    const done = Object.values(this.state.scales);
+    if (done.length === 0) { this.setState('tests', 'empty', this.i18n.t('tests.empty')); return; }
+    done.forEach((out) => { const c = h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h3', { text: out.label }), new Badge('🟢').render(h('span')))); const ts = new TrafficScale7(); ts.render(c); ts.update(out.total, out.label); c.append(h('p', { class: 'sub', text: `${fmt(out.total, 'score')} из ${out.total.range[1]} · ${out.band || 'без нормы'} · Grade ${out.grade}` })); content.append(c); });
+  }
+
   // Экраны, у которых пока нет инструментов: честный ⛔ с описанием полного пайплайна.
   renderStub(page) {
     const info = {
-      speech: ['Речь', 'Спектрограмма 0–5 кГц, RMS, F0-трек, VAAL 25 шкал, Плутчик, Белянин, ЛЕКСИС, тепловая карта 24 ч. ⛔ Нет аудио и нет prosodyTool/phonoSemTool (Спринт 1). Полный пайплайн измерил бы: F0 автокорреляцией, паузы, темп онсетов, F1–F4, HNR, джиттер, шиммер.'],
-      tests: ['Тесты', 'Итог · Gallup-34 · Интеллект · Характер · Мотивация · Развитие · Синтез. ⛔ scaleScorer — Спринт 1; данных опросников нет.'],
       mind: ['Разум (V10)', 'Семиосферы · Цикл-8 · Когнитом 2D/3D · Факторы 52 · 6 осей · Я-профайл · Практики · МКБ-11. ⛔ Порт V10 — Спринт 3; 3D — ленивый чанк.'],
       narrative: ['Нарратив / Киноцех', 'Архетипы, путь героя (17), хронотоп, партитура напряжения, ОПТИКА-радары. ⛔ Спринт 7.']
     };
@@ -725,7 +948,7 @@ class App {
   start() {
     this.island.render(byId('island-host'));
     this.island.update({ phase: 'idle' });
-    new Composer(this.i18n.t('launch.placeholder'), (text) => { byId('launch-transcript').value = text; this.go('launch'); this.launch(); }, (file) => file.text().then((t) => { byId('launch-transcript').value = t; this.go('launch'); this.toast.show(`Вложение ${file.name}`); })).render(byId('composer-host'));
+    new Composer(this.i18n.t('launch.placeholder'), (text) => { byId('launch-transcript').value = text; this.go('launch'); this.launch(); }, (file) => this.attach(file)).render(byId('composer-host'));
     this.renderLaunch();
     this.renderClinic();
     this.renderSettings();
@@ -747,7 +970,7 @@ async function main() {
   const app = new App({ agents: agents.agents, tools: tools.tools, parameters: parameters.parameters, models, frames: frames.frames }, { ru, uk, en }, report, corpus);
   app.start();
   // Тестовый крючок для UI-харнесса (скриншоты, round-trip); наружу ничего не отправляется.
-  globalThis.__atm = { app, version: VERSION, demo: DEMO_TRANSCRIPT };
+  globalThis.__atm = { app, version: VERSION, demo: DEMO_TRANSCRIPT, loadPcm: (pcm, sr, name) => app.loadPcm(pcm, sr, name) };
 }
 
 main().catch((e) => {

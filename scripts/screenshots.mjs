@@ -37,6 +37,7 @@ export async function audit(options) {
       await page.waitForFunction(() => globalThis.__atm !== undefined, undefined, { timeout: 10000 });
       const check = async (label) => {
         const m = await page.evaluate(() => {
+          window.scrollTo(0, 0);
           const de = document.documentElement;
           const island = document.querySelector('.island');
           const title = document.querySelector('.page[data-active="true"] .module-title');
@@ -69,7 +70,7 @@ export async function audit(options) {
       await check('synthesis');
       await page.evaluate(() => globalThis.__atm.app.go('analysis'));
       const cards = await page.evaluate(() => ({ n: document.querySelectorAll('#analysis-feed .card').length, green: document.querySelectorAll('#analysis-feed .card[data-badge="🟢"]').length, missing: document.querySelectorAll('#analysis-feed .card[data-badge="⛔"]').length, partial: !document.querySelector('#page-analysis [data-state="partial"]').hidden }));
-      ok(`${tag}: лента анализа — карточки 🟢/⛔ и чип частичности`, cards.n > 0 && cards.green >= 3 && cards.missing >= 1 && cards.partial, `${cards.n} карточек · 🟢 ${cards.green} · ⛔ ${cards.missing}`);
+      ok(`${tag}: лента анализа — карточки 🟢/🔵/⛔ и чип частичности`, cards.n > 0 && cards.green >= 5 && cards.missing >= 1 && cards.partial, `${cards.n} карточек · 🟢 ${cards.green} · ⛔ ${cards.missing}`);
       await check('analysis');
       await page.evaluate(() => globalThis.__atm.app.go('profile', 'cascade'));
       await check('profile-cascade');
@@ -88,6 +89,18 @@ export async function audit(options) {
       await check('clinic');
       await page.evaluate(() => globalThis.__atm.app.go('agents'));
       await check('agents');
+      // Речь: синтетический тон через тестовый крючок → спектрограмма, F0 ≈ 150 Гц; VAAL/ЛЕКСИС по транскрипту.
+      await page.evaluate(() => { const sr = 44100; const pcm = new Float32Array(sr * 2); for (let i = 0; i < pcm.length; i += 1) pcm[i] = 0.5 * Math.sin((2 * Math.PI * 150 * i) / sr); globalThis.__atm.loadPcm(pcm, sr, 'tone150-test'); });
+      const speech = await page.evaluate(() => ({ page: globalThis.__atm.app.state.page, canvas: document.querySelectorAll('#speech-prosody canvas').length, f0: globalThis.__atm.app.state.prosody.f0.mean.value, vaal: document.querySelectorAll('#speech-vaal .vaal-list .bar').length, heat: document.querySelector('#speech-lexis .heat24') !== null }));
+      ok(`${tag}: «Речь» — спектрограмма и RMS нарисованы, F0 ≈ 150 Гц, 25 шкал VAAL, тепловая карта`, speech.page === 'speech' && speech.canvas === 2 && Math.abs(speech.f0 - 150) < 1 && speech.vaal === 25 && speech.heat, `F0=${speech.f0.toFixed(2)} · canvas=${speech.canvas} · шкал=${speech.vaal}`);
+      await check('speech');
+      // Тесты: PHQ-9 заполняется, считается, item9 > 0 поднимает кризисный флаг.
+      await page.evaluate(() => { globalThis.__atm.app.state.testsTab = 'phq9'; globalThis.__atm.app.go('tests'); });
+      for (let i = 0; i < 9; i += 1) await page.locator(`label:has(input[name="PHQ9-${i}"][value="1"])`).click();
+      await page.locator('#tests-content .btn').first().click();
+      const tests = await page.evaluate(() => ({ svg: document.querySelectorAll('#tests-content svg').length, total: globalThis.__atm.app.state.scales.PHQ9 ? globalThis.__atm.app.state.scales.PHQ9.total.value : null, crisis: document.querySelector('#tests-content .state.error') !== null }));
+      ok(`${tag}: «Тесты» — PHQ-9 = 9, светофор, кризисный флаг по пункту 9`, tests.svg >= 1 && tests.total === 9 && tests.crisis, `total=${tests.total}`);
+      await check('tests');
       await page.evaluate(() => globalThis.__atm.app.go('memory'));
       await page.fill('#memory-query', 'выгорание, нет смысла');
       ok(`${tag}: память — C002 первым`, await page.evaluate(() => { const first = document.querySelector('#memory-results .card h3'); return first !== null && first.textContent.startsWith('C002'); }));

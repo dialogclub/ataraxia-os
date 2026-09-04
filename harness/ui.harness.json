@@ -13,5 +13,5 @@
   "telemetry": ["viewport", "errors"],
   "ui_contract": { "component": "Shell", "badge_policy": "🟢" },
   "status": "green",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

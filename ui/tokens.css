@@ -95,7 +95,7 @@ details.json pre{margin:8px 0 0;max-height:280px;overflow:auto;background:var(--
 .skeleton .bar.w60{width:60%} .skeleton .bar.w40{width:40%} .skeleton .bar.w80{width:80%}
 
 /* Сегмент-контрол */
-.segment{display:flex;width:100%;max-width:520px;background:rgba(118,118,128,.12);border-radius:var(--r-inner);padding:2px;gap:2px}
+.segment{display:flex;width:100%;max-width:680px;background:rgba(118,118,128,.12);border-radius:var(--r-inner);padding:2px;gap:2px}
 .segment button{flex:1 1 0;min-width:0;min-height:36px;padding:0 8px;border-radius:8px;font-size:var(--t-sub);font-weight:600;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .segment button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 
@@ -256,3 +256,20 @@ details.json pre{margin:8px 0 0;max-height:280px;overflow:auto;background:var(--
 .gallery .cell{background:var(--card-solid);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .gallery .cell h4{font-size:var(--t-foot);color:var(--ink3);font-weight:600}
 @media (max-width:480px){.segment{flex-wrap:wrap}.segment button{flex:1 1 40%;font-size:var(--t-foot);padding:0 6px}}
+
+/* Heatmap24 · формы опросников · речь */
+.heat24{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+.heat24 .cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:flex-end;justify-content:center;font-size:var(--t-cap);color:var(--ink2)}
+.scale-list{display:flex;flex-direction:column;gap:6px}
+.scale-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;font-size:var(--t-sub)}
+.scale-row .opts{display:flex;gap:4px}
+.scale-row .opts label{display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;border:1px solid var(--line-soft);border-radius:var(--r-chip);font-size:var(--t-foot);cursor:pointer;background:#fff}
+.scale-row .opts input{position:absolute;opacity:0;width:1px;height:1px}
+.scale-row .opts input:checked + span{background:var(--blue);color:#fff;border-radius:6px;padding:4px 8px}
+.scale-row .opts input:focus-visible + span{outline:3px solid var(--blue)}
+.vaal-list{display:grid;grid-template-columns:1fr auto 1fr;gap:4px 8px;font-size:var(--t-foot);align-items:center}
+.vaal-list .bar{height:8px;border-radius:4px;background:rgba(60,60,67,.08);position:relative;min-width:80px}
+.vaal-list .bar i{position:absolute;top:0;height:100%;background:var(--blue);border-radius:4px}
+.vaal-list .sig{font-weight:700;color:var(--ink)}
+.audio-label{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:var(--r-inner);font-weight:600;background:rgba(10,132,255,.12);color:var(--blue);cursor:pointer}
+.audio-label input{display:none}

@@ -1,0 +1,24 @@
+{
+  "fn": "prosodyTool",
+  "type": "dsp",
+  "layer": "L1",
+  "owner_agent": "Somatics",
+  "contract": { "input": "schemas/prosody.in.json", "output": "schemas/prosody.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "single-frame", "silence", "clipping", "sr-48000", "nan-samples"],
+  "stress": { "n": 1000, "assert": ["noNaN", "inRange", "time<120ms"] },
+  "golden": [
+    { "id": "tone150", "input": "synth:tone(150 Hz, 2 s)", "expect": { "f0": [149, 151] } },
+    { "id": "silence", "input": "synth:silence(1 s)", "expect": { "pause_share": [100, 100] } },
+    { "id": "noise", "input": "synth:noise(1 s)", "expect": { "hnr": [-20, 5] } },
+    { "id": "jitter2", "input": "synth:alternating periods ±1 %", "expect": { "jitter": [0.017, 0.023] } },
+    { "id": "vowel", "input": "synth:pulse 120 Hz → resonators 500/1500/2500/3800", "expect": { "f1": [420, 580], "f2": [1400, 1600], "f3": [2400, 2600], "f4": [3700, 3900] } },
+    { "id": "spectrogram-peak", "input": "synth:tone(150 Hz)", "expect": { "peak_bin": [6, 8] } }
+  ],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "channel_missing": "badge:⛔", "no_identity_claims": true, "polygraph_export": "forbidden" },
+  "telemetry": ["duration", "frames", "sr"],
+  "ui_contract": { "component": "Spectrogram", "badge_policy": "🟢; прокси-чипы 🔵" },
+  "status": "green",
+  "version": "1.0.0"
+}

@@ -19,13 +19,14 @@ npm run serve         # http://127.0.0.1:8765/ui/index.html · /ui/gallery.html
 | Путь | Что |
 |---|---|
 | `core/` | `Param` (нет голых чисел), `EventBus`, `Scp` (иммутабельный профиль с аудитом) |
-| `core/engines/` | `cascadeEngine`, `stimulusGate`, `chronometry`, `gccEngine`, `memorySearchTool` (LOCAL / ◇ MCP-SWAP) |
+| `core/dsp.mjs` | БПФ, окно Ханна, автокорреляция, Левинсон–Дурбин, LPC-огибающая |
+| `core/engines/` | `prosodyTool`, `lexisTool`, `phonoSemTool`, `groundingClassifier`, `scaleScorer`, `cascadeEngine`, `stimulusGate`, `chronometry`, `gccEngine`, `memorySearchTool` (LOCAL / ◇ MCP-SWAP) |
 | `harness/` | `Harness` (детерминизм · edge-cases · стресс · golden · custom), раннер, паспорта `*.harness.json`, тесты `*.test.mjs`, `report.json` |
-| `registry/` | агенты (51), инструменты (13), параметры (113), модели, рамки интерпретации (35); генератор — `scripts/gen-registries.mjs` |
+| `registry/` | агенты (51), инструменты (13, 10 зелёных), параметры (142), модели, рамки интерпретации (35); генератор — `scripts/gen-registries.mjs` |
 | `schemas/` | SCP v1, Param, паспорт харнесса, карточка агента, контракты инструментов; наследуемые PersonVector/SpectrogramCard/… |
 | `ui/` | токены 4.1, компоненты (`render/update/destroy`, ⛔-состояние, NaN-защита), галерея, оболочка `index.html` + `app.mjs`, словари RU/UA/EN |
 | `scripts/` | `check`, `serve`, `screenshots` (аудит вьюпортов), `build-single` |
-| `fixtures/` | golden «Константин 27.08.2026», синтетический демо-корпус памяти, SMFK-100 |
+| `fixtures/` | golden «Константин 27.08.2026», синтетический демо-корпус памяти, SMFK-100, golden ЛЕКСИС, golden ЦЗИ-8 (8 × 10), генераторы синтетических сигналов |
 
 ## Инварианты, проверяемые харнессом
 

@@ -1,7 +1,8 @@
 {
-  "generated": "2026-09-04T03:43:57.207Z",
+  "generated": "2026-09-04T18:11:46.423Z",
   "system": "ATMARAKSI OS",
-  "green": 6,
+  "partial": false,
+  "green": 11,
   "red": 0,
   "functions": [
     {
@@ -15,34 +16,34 @@
           "name": "детерминизм ×2",
           "ok": true,
           "detail": "3 входов × 2 прогонов, байт-в-байт",
-          "ms": 0.7
+          "ms": 1.1
         },
         {
           "name": "edge-cases ×6",
           "ok": true,
           "detail": "empty · phi-zero · all-ones · out-of-range · nan-input · cbrt-form",
-          "ms": 0.4
+          "ms": 0.7
         },
         {
           "name": "монотонность по каждому аргументу",
           "ok": true,
           "detail": "4 аргумента × 21 шаг, неубывание",
-          "ms": 1.9
+          "ms": 2.5
         },
         {
           "name": "стресс n=2000",
           "ok": true,
-          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.18 мс < 5 мс",
-          "ms": 26
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 1.56 мс < 5 мс",
+          "ms": 39.7
         },
         {
           "name": "golden ×1",
           "ok": true,
           "detail": "konstantin-2026-08-27=0.34",
-          "ms": 0.1
+          "ms": 0.2
         }
       ],
-      "total_ms": 29.1
+      "total_ms": 44.2
     },
     {
       "fn": "chronometry",
@@ -61,7 +62,7 @@
           "name": "edge-cases ×4",
           "ok": true,
           "detail": "empty · zero · negative · nan",
-          "ms": 0.1
+          "ms": 0.2
         },
         {
           "name": "обратимость минуты ↔ годы",
@@ -72,8 +73,8 @@
         {
           "name": "стресс n=1000",
           "ok": true,
-          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.04 мс < 1 мс",
-          "ms": 2.5
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.35 мс < 1 мс",
+          "ms": 4.1
         },
         {
           "name": "golden ×1",
@@ -82,7 +83,7 @@
           "ms": 0
         }
       ],
-      "total_ms": 2.9
+      "total_ms": 4.6
     },
     {
       "fn": "gccEngine",
@@ -101,7 +102,7 @@
           "name": "edge-cases ×5",
           "ok": true,
           "detail": "empty · single · identical · one-invalid · extremes",
-          "ms": 0.2
+          "ms": 0.3
         },
         {
           "name": "фикстура: Gcc_formula совпадает с claimed-разрывом",
@@ -112,8 +113,8 @@
         {
           "name": "стресс n=1000",
           "ok": true,
-          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.26 мс < 2 мс",
-          "ms": 14
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.35 мс < 2 мс",
+          "ms": 16.4
         },
         {
           "name": "golden ×1",
@@ -122,7 +123,99 @@
           "ms": 0.1
         }
       ],
-      "total_ms": 14.9
+      "total_ms": 17.4
+    },
+    {
+      "fn": "groundingClassifier",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 4.2
+        },
+        {
+          "name": "edge-cases ×4",
+          "ok": true,
+          "detail": "empty · unclassifiable · single · all-levels",
+          "ms": 1.5
+        },
+        {
+          "name": "golden 8 × 10: точность ≥ 90 %",
+          "ok": true,
+          "detail": "80/80 = 100 %",
+          "ms": 2.8
+        },
+        {
+          "name": "монотонность: добавление K3-высказываний не уменьшает долю K3",
+          "ok": true,
+          "detail": "K3 растёт с 0 до 0.40",
+          "ms": 6.4
+        },
+        {
+          "name": "устойчивость к перестановке",
+          "ok": true,
+          "detail": "профиль и разрыв инвариантны",
+          "ms": 1.6
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.37 мс < 20 мс",
+          "ms": 73
+        }
+      ],
+      "total_ms": 89.5
+    },
+    {
+      "fn": "lexisTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 2.4
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · no-speakers · mixed-ru-ua · en · no-timestamps · punctuation-only",
+          "ms": 1.4
+        },
+        {
+          "name": "golden: доли посчитаны вручную",
+          "ok": true,
+          "detail": "я %=80 · они %=20 · мы %=0 · доля К.=70 · доля Т.=30 · вопросы Т.=1 · час 10=2 · час 22=1",
+          "ms": 0.3
+        },
+        {
+          "name": "устойчивость к перестановке реплик",
+          "ok": true,
+          "detail": "местоимения и карта не зависят от порядка",
+          "ms": 0.2
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.73 мс < 20 мс",
+          "ms": 95.5
+        },
+        {
+          "name": "golden ×3",
+          "ok": true,
+          "detail": "i=80 · they=20 · must=71.42857142857143",
+          "ms": 0.3
+        }
+      ],
+      "total_ms": 100.1
     },
     {
       "fn": "memorySearchTool",
@@ -135,34 +228,166 @@
           "name": "детерминизм ×2",
           "ok": true,
           "detail": "3 входов × 2 прогонов, байт-в-байт",
-          "ms": 2.3
+          "ms": 2.6
         },
         {
           "name": "edge-cases ×5",
           "ok": true,
           "detail": "empty-query · empty-index · filters · mixed-ru-ua · mcp-unplugged",
-          "ms": 0.4
+          "ms": 0.6
         },
         {
           "name": "◇ MCP-SWAP: один и тот же контракт",
           "ok": true,
           "detail": "поля ответа: hits,mode,query,reason,total,version",
-          "ms": 0.5
+          "ms": 0.8
         },
         {
           "name": "стресс n=2000",
           "ok": true,
-          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 5.45 мс < 50 мс",
-          "ms": 45.6
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.62 мс < 50 мс",
+          "ms": 73.5
         },
         {
           "name": "golden: «выгорание, нет смысла» → C002 первым",
           "ok": true,
           "detail": "C002 score=0.6183 · далее C001=0.0698, C005=0.0654",
-          "ms": 0.1
+          "ms": 0.2
         }
       ],
-      "total_ms": 48.9
+      "total_ms": 77.7
+    },
+    {
+      "fn": "phonoSemTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 6.8
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · digits-only · ru · uk · en · single-letter",
+          "ms": 4.3
+        },
+        {
+          "name": "таблица PHON: 33 RU + 26 EN + 4 UA букв × 25 шкал, значения в [−2, 2]",
+          "ok": true,
+          "detail": "63 букв × 25 шкал",
+          "ms": 0.4
+        },
+        {
+          "name": "«мягкий» vs «грубый» различаются по шкале нежный–грубый и по полярности",
+          "ok": true,
+          "detail": "нежный–грубый: 70 vs -78 · полярность 21 vs -31",
+          "ms": 1.7
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 1.81 мс < 20 мс",
+          "ms": 714.5
+        }
+      ],
+      "total_ms": 727.7
+    },
+    {
+      "fn": "prosodyTool",
+      "type": "dsp",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 797
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · single-frame · silence · clipping · sr-48000 · nan-samples",
+          "ms": 544.3
+        },
+        {
+          "name": "44,1 vs 48 кГц: одинаковые F0/паузы/HNR (допуск)",
+          "ok": true,
+          "detail": "F0 150.00/150.00 Гц · HNR 30.0/29.2 дБ",
+          "ms": 581.7
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 11.14 мс < 120 мс",
+          "ms": 4660.3
+        },
+        {
+          "name": "golden ×10",
+          "ok": true,
+          "detail": "tone150=149.99919884405682 · silence=100 · noise=-11.096515857626912 · jitter2=0.0204 · shimmer4=0.04 · vowel-f1=503 · vowel-f2=1514 · vowel-f3=2504 · vowel-f4=3802 · spectrogram-peak=7",
+          "ms": 1968.3
+        }
+      ],
+      "total_ms": 8551.6
+    },
+    {
+      "fn": "scaleScorer",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.9
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "unknown-scale · incomplete · out-of-range · proprietary · ranking-invalid",
+          "ms": 0.2
+        },
+        {
+          "name": "эталонные ключи и границы",
+          "ok": true,
+          "detail": "PHQ9 нули=0 · PHQ9 максимум=27 · GAD7 максимум=21 · TAS20 все 3 (с реверсом)=60 · TAS20 все 5 → реверс даёт 5 обратных=80 · MBI EE все 3=27 · MBI PA все 3=24 · SCL90 GSI все 4=4 · SCL90 PST нули=0 · IPIP E % при всех 3=50 · IPIP N % при всех 5 (реверс 8 из 10)=20",
+          "ms": 1.1
+        },
+        {
+          "name": "границы диапазонов и флаг кризиса",
+          "ok": true,
+          "detail": "9 границ PHQ-9 · флаг item9 · GAD-7 = 10 → умеренная",
+          "ms": 0.2
+        },
+        {
+          "name": "Gallup-34: домены из импортированного рейтинга",
+          "ok": true,
+          "detail": "топ-5: Исполнение 2 · Влияние 1 · Отношения 1 · Стратегия 1",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.10 мс < 5 мс",
+          "ms": 10.5
+        },
+        {
+          "name": "golden ×6",
+          "ok": true,
+          "detail": "phq9-zeros=0 · phq9-max=27 · tas20-all3=60 · mbi-ee=27 · scl90-gsi=4 · ipip-mid=50",
+          "ms": 0.7
+        }
+      ],
+      "total_ms": 13.7
     },
     {
       "fn": "stimulusGate",
@@ -175,7 +400,7 @@
           "name": "детерминизм ×2",
           "ok": true,
           "detail": "3 входов × 2 прогонов, байт-в-байт",
-          "ms": 0.2
+          "ms": 0.3
         },
         {
           "name": "edge-cases ×5",
@@ -187,56 +412,56 @@
           "name": "предел громкости 85 дБ",
           "ok": true,
           "detail": "85 ✓ · 85,1 ✗ · 80 ⚠",
-          "ms": 0
+          "ms": 0.1
         },
         {
           "name": "гейт непроходим программно",
           "ok": true,
           "detail": "нет методов обхода; правила заморожены; режим pro блокирует 15–25 Гц",
-          "ms": 0.2
+          "ms": 0.3
         },
         {
           "name": "стресс n=2000",
           "ok": true,
-          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.33 мс < 2 мс",
-          "ms": 7.8
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · худшее 0.10 мс < 2 мс",
+          "ms": 12.7
         },
         {
           "name": "аварийный стоп < 100 мс (×100)",
           "ok": true,
-          "detail": "100 стопов · худшая 0.006 мс < 100 мс",
-          "ms": 0.3
+          "detail": "100 стопов · худшая 0.008 мс < 100 мс",
+          "ms": 0.6
         }
       ],
-      "total_ms": 8.8
+      "total_ms": 14.3
     },
     {
       "fn": "ui",
       "type": "ui",
       "layer": "L4",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "status": "green",
       "checks": [
         {
           "name": "статический сканер (node --check · скобки · запреты · id)",
           "ok": true,
           "detail": "✓ node --check · баланс скобок · запретные конструкции · id-сканер — чисто",
-          "ms": 1052.1
+          "ms": 2509.8
         },
         {
           "name": "сборка single-file",
           "ok": true,
-          "detail": "dist/atmaraksi-os.html · 212 КБ · 18 модулей · 10 файлов данных",
-          "ms": 52.8
+          "detail": "dist/atmaraksi-os.html · 323 КБ · 26 модулей · 10 файлов данных",
+          "ms": 77.7
         },
         {
           "name": "рендер 440×956 · 393×852 · 1280×800 + сценарий (скриншоты в docs/screenshots)",
           "ok": true,
-          "detail": "116 проверок ✓",
-          "ms": 8134.8
+          "detail": "138 проверок ✓",
+          "ms": 15981.5
         }
       ],
-      "total_ms": 9239.7
+      "total_ms": 18569
     }
   ]
 }

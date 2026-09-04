@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ATMARAKSI OS v0.1 «Каркас»</title>
+<title>ATMARAKSI OS v0.2 «Инструменты»</title>
 <!--
   CHANGELOG
+  v0.2 «Инструменты» · 04.09.2026 · Спринт 1: prosodyTool (DSP), lexisTool, phonoSemTool (VAAL-lite 🔵), groundingClassifier (ЦЗИ-8 🔵),
+  scaleScorer (PHQ-9, GAD-7, TAS-20, MBI, SCL-90-R, IPIP-50); экраны «Речь» (спектрограмма, RMS, VAAL, ЛЕКСИС, Heatmap24) и «Тесты»;
+  ЦЗИ-8 в профиле; аудио через Web Audio; таймкоды [HH:MM]. 10 из 13 инструментов зелёные.
   v0.1 «Каркас» · 04.09.2026 · Спринт 0: SCP v1, реестры (агенты/инструменты/параметры/модели/рамки), шина событий,
   харнесс-фреймворк + раннер + отчёт, токены и галерея компонентов, оболочка Телефон/Студия, Dynamic Island, композер,
   состояния пусто/загрузка/ошибка/частично. Инструменты с зелёным харнессом: cascadeEngine, stimulusGate, chronometry,
@@ -22,7 +25,7 @@
     <section class="page" id="page-home" data-active="true" aria-labelledby="home-title">
       <header class="module-head">
         <h1 class="module-title" id="home-title" data-i18n="nav.home">Домой</h1>
-        <div class="meta"><span class="chip blue" id="home-version">v0.1 «Каркас»</span><span class="chip grey" id="home-harness-chip">харнессы</span></div>
+        <div class="meta"><span class="chip blue" id="home-version">v0.2 «Инструменты»</span><span class="chip grey" id="home-harness-chip">харнессы</span></div>
       </header>
       <div data-states>
         <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="analysis.empty">Вставьте транскрипт или нажмите «Демо-транскрипт».</span></div>
@@ -185,6 +188,34 @@
       <div class="card table-wrap"><table class="table" id="agents-table"></table></div>
       <section class="section"><h3 data-i18n="agents.tools">Инструменты L1/L3</h3><div class="card table-wrap"><table class="table" id="tools-table"></table></div></section>
       <section class="section"><h3 data-i18n="agents.log">Журнал прогона</h3><div class="card quiet" id="agents-log"></div></section>
+    </section>
+
+    <section class="page" id="page-speech" aria-labelledby="speech-title">
+      <header class="module-head"><h1 class="module-title" id="speech-title" data-i18n="nav.speech">Речь</h1><div class="meta" id="speech-meta"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div><div class="bar w80"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3 data-i18n="speech.audio">Аудио</h3><div class="card-source">prosodyTool · Web Audio, офлайн</div></div><span id="speech-harness"></span></div>
+        <div class="hstack"><label class="audio-label" for="speech-audio-file"><span aria-hidden="true">🎙</span><span data-i18n="speech.load">Загрузить аудио</span><input type="file" id="speech-audio-file" accept="audio/*"></label><button type="button" class="btn secondary" id="speech-demo-tone" data-i18n="speech.demo">Синтетический тон 150 Гц</button><span class="caption" id="speech-audio-name"></span></div>
+      </div>
+      <div class="stack" id="speech-prosody"></div>
+      <section class="section"><h3 data-i18n="speech.vaal">VAAL · фоносемантика</h3><div class="stack" id="speech-vaal"></div></section>
+      <section class="section"><h3 data-i18n="speech.lexis">ЛЕКСИС</h3><div class="stack" id="speech-lexis"></div></section>
+    </section>
+
+    <section class="page" id="page-tests" aria-labelledby="tests-title">
+      <header class="module-head"><h1 class="module-title" id="tests-title" data-i18n="nav.tests">Тесты</h1><div id="tests-tabs"></div></header>
+      <div data-states>
+        <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span class="msg"></span></div>
+        <div class="skeleton" data-state="loading" hidden><div class="bar w60"></div></div>
+        <div class="state error" data-state="error" hidden><span class="title" data-i18n="state.error">Ошибка</span><span class="msg"></span></div>
+        <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
+      </div>
+      <div class="stack" id="tests-content"></div>
     </section>
 
     <section class="page" id="page-stub" aria-labelledby="stub-title">

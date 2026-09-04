@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.lexis.in", "type": "object", "required": ["lines"], "properties": { "lines": { "type": "array", "items": { "type": "object", "required": ["text"], "properties": { "speaker": { "type": "string" }, "text": { "type": "string" }, "t": { "type": "string", "description": "[HH:MM], HH:MM:SS, ISO или #n" } } } }, "focus": { "type": "string" } } }

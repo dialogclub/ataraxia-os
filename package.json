@@ -1,6 +1,6 @@
 {
   "name": "atmaraksi-os",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ATMARAKSI OS — мультиагентная платформа с харнессом на каждую функцию. Исследовательский интерфейс, не медицинское изделие.",
   "type": "module",
   "private": true,

@@ -16,8 +16,8 @@
         "1000 буферов — 0 NaN"
       ],
       "module": "",
-      "harness": "",
-      "status": "hidden_by_harness"
+      "harness": "harness/prosodyTool.harness.json",
+      "status": "green"
     },
     {
       "id": "lexisTool",
@@ -31,8 +31,8 @@
         "смешанные RU/UA"
       ],
       "module": "",
-      "harness": "",
-      "status": "hidden_by_harness"
+      "harness": "harness/lexisTool.harness.json",
+      "status": "green"
     },
     {
       "id": "phonoSemTool",
@@ -47,8 +47,8 @@
         "1000 текстов — 0 NaN, [−100, 100]"
       ],
       "module": "",
-      "harness": "",
-      "status": "hidden_by_harness"
+      "harness": "harness/phonoSemTool.harness.json",
+      "status": "green"
     },
     {
       "id": "cascadeEngine",
@@ -78,8 +78,8 @@
         "устойчивость к перестановке"
       ],
       "module": "",
-      "harness": "",
-      "status": "hidden_by_harness"
+      "harness": "harness/groundingClassifier.harness.json",
+      "status": "green"
     },
     {
       "id": "scaleScorer",
@@ -93,8 +93,8 @@
         "неполный опросник → ⛔"
       ],
       "module": "",
-      "harness": "",
-      "status": "hidden_by_harness"
+      "harness": "harness/scaleScorer.harness.json",
+      "status": "green"
     },
     {
       "id": "ppgTool",

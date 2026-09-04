@@ -1,0 +1,17 @@
+{
+  "fn": "groundingClassifier",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Grounding",
+  "contract": { "input": "schemas/grounding.in.json", "output": "schemas/grounding.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "unclassifiable", "single", "all-levels"],
+  "stress": { "n": 1000, "assert": ["noNaN", "inRange", "time<20ms"] },
+  "golden": [{ "id": "czi8-golden-v1", "input": "fixtures/czi8.golden.json", "expect": { "accuracy": [0.9, 1] } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "badge": "🔵 реконструкция имён контуров и модусов", "channel_missing": "badge:⛔" },
+  "telemetry": ["n", "classified"],
+  "ui_contract": { "component": "Czi8Ring", "badge_policy": "🔵" },
+  "status": "green",
+  "version": "1.0.0"
+}

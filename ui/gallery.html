@@ -25,6 +25,9 @@ import { CascadeWaterfall, PhiControl } from './components/cascade.mjs';
 import { Czi8Ring } from './components/czi8.mjs';
 import { ResultCard } from './components/card.mjs';
 import { CascadeEngine } from '../core/engines/cascadeEngine.mjs';
+import { Spectrogram, Envelope } from './components/spectrogram.mjs';
+import { Heatmap24 } from './components/heatmap.mjs';
+import { ProsodyTool } from '../core/engines/prosodyTool.mjs';
 
 const P = (value, unit, range, badge) => ({ value, unit, range, badge: badge === undefined ? '🟢' : badge, source: 'tool', tool: 'fixture', version: '1.0', note: 'фикстура галереи' });
 const MISSING = (unit, range) => ({ value: null, unit, range, badge: '⛔', source: 'none', tool: 'fixture', version: '1.0', note: 'нет канала' });
@@ -93,6 +96,13 @@ section('ResultCard (грамматика 4.3)', [
   ['инструмент 🟢', (el) => new ResultCard({ id: 'g2', title: 'Каскад АВС', badge: '🟢', source: 'cascadeEngine v1.0', verdict: 'B = 0,34 при Φ = 0,65', params: [{ label: 'A', param: P(0.85, 'index', [0, 1]), kind: 'index' }, { label: 'B', param: P(0.34, 'index', [0, 1]), kind: 'index' }], next: { label: 'Подобрать дыхание', onClick: () => {} } }).render(el)],
   ['частичность ⛔', (el) => new ResultCard({ id: 'g3', title: 'ХРОНОС · просодика', badge: '⛔', source: 'prosodyTool', verdict: 'Канал недоступен', params: [{ label: 'F0', param: MISSING('Hz', [60, 500]), kind: 'freq' }], limit: 'нет аудио — просодика ⛔' }).render(el)],
   ['NaN в параметре', (el) => new ResultCard({ id: 'g4', title: 'Защита от NaN', badge: '🔵', source: 'фикстура', params: [{ label: 'x', param: P(Number.NaN, 'z', [-100, 100]), kind: 'index' }] }).render(el)]
+]);
+
+section('Spectrogram · Envelope · Heatmap24', [
+  ['тон 150 Гц + пауза (синтез в браузере)', (el) => { const sr = 44100; const pcm = new Float32Array(sr * 3); for (let i = 0; i < sr * 3; i += 1) pcm[i] = i > sr && i < sr * 1.5 ? 0 : 0.5 * Math.sin((2 * Math.PI * 150 * i) / sr); const out = new ProsodyTool().run({ pcm, sr }); const s = new Spectrogram(200); s.render(el); s.update(out, [{ from: 0, to: 1, name: 'Т.' }, { from: 1.5, to: 3, name: 'К.' }]); const e = new Envelope(60); e.render(el); e.update(out.rms.track); }],
+  ['⛔ без аудио', (el) => { const s = new Spectrogram(160); s.render(el); s.update(new ProsodyTool().run({})); const e = new Envelope(60); e.render(el); e.update([]); }],
+  ['тепловая карта 24 ч', (el) => { const hm = new Heatmap24(); hm.render(el); const hours = new Array(24).fill(0); hours[10] = 4; hours[11] = 7; hours[22] = 2; hm.update({ hours, stamped: 13, badge: '🟢', reason: '' }); }],
+  ['тепловая карта ⛔', (el) => { const hm = new Heatmap24(); hm.render(el); hm.update({ hours: new Array(24).fill(0), stamped: 0, badge: '⛔', reason: 'нет временных меток' }); }]
 ]);
 
 section('Состояния', [

@@ -1,0 +1,8 @@
+{ "$id": "atmaraksi.prosody.out", "type": "object", "required": ["status", "reason", "version", "sr", "duration_s", "frames", "f0", "rms", "pause_share", "onset_rate", "hnr", "jitter", "shimmer", "formants", "centroid", "tilt", "spectrogram", "proxies"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "f0": { "type": "object", "required": ["mean", "sd", "track"], "properties": { "mean": { "$ref": "Param.v1.json" }, "sd": { "$ref": "Param.v1.json" }, "track": { "type": "array" } } },
+  "rms": { "type": "object", "properties": { "mean": { "$ref": "Param.v1.json" }, "sd": { "$ref": "Param.v1.json" }, "track": { "type": "array" } } },
+  "pause_share": { "$ref": "Param.v1.json" }, "onset_rate": { "$ref": "Param.v1.json" }, "hnr": { "$ref": "Param.v1.json" }, "jitter": { "$ref": "Param.v1.json" }, "shimmer": { "$ref": "Param.v1.json" },
+  "formants": { "type": "object", "properties": { "f1": { "$ref": "Param.v1.json" }, "f2": { "$ref": "Param.v1.json" }, "f3": { "$ref": "Param.v1.json" }, "f4": { "$ref": "Param.v1.json" } } },
+  "centroid": { "$ref": "Param.v1.json" }, "tilt": { "$ref": "Param.v1.json" },
+  "spectrogram": { "type": "object", "required": ["frames", "bins", "bin_hz", "hop_s", "fmax", "peak_bin", "data"], "properties": { "fmax": { "const": 5000 }, "data": { "type": "array", "items": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 255 } } } } },
+  "proxies": { "type": "object", "description": "🔵 акустические прокси; не диагноз", "properties": { "agitation": { "$ref": "Param.v1.json" }, "flat_affect": { "$ref": "Param.v1.json" }, "restraint": { "$ref": "Param.v1.json" } } } } }

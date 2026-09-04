@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "note": "Реестр параметров (3.5). Спринт 0: 113 записей; целевой объём 300+. Интерфейс строится из реестра.",
+  "note": "Реестр параметров (3.5). Спринт 0: 142 записей; целевой объём 300+. Интерфейс строится из реестра.",
   "parameters": [
     {
       "id": "cascade.A",
@@ -1888,6 +1888,499 @@
       "evidence_required": false,
       "ui_encoding": "traffic",
       "export_key": "ocean.N"
+    },
+    {
+      "id": "prosody.centroid",
+      "label_ru": "Спектральный центроид",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        0,
+        5000
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.centroid"
+    },
+    {
+      "id": "prosody.tilt",
+      "label_ru": "Наклон спектра",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        -60,
+        60
+      ],
+      "unit": "dB/kHz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.tilt"
+    },
+    {
+      "id": "prosody.voiced_share",
+      "label_ru": "Доля вокализованных кадров",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.voiced_share"
+    },
+    {
+      "id": "prosody.proxy.agitation",
+      "label_ru": "Прокси: возбуждение/агитация",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.agitation"
+    },
+    {
+      "id": "prosody.proxy.flat_affect",
+      "label_ru": "Прокси: уплощённый аффект",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.flat_affect"
+    },
+    {
+      "id": "prosody.proxy.restraint",
+      "label_ru": "Прокси: сдержанность",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.restraint"
+    },
+    {
+      "id": "lexis.modality_ratio",
+      "label_ru": "Доля долженствования",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gauge",
+      "export_key": "lexis.modality_ratio"
+    },
+    {
+      "id": "lexis.initiative",
+      "label_ru": "Инициативность (прокси)",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.initiative"
+    },
+    {
+      "id": "lexis.heatmap24",
+      "label_ru": "Активность по часам",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "count",
+      "range": [
+        0,
+        9999
+      ],
+      "unit": "n",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "heatmap",
+      "export_key": "lexis.heatmap24"
+    },
+    {
+      "id": "vaal.ttr",
+      "label_ru": "TTR",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "vaal.ttr"
+    },
+    {
+      "id": "vaal.hapax",
+      "label_ru": "Hapax legomena",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "vaal.hapax"
+    },
+    {
+      "id": "vaal.category.агрессивность",
+      "label_ru": "Контент-анализ: агрессивность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.агрессивность"
+    },
+    {
+      "id": "vaal.category.тревожность",
+      "label_ru": "Контент-анализ: тревожность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.тревожность"
+    },
+    {
+      "id": "vaal.category.депрессивность",
+      "label_ru": "Контент-анализ: депрессивность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.депрессивность"
+    },
+    {
+      "id": "vaal.category.демонстративность",
+      "label_ru": "Контент-анализ: демонстративность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.демонстративность"
+    },
+    {
+      "id": "vaal.category.рациональность",
+      "label_ru": "Контент-анализ: рациональность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.рациональность"
+    },
+    {
+      "id": "vaal.category.эмоциональность",
+      "label_ru": "Контент-анализ: эмоциональность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.эмоциональность"
+    },
+    {
+      "id": "vaal.category.социальность",
+      "label_ru": "Контент-анализ: социальность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.социальность"
+    },
+    {
+      "id": "vaal.category.витальность",
+      "label_ru": "Контент-анализ: витальность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.витальность"
+    },
+    {
+      "id": "belyanin.светлый",
+      "label_ru": "Белянин: светлый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.светлый"
+    },
+    {
+      "id": "belyanin.тёмный",
+      "label_ru": "Белянин: тёмный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.тёмный"
+    },
+    {
+      "id": "belyanin.весёлый",
+      "label_ru": "Белянин: весёлый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.весёлый"
+    },
+    {
+      "id": "belyanin.печальный",
+      "label_ru": "Белянин: печальный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.печальный"
+    },
+    {
+      "id": "belyanin.красивый",
+      "label_ru": "Белянин: красивый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.красивый"
+    },
+    {
+      "id": "belyanin.сложный",
+      "label_ru": "Белянин: сложный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.сложный"
+    },
+    {
+      "id": "czi8.liberty_mode",
+      "label_ru": "Модус свободы воли А/Б/В/Г",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "enum",
+      "range": [
+        0,
+        3
+      ],
+      "unit": "mode",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "czi8.liberty_mode"
+    },
+    {
+      "id": "clinic.scl90_gsi",
+      "label_ru": "SCL-90-R GSI",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "index",
+      "range": [
+        0,
+        4
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.scl90_gsi"
+    },
+    {
+      "id": "clinic.mbi_dp",
+      "label_ru": "MBI деперсонализация",
+      "framework": "Маслач",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        30
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.mbi_dp"
+    },
+    {
+      "id": "clinic.mbi_pa",
+      "label_ru": "MBI личные достижения",
+      "framework": "Маслач",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        48
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.mbi_pa"
     },
     {
       "id": "narrative.hero_stage",
