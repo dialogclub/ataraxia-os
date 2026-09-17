@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.phonosem.in", "type": "object", "required": ["text"], "properties": { "text": { "type": "string" }, "lang": { "enum": ["ru", "uk", "en"] } } }

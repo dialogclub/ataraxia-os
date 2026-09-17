@@ -1,0 +1,4 @@
+{ "$id": "atmaraksi.scale.out", "type": "object", "required": ["status", "reason", "version", "scale", "label", "total", "band", "subscales", "flags"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "total": { "$ref": "Param.v1.json" }, "band": { "type": "string" }, "grade": { "type": "string" },
+  "subscales": { "type": "object", "additionalProperties": { "type": "object", "properties": { "score": { "$ref": "Param.v1.json" }, "band": { "type": "string" } } } },
+  "indices": { "type": "object", "properties": { "GSI": { "$ref": "Param.v1.json" }, "PST": { "$ref": "Param.v1.json" }, "PSDI": { "$ref": "Param.v1.json" } } }, "flags": { "type": "array", "items": { "type": "string" } } } }

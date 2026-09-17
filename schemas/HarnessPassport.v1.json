@@ -1,0 +1,27 @@
+{
+  "$id": "atmaraksi.HarnessPassport.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Паспорт харнесса (Приложение A)",
+  "type": "object",
+  "required": ["fn", "type", "layer", "owner_agent", "contract", "determinism", "edge_cases", "stress", "golden", "eval", "guardrails", "telemetry", "ui_contract", "status", "version"],
+  "properties": {
+    "fn": { "type": "string" },
+    "type": { "enum": ["deterministic", "llm-agent", "dsp", "clinical", "stimulus", "ui", "export"] },
+    "layer": { "enum": ["L0", "L1", "L2", "L3", "L4"] },
+    "owner_agent": { "type": "string" },
+    "contract": { "type": "object", "required": ["input", "output"] },
+    "determinism": { "type": "object", "required": ["runs", "compare"] },
+    "edge_cases": { "type": "array", "items": { "type": "string" } },
+    "stress": { "type": "object", "required": ["n", "assert"] },
+    "golden": { "type": "array" },
+    "eval": { "type": "object", "required": ["judge", "rubric"] },
+    "guardrails": { "type": "object" },
+    "telemetry": { "type": "array" },
+    "ui_contract": { "type": "object", "required": ["component", "badge_policy"] },
+    "status": { "enum": ["green", "red", "hidden_by_harness"] },
+    "version": { "type": "string" },
+    "tools_required": { "type": "array" }, "schema_strict": { "type": "boolean" }, "retry_on_invalid": { "type": "integer" },
+    "evidence_required": { "type": "boolean" }, "self_consistency_k": { "type": "integer" }, "golden_transcripts": { "type": "array" },
+    "rubric": { "type": ["array", "null"] }, "model_regression": { "type": "boolean" }
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "version": "1.0",
+  "note": "Реестр инструментов L1/L3 (3.4). Без зелёного харнесса инструмент скрыт (hidden_by_harness).",
+  "tools": [
+    {
+      "id": "prosodyTool",
+      "label_ru": "ХРОНОС — просодика",
+      "layer": "L1",
+      "type": "dsp",
+      "io": "PCM → F0, вариативность, RMS, паузы, темп, F1–F4, центроид, наклон, HNR, джиттер, шиммер; спектрограмма 0–5 кГц",
+      "test_vectors": [
+        "тон 150 Гц → F0 150 ± 1",
+        "тишина → паузы 100 %",
+        "белый шум → HNR < 5 дБ",
+        "джиттер 2 % → 0,02 ± 0,003",
+        "1000 буферов — 0 NaN"
+      ],
+      "module": "",
+      "harness": "harness/prosodyTool.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "lexisTool",
+      "label_ru": "ЛЕКСИС — лексика",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "транскрипт → местоимения, модальность, Zimbardo-прокси, спикер-баланс, инициативность, тепловая карта 24 ч",
+      "test_vectors": [
+        "golden-транскрипт с долями",
+        "пустой ввод → нули с ⛔",
+        "смешанные RU/UA"
+      ],
+      "module": "",
+      "harness": "harness/lexisTool.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "phonoSemTool",
+      "label_ru": "VAAL — фоносемантика",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "текст → 25 шкал (z-score), полярность, значимые, Шалак 8, Плутчик 8, Белянин, TTR/hapax",
+      "test_vectors": [
+        "детерминизм",
+        "RU/UA/EN",
+        "мягкий vs грубый различаются",
+        "1000 текстов — 0 NaN, [−100, 100]"
+      ],
+      "module": "",
+      "harness": "harness/phonoSemTool.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "cascadeEngine",
+      "label_ru": "Каскад АВС",
+      "layer": "L3",
+      "type": "deterministic",
+      "io": "A, D, C, Φ, форма → B, вклад, версия",
+      "test_vectors": [
+        "Φ = 0 → B = 0",
+        "монотонность",
+        "[0, 1]",
+        "golden Константин 27.08.2026 → B = 0,34"
+      ],
+      "module": "core/engines/cascadeEngine.mjs",
+      "harness": "harness/cascadeEngine.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "groundingClassifier",
+      "label_ru": "ЦЗИ-8 классификатор",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "высказывания → K1–K8, разрыв, модус А/Б/В/Г",
+      "test_vectors": [
+        "golden ≥ 8 × 10",
+        "монотонность",
+        "устойчивость к перестановке"
+      ],
+      "module": "",
+      "harness": "harness/groundingClassifier.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "scaleScorer",
+      "label_ru": "Шкалы и нормы",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "ответы → PHQ-9, GAD-7, SCL-90, MBI, TAS-20, Мадди, Gallup-34, IST, Big Five, 16PF, Леонгард, Рокич, Белбин",
+      "test_vectors": [
+        "эталонные ключи",
+        "граничные баллы",
+        "неполный опросник → ⛔"
+      ],
+      "module": "",
+      "harness": "harness/scaleScorer.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "ppgTool",
+      "label_ru": "PPG камерой",
+      "layer": "L1",
+      "type": "dsp",
+      "io": "кадры (R-канал) → HR, RMSSD, SDNN, ЧД, спектр F1–F12",
+      "test_vectors": [
+        "синтетический пульс 72 → 72 ± 1",
+        "шум → «низкое качество», не число"
+      ],
+      "module": "",
+      "harness": "",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "riskEngine",
+      "label_ru": "Риск-движок v2",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "маркеры, SNP, антропометрия, возраст, пол → риск 14 патологий",
+      "test_vectors": [
+        "форма base × LR",
+        "ДГПЖ у женщин → 0",
+        "возраст монотонен",
+        "чипы вклада"
+      ],
+      "module": "",
+      "harness": "",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "fusionEngine",
+      "label_ru": "Sealed Core фьюжн",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "4 канала → шкалы с уверенностью, Δ-флаги",
+      "test_vectors": [
+        "voice → PHQ-9",
+        "Brier/AUC на синтетике",
+        "отсутствие канала не роняет фьюжн"
+      ],
+      "module": "",
+      "harness": "",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "stimulusGate",
+      "label_ru": "Гейт стимуляции",
+      "layer": "L1",
+      "type": "stimulus",
+      "io": "мигание/звук/час → разрешено/заблокировано",
+      "test_vectors": [
+        "15–25 Гц → блок",
+        "стоп < 100 мс",
+        "предел SPL 85 дБ"
+      ],
+      "module": "core/engines/stimulusGate.mjs",
+      "harness": "harness/stimulusGate.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "memorySearchTool",
+      "label_ru": "Память кейсов LOCAL/MCP",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "запрос/профиль → top-k, исходы",
+      "test_vectors": [
+        "«выгорание, нет смысла» → C002",
+        "пустой индекс → 0",
+        "MCP-контракт совместим",
+        "2000 запросов — 0 NaN"
+      ],
+      "module": "core/engines/memorySearchTool.mjs",
+      "harness": "harness/memorySearchTool.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "chronometry",
+      "label_ru": "Хронометраж Башкина",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "игровые минуты → биографические дни/годы",
+      "test_vectors": [
+        "240 мин → ≈ 40 лет"
+      ],
+      "module": "core/engines/chronometry.mjs",
+      "harness": "harness/chronometry.harness.json",
+      "status": "green"
+    },
+    {
+      "id": "gccEngine",
+      "label_ru": "SMFK-100 Gcc",
+      "layer": "L3",
+      "type": "deterministic",
+      "io": "участники Cr/Sr/Of → Gcc, geo-mean, σ²",
+      "test_vectors": [
+        "фикстура core-team → 0,842491",
+        "один участник → ⛔",
+        "дубликаты → Cr·Sr"
+      ],
+      "module": "core/engines/gccEngine.mjs",
+      "harness": "harness/gccEngine.harness.json",
+      "status": "green"
+    }
+  ]
+}

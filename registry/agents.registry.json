@@ -1,0 +1,1327 @@
+{
+  "version": "1.0",
+  "note": "Реестр агентов (3.3). status = hidden_by_harness, пока нет зелёного харнесса типа llm-agent (Спринт 2).",
+  "agents": [
+    {
+      "id": "Router",
+      "domain": "system",
+      "label_ru": "Интент → контур и состав агентов",
+      "reads": [
+        "scp.inputs",
+        "scp.meta.mode"
+      ],
+      "writes": [
+        "scp.meta.mode"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/router.ru.md",
+      "output_schema": "schemas/agents/router.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "cheap",
+      "editable_in_ui": false,
+      "harness": "harness/Router.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Reflector",
+      "domain": "system",
+      "label_ru": "Сводит противоречия, требует якоря",
+      "reads": [
+        "scp.*"
+      ],
+      "writes": [
+        "scp.synthesis.verdicts"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/reflector.ru.md",
+      "output_schema": "schemas/agents/reflector.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L3",
+      "model_policy": "strong",
+      "editable_in_ui": false,
+      "harness": "harness/Reflector.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "TheraNavigator",
+      "domain": "system",
+      "label_ru": "План, следующий шаг, «что дальше»",
+      "reads": [
+        "scp.synthesis",
+        "scp.request"
+      ],
+      "writes": [
+        "scp.synthesis.plan"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/theranavigator.ru.md",
+      "output_schema": "schemas/agents/theranavigator.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L3",
+      "model_policy": "default",
+      "editable_in_ui": false,
+      "harness": "harness/TheraNavigator.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Judge",
+      "domain": "system",
+      "label_ru": "Оценка выходов агентов по рубрике (не виден клиенту)",
+      "reads": [
+        "scp.evidence",
+        "scp.audit"
+      ],
+      "writes": [],
+      "tools_required": [],
+      "prompt_ref": "prompts/judge.ru.md",
+      "output_schema": "schemas/agents/judge.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L3",
+      "model_policy": "cheap",
+      "editable_in_ui": false,
+      "harness": "harness/Judge.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Budget",
+      "domain": "system",
+      "label_ru": "Модель, стоимость, параллелизм",
+      "reads": [
+        "scp.meta"
+      ],
+      "writes": [
+        "scp.meta.model",
+        "scp.meta.fallback"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/budget.ru.md",
+      "output_schema": "schemas/agents/budget.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "cheap",
+      "editable_in_ui": false,
+      "harness": "harness/Budget.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Memory",
+      "domain": "system",
+      "label_ru": "Похожие кейсы и реальные исходы",
+      "reads": [
+        "scp.request",
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.memory.similar"
+      ],
+      "tools_required": [
+        "memorySearchTool"
+      ],
+      "prompt_ref": "prompts/memory.ru.md",
+      "output_schema": "schemas/agents/memory.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "cheap",
+      "editable_in_ui": false,
+      "harness": "harness/Memory.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Safety",
+      "domain": "system",
+      "label_ru": "Кризис, противопоказания, гейты",
+      "reads": [
+        "scp.clinic",
+        "scp.practice"
+      ],
+      "writes": [
+        "scp.clinic.crisis",
+        "scp.synthesis.risks"
+      ],
+      "tools_required": [
+        "stimulusGate",
+        "riskEngine?"
+      ],
+      "prompt_ref": "prompts/safety.ru.md",
+      "output_schema": "schemas/agents/safety.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "strong",
+      "editable_in_ui": false,
+      "harness": "harness/Safety.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Requestor",
+      "domain": "core",
+      "label_ru": "Явный и скрытый запрос",
+      "reads": [
+        "scp.inputs.transcript",
+        "scp.lexis"
+      ],
+      "writes": [
+        "scp.request.explicit",
+        "scp.request.latent"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/requestor.ru.md",
+      "output_schema": "schemas/agents/requestor.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Requestor.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Veritas",
+      "domain": "core",
+      "label_ru": "Достоверность речи и смещённая речь",
+      "reads": [
+        "scp.lexis",
+        "scp.signals.prosody",
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.request.veracity",
+        "scp.request.displacements"
+      ],
+      "tools_required": [
+        "lexisTool",
+        "prosodyTool?"
+      ],
+      "prompt_ref": "prompts/veritas.ru.md",
+      "output_schema": "schemas/agents/veritas.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Veritas.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Obstacle",
+      "domain": "core",
+      "label_ru": "Внутреннее и внешнее препятствие",
+      "reads": [
+        "scp.request",
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.obstacle"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/obstacle.ru.md",
+      "output_schema": "schemas/agents/obstacle.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Obstacle.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Insight",
+      "domain": "core",
+      "label_ru": "Интуитивное решение и озарение",
+      "reads": [
+        "scp.request",
+        "scp.obstacle"
+      ],
+      "writes": [
+        "scp.intuition",
+        "scp.insight"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/insight.ru.md",
+      "output_schema": "schemas/agents/insight.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Insight.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Libertas",
+      "domain": "core",
+      "label_ru": "Свобода воли: модусы А/Б/В/Г",
+      "reads": [
+        "scp.czi8",
+        "scp.obstacle"
+      ],
+      "writes": [
+        "scp.liberty"
+      ],
+      "tools_required": [
+        "groundingClassifier"
+      ],
+      "prompt_ref": "prompts/libertas.ru.md",
+      "output_schema": "schemas/agents/libertas.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Libertas.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Qualitas",
+      "domain": "core",
+      "label_ru": "Новое качество личности для решения",
+      "reads": [
+        "scp.liberty",
+        "scp.insight"
+      ],
+      "writes": [
+        "scp.quality"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/qualitas.ru.md",
+      "output_schema": "schemas/agents/qualitas.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Qualitas.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Grounding",
+      "domain": "core",
+      "label_ru": "ЦЗИ-8: контуры K1–K8, разрыв",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.czi8"
+      ],
+      "tools_required": [
+        "groundingClassifier"
+      ],
+      "prompt_ref": "prompts/grounding.ru.md",
+      "output_schema": "schemas/agents/grounding.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Grounding.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "CascadeABC",
+      "domain": "core",
+      "label_ru": "Каскад АВС: A, D, C, Φ → B",
+      "reads": [
+        "scp.frames",
+        "scp.drives"
+      ],
+      "writes": [
+        "scp.cascade"
+      ],
+      "tools_required": [
+        "cascadeEngine"
+      ],
+      "prompt_ref": "prompts/cascadeabc.ru.md",
+      "output_schema": "schemas/agents/cascadeabc.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L3",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/CascadeABC.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Drives",
+      "domain": "core",
+      "label_ru": "Драйвы Theromata/Alligantia/Phobon/Dominix/Agonix",
+      "reads": [
+        "scp.inputs.transcript",
+        "scp.lexis"
+      ],
+      "writes": [
+        "scp.drives"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/drives.ru.md",
+      "output_schema": "schemas/agents/drives.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Drives.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Persona6",
+      "domain": "core",
+      "label_ru": "Шестиосевая интерпретация V10",
+      "reads": [
+        "scp.frames",
+        "scp.lexis"
+      ],
+      "writes": [
+        "scp.frames.persona6"
+      ],
+      "tools_required": [
+        "phonoSemTool?"
+      ],
+      "prompt_ref": "prompts/persona6.ru.md",
+      "output_schema": "schemas/agents/persona6.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Persona6.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "ICD11Contour",
+      "domain": "core",
+      "label_ru": "МКБ-11 контур на цикле переработки (гипотеза, не диагноз)",
+      "reads": [
+        "scp.clinic",
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.frames.icd11"
+      ],
+      "tools_required": [
+        "scaleScorer?"
+      ],
+      "prompt_ref": "prompts/icd11contour.ru.md",
+      "output_schema": "schemas/agents/icd11contour.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/ICD11Contour.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Cognitome",
+      "domain": "core",
+      "label_ru": "Когнитом: 28 КОГ × 7 уровней",
+      "reads": [
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.frames.cognitome"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/cognitome.ru.md",
+      "output_schema": "schemas/agents/cognitome.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Cognitome.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Lowen",
+      "domain": "body",
+      "label_ru": "Характерные структуры Лоуэна (5)",
+      "reads": [
+        "scp.inputs",
+        "scp.signals"
+      ],
+      "writes": [
+        "scp.body.lowen"
+      ],
+      "tools_required": [
+        "prosodyTool?"
+      ],
+      "prompt_ref": "prompts/lowen.ru.md",
+      "output_schema": "schemas/agents/lowen.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Lowen.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Reich",
+      "domain": "body",
+      "label_ru": "Сегменты панциря Райха (7)",
+      "reads": [
+        "scp.inputs",
+        "scp.body"
+      ],
+      "writes": [
+        "scp.body.reich"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/reich.ru.md",
+      "output_schema": "schemas/agents/reich.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Reich.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Somatics",
+      "domain": "body",
+      "label_ru": "Тело как детектор смещённой речи",
+      "reads": [
+        "scp.request.displacements",
+        "scp.signals"
+      ],
+      "writes": [
+        "scp.body.somatics"
+      ],
+      "tools_required": [
+        "prosodyTool?"
+      ],
+      "prompt_ref": "prompts/somatics.ru.md",
+      "output_schema": "schemas/agents/somatics.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Somatics.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "PulseMeridian",
+      "domain": "body",
+      "label_ru": "12 осцилляторов (Grade D-метка)",
+      "reads": [
+        "scp.signals.ppg"
+      ],
+      "writes": [
+        "scp.body.meridians"
+      ],
+      "tools_required": [
+        "ppgTool"
+      ],
+      "prompt_ref": "prompts/pulsemeridian.ru.md",
+      "output_schema": "schemas/agents/pulsemeridian.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/PulseMeridian.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Risk",
+      "domain": "body",
+      "label_ru": "Риски 14 геропатологий",
+      "reads": [
+        "scp.body",
+        "scp.subject"
+      ],
+      "writes": [
+        "scp.body.risk"
+      ],
+      "tools_required": [
+        "riskEngine"
+      ],
+      "prompt_ref": "prompts/risk.ru.md",
+      "output_schema": "schemas/agents/risk.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Risk.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Wearables",
+      "domain": "body",
+      "label_ru": "Биопаспорт: носимые устройства",
+      "reads": [
+        "scp.signals.wearables"
+      ],
+      "writes": [
+        "scp.body.biopassport"
+      ],
+      "tools_required": [
+        "scaleScorer?"
+      ],
+      "prompt_ref": "prompts/wearables.ru.md",
+      "output_schema": "schemas/agents/wearables.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Wearables.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Fusion",
+      "domain": "body",
+      "label_ru": "vMed: фьюжн каналов",
+      "reads": [
+        "scp.signals",
+        "scp.clinic"
+      ],
+      "writes": [
+        "scp.clinic.scales"
+      ],
+      "tools_required": [
+        "fusionEngine"
+      ],
+      "prompt_ref": "prompts/fusion.ru.md",
+      "output_schema": "schemas/agents/fusion.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Fusion.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Graphology",
+      "domain": "body",
+      "label_ru": "Графология 2 канала, Δ-флаг",
+      "reads": [
+        "scp.inputs.handwriting"
+      ],
+      "writes": [
+        "scp.clinic.delta_flags"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/graphology.ru.md",
+      "output_schema": "schemas/agents/graphology.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Graphology.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Drawing",
+      "domain": "body",
+      "label_ru": "Проективный рисунок (дерево Коха)",
+      "reads": [
+        "scp.inputs.drawing"
+      ],
+      "writes": [
+        "scp.frames.koch"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/drawing.ru.md",
+      "output_schema": "schemas/agents/drawing.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Drawing.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Breath",
+      "domain": "practice",
+      "label_ru": "Подбор дыхательного паттерна из 72",
+      "reads": [
+        "scp.body",
+        "scp.practice"
+      ],
+      "writes": [
+        "scp.practice.breath"
+      ],
+      "tools_required": [
+        "stimulusGate"
+      ],
+      "prompt_ref": "prompts/breath.ru.md",
+      "output_schema": "schemas/agents/breath.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Breath.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Stimulus",
+      "domain": "practice",
+      "label_ru": "Звук, свет, EMDR — под гейтом",
+      "reads": [
+        "scp.practice"
+      ],
+      "writes": [
+        "scp.practice.stimulus"
+      ],
+      "tools_required": [
+        "stimulusGate"
+      ],
+      "prompt_ref": "prompts/stimulus.ru.md",
+      "output_schema": "schemas/agents/stimulus.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Stimulus.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Mindfulness",
+      "domain": "practice",
+      "label_ru": "Практики осознанности (Берзин)",
+      "reads": [
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.practice.mindfulness"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/mindfulness.ru.md",
+      "output_schema": "schemas/agents/mindfulness.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Mindfulness.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Abhidharma52",
+      "domain": "practice",
+      "label_ru": "52 фактора Абхидхармы",
+      "reads": [
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.frames.abhidharma"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/abhidharma52.ru.md",
+      "output_schema": "schemas/agents/abhidharma52.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Abhidharma52.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Semiosphere",
+      "domain": "practice",
+      "label_ru": "Семиосферы",
+      "reads": [
+        "scp.lexis"
+      ],
+      "writes": [
+        "scp.frames.semiosphere"
+      ],
+      "tools_required": [
+        "phonoSemTool?"
+      ],
+      "prompt_ref": "prompts/semiosphere.ru.md",
+      "output_schema": "schemas/agents/semiosphere.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Semiosphere.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Cycle8",
+      "domain": "practice",
+      "label_ru": "Цикл-8",
+      "reads": [
+        "scp.czi8"
+      ],
+      "writes": [
+        "scp.frames.cycle8"
+      ],
+      "tools_required": [
+        "groundingClassifier"
+      ],
+      "prompt_ref": "prompts/cycle8.ru.md",
+      "output_schema": "schemas/agents/cycle8.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Cycle8.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Berne",
+      "domain": "love",
+      "label_ru": "Сценарии, игры, матрица игнорирования",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.frames.berne"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/berne.ru.md",
+      "output_schema": "schemas/agents/berne.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Berne.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Gottman",
+      "domain": "love",
+      "label_ru": "Четыре всадника и ремонт",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.frames.gottman"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/gottman.ru.md",
+      "output_schema": "schemas/agents/gottman.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Gottman.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Vaillant",
+      "domain": "love",
+      "label_ru": "Иерархия защит",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.frames.vaillant"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/vaillant.ru.md",
+      "output_schema": "schemas/agents/vaillant.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Vaillant.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Panksepp",
+      "domain": "love",
+      "label_ru": "Семь аффективных систем",
+      "reads": [
+        "scp.signals",
+        "scp.lexis"
+      ],
+      "writes": [
+        "scp.frames.panksepp"
+      ],
+      "tools_required": [
+        "prosodyTool?"
+      ],
+      "prompt_ref": "prompts/panksepp.ru.md",
+      "output_schema": "schemas/agents/panksepp.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Panksepp.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Attachment",
+      "domain": "love",
+      "label_ru": "Привязанность",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.frames.attachment"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/attachment.ru.md",
+      "output_schema": "schemas/agents/attachment.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Attachment.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "EriksonMarcia",
+      "domain": "love",
+      "label_ru": "Стадии Эриксона и статус идентичности Марсиа",
+      "reads": [
+        "scp.subject",
+        "scp.frames"
+      ],
+      "writes": [
+        "scp.frames.erikson"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/eriksonmarcia.ru.md",
+      "output_schema": "schemas/agents/eriksonmarcia.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/EriksonMarcia.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Intraktom",
+      "domain": "social",
+      "label_ru": "Роли, коалиции, tension-партитура",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.narrative.intraktom"
+      ],
+      "tools_required": [
+        "lexisTool",
+        "gccEngine?"
+      ],
+      "prompt_ref": "prompts/intraktom.ru.md",
+      "output_schema": "schemas/agents/intraktom.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Intraktom.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Cashflow",
+      "domain": "social",
+      "label_ru": "Финансовый паттерн, хронометраж",
+      "reads": [
+        "scp.inputs.transcript"
+      ],
+      "writes": [
+        "scp.frames.cashflow"
+      ],
+      "tools_required": [
+        "chronometry"
+      ],
+      "prompt_ref": "prompts/cashflow.ru.md",
+      "output_schema": "schemas/agents/cashflow.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Cashflow.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Gallup34",
+      "domain": "social",
+      "label_ru": "Таланты Gallup-34",
+      "reads": [
+        "scp.inputs.scales"
+      ],
+      "writes": [
+        "scp.frames.gallup34"
+      ],
+      "tools_required": [
+        "scaleScorer"
+      ],
+      "prompt_ref": "prompts/gallup34.ru.md",
+      "output_schema": "schemas/agents/gallup34.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Gallup34.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Belbin",
+      "domain": "social",
+      "label_ru": "Командные роли Белбина",
+      "reads": [
+        "scp.inputs.scales"
+      ],
+      "writes": [
+        "scp.frames.belbin"
+      ],
+      "tools_required": [
+        "scaleScorer"
+      ],
+      "prompt_ref": "prompts/belbin.ru.md",
+      "output_schema": "schemas/agents/belbin.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Belbin.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Fincast",
+      "domain": "social",
+      "label_ru": "Касты Кроля × Маслоу × десятина",
+      "reads": [
+        "scp.frames.cashflow"
+      ],
+      "writes": [
+        "scp.frames.fincast"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/fincast.ru.md",
+      "output_schema": "schemas/agents/fincast.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Fincast.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Chronotope",
+      "domain": "social",
+      "label_ru": "Zimbardo + вертикаль времени Анохина",
+      "reads": [
+        "scp.lexis.zimbardo"
+      ],
+      "writes": [
+        "scp.frames.chronotope"
+      ],
+      "tools_required": [
+        "lexisTool"
+      ],
+      "prompt_ref": "prompts/chronotope.ru.md",
+      "output_schema": "schemas/agents/chronotope.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Chronotope.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Archetype",
+      "domain": "narrative",
+      "label_ru": "Юнг / Болен / Вулф / Эстес",
+      "reads": [
+        "scp.inputs.transcript",
+        "scp.memory"
+      ],
+      "writes": [
+        "scp.narrative.archetypes"
+      ],
+      "tools_required": [
+        "memorySearchTool?"
+      ],
+      "prompt_ref": "prompts/archetype.ru.md",
+      "output_schema": "schemas/agents/archetype.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Archetype.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "HeroPath",
+      "domain": "narrative",
+      "label_ru": "Путь героя: 17 стадий",
+      "reads": [
+        "scp.narrative"
+      ],
+      "writes": [
+        "scp.narrative.hero_path"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/heropath.ru.md",
+      "output_schema": "schemas/agents/heropath.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/HeroPath.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Optika",
+      "domain": "narrative",
+      "label_ru": "Кино-аппарат ОПТИКА",
+      "reads": [
+        "scp.narrative"
+      ],
+      "writes": [
+        "scp.narrative.optika"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/optika.ru.md",
+      "output_schema": "schemas/agents/optika.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Optika.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Motif",
+      "domain": "narrative",
+      "label_ru": "Мотивы Березкина",
+      "reads": [
+        "scp.narrative"
+      ],
+      "writes": [
+        "scp.narrative.motifs"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/motif.ru.md",
+      "output_schema": "schemas/agents/motif.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Motif.harness.json",
+      "status": "hidden_by_harness"
+    },
+    {
+      "id": "Mythodesign",
+      "domain": "narrative",
+      "label_ru": "Мифодизайн",
+      "reads": [
+        "scp.narrative"
+      ],
+      "writes": [
+        "scp.narrative.mythodesign"
+      ],
+      "tools_required": [],
+      "prompt_ref": "prompts/mythodesign.ru.md",
+      "output_schema": "schemas/agents/mythodesign.out.json",
+      "badge_policy": {
+        "with_quote": "🟡",
+        "with_measure": "🟢",
+        "none": "🔵"
+      },
+      "cost_tier": "L2",
+      "model_policy": "default",
+      "editable_in_ui": true,
+      "harness": "harness/Mythodesign.harness.json",
+      "status": "hidden_by_harness"
+    }
+  ]
+}

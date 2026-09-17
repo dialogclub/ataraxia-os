@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.chronometry.in", "type": "object", "required": ["game_minutes"], "properties": { "game_minutes": { "type": "number", "minimum": 0 } } }

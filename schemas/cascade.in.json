@@ -1,0 +1,5 @@
+{ "$id": "atmaraksi.cascade.in", "type": "object", "required": ["A", "D", "C", "phi"], "properties": {
+  "A": { "type": "number", "minimum": 0, "maximum": 1 }, "D": { "type": "number", "minimum": 0, "maximum": 1 },
+  "C": { "type": "number", "minimum": 0, "maximum": 1 }, "phi": { "type": "number", "minimum": 0, "maximum": 1 },
+  "form": { "enum": ["none", "cbrt"] },
+  "drives": { "type": "object", "properties": { "Theromata": { "type": "number" }, "Alligantia": { "type": "number" }, "Phobon": { "type": "number" }, "Dominix": { "type": "number" }, "Agonix": { "type": "number" } } } } }

@@ -1,0 +1,17 @@
+{
+  "fn": "memorySearchTool",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Memory",
+  "contract": { "input": "schemas/memory.in.json", "output": "schemas/memory.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty-query", "empty-index", "filters", "mixed-ru-ua", "mcp-unplugged"],
+  "stress": { "n": 2000, "assert": ["noNaN", "inRange", "time<50ms"] },
+  "golden": [{ "id": "burnout", "input": { "query": "выгорание, нет смысла" }, "expect": { "first": "C002" } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "no_invented_cases": true, "zero_hits_is_honest": true, "mcp_swap_contract": "same response shape" },
+  "telemetry": ["mode", "total", "duration"],
+  "ui_contract": { "component": "MemoryList", "badge_policy": "🟢" },
+  "status": "green",
+  "version": "1.0.0"
+}

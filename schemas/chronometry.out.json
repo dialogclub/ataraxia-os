@@ -1,0 +1,2 @@
+{ "$id": "atmaraksi.chronometry.out", "type": "object", "required": ["status", "reason", "days", "years", "version"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "reason": { "type": "string" }, "days": { "$ref": "Param.v1.json" }, "years": { "$ref": "Param.v1.json" }, "version": { "type": "string" } } }

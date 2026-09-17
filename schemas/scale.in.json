@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.scale.in", "type": "object", "required": ["scale"], "properties": { "scale": { "type": "string" }, "answers": { "type": "array", "items": { "type": "integer" } }, "ranking": { "type": "array" } } }

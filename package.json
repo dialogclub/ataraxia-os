@@ -1,0 +1,18 @@
+{
+  "name": "atmaraksi-os",
+  "version": "0.2.0",
+  "description": "ATMARAKSI OS — мультиагентная платформа с харнессом на каждую функцию. Исследовательский интерфейс, не медицинское изделие.",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "harness": "node harness/runner.mjs",
+    "harness:all": "node harness/runner.mjs all",
+    "screens": "node scripts/screenshots.mjs",
+    "build": "node scripts/build-single.mjs",
+    "serve": "node scripts/serve.mjs",
+    "verify": "npm run check && npm run harness:all && npm run build && npm run screens"
+  },
+  "license": "UNLICENSED"
+}

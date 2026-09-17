@@ -1,0 +1,17 @@
+{
+  "fn": "cascadeEngine",
+  "type": "deterministic",
+  "layer": "L3",
+  "owner_agent": "CascadeABC",
+  "contract": { "input": "schemas/cascade.in.json", "output": "schemas/cascade.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "phi-zero", "all-ones", "out-of-range", "nan-input", "cbrt-form"],
+  "stress": { "n": 2000, "assert": ["noNaN", "inRange", "time<5ms"] },
+  "golden": [{ "id": "konstantin-2026-08-27", "input": "fixtures/cascade.konstantin.json", "expect": { "B": [0.33, 0.35] } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "channel_missing": "badge:⛔", "no_identity_claims": true },
+  "telemetry": ["duration", "form", "formula_version"],
+  "ui_contract": { "component": "CascadeWaterfall", "badge_policy": "🟢" },
+  "status": "green",
+  "version": "1.0.0"
+}

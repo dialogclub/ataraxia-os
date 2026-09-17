@@ -1,0 +1,2 @@
+{ "$id": "atmaraksi.memory.in", "type": "object", "required": ["query"], "properties": { "query": { "type": "string" }, "k": { "type": "integer", "minimum": 1 },
+  "filters": { "type": "object", "properties": { "crisis": { "type": "boolean" }, "age_band": { "type": "string" }, "tags": { "type": "array", "items": { "type": "string" } } } } } }

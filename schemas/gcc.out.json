@@ -1,0 +1,3 @@
+{ "$id": "atmaraksi.gcc.out", "type": "object", "required": ["status", "reason", "n", "formula", "Gcc", "geometric_mean_CrSr", "sigma2_Of"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "reason": { "type": "string" }, "n": { "type": "integer" }, "formula": { "const": "prod(Cr_i*Sr_i)**(1/n) * (1 - pvariance(Of))" },
+  "Gcc": { "$ref": "Param.v1.json" }, "geometric_mean_CrSr": { "$ref": "Param.v1.json" }, "sigma2_Of": { "$ref": "Param.v1.json" } } }

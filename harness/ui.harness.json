@@ -1,0 +1,17 @@
+{
+  "fn": "ui",
+  "type": "ui",
+  "layer": "L4",
+  "owner_agent": "Router",
+  "contract": { "input": "registry/parameters.registry.json", "output": "ui/index.html" },
+  "determinism": { "runs": 1, "compare": "dom" },
+  "edge_cases": ["empty", "loading", "error", "partial", "NaN"],
+  "stress": { "n": 3, "assert": ["noHorizontalScroll", "tabbarNoOverlap", "islandNoOverlap", "statesPresent", "crisisClickable", "gateClickable", "roundTrip", "size<1.5MB"] },
+  "golden": [{ "id": "viewports", "expect": { "viewports": [[440, 956], [393, 852], [1280, 800]] } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "forbidden": ["alert(", "localStorage", "sessionStorage", "eval(", "**-", "ref.click()"], "no_fake_data": true },
+  "telemetry": ["viewport", "errors"],
+  "ui_contract": { "component": "Shell", "badge_policy": "🟢" },
+  "status": "green",
+  "version": "0.2.0"
+}

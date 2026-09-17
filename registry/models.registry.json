@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "note": "Реестр моделей (3.8). Значения сверены с docs.claude.com перед фиксацией. В среде артефактов ключ подставляет шлюз.",
+  "default": "claude-opus-5",
+  "models": [
+    {
+      "id": "claude-opus-5",
+      "label": "Opus 5",
+      "tier": "strong",
+      "use": [
+        "L2",
+        "L3"
+      ],
+      "fallback": "claude-sonnet-5"
+    },
+    {
+      "id": "claude-sonnet-5",
+      "label": "Sonnet 5",
+      "tier": "default",
+      "use": [
+        "L2",
+        "L3",
+        "Judge"
+      ],
+      "fallback": "claude-sonnet-4-6"
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "label": "Sonnet 4.6",
+      "tier": "default",
+      "use": [
+        "L2"
+      ],
+      "fallback": "claude-haiku-4-5"
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "label": "Haiku 4.5",
+      "tier": "cheap",
+      "use": [
+        "Judge",
+        "Router"
+      ],
+      "fallback": ""
+    }
+  ],
+  "policy": {
+    "timeout_ms": 90000,
+    "retry_on": [
+      429,
+      500,
+      502,
+      503,
+      529
+    ],
+    "backoff": "exponential",
+    "fallback_flag": "откат_с_Opus",
+    "l1_never_waits_model": true
+  }
+}
