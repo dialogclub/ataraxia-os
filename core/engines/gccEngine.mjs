@@ -1,10 +1,12 @@
 // SMFK-100: групповой коэффициент совместимости Gcc = (Π Cr_i·Sr_i)^(1/n) × (1 − pvariance(Of)).
 // Эвристика функциональной комплементарности; не клинический тест совместимости (см. схему CompatibilityArtifact.v1).
+// Fail-closed при n < 3 — как в python/ataraxia_dsp/smfk.py (одна формула, одно правило).
 import { Param } from '../param.mjs';
 
 const VERSION = '1.0';
 const TOOL = 'gccEngine';
 const FORMULA = 'prod(Cr_i*Sr_i)**(1/n) * (1 - pvariance(Of))';
+const MIN_N = 3;
 
 function unit(x) {
   return typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= 1;
@@ -19,10 +21,10 @@ export class GccEngine {
   run(input) {
     const members = input === undefined || input === null || !Array.isArray(input.members) ? [] : input.members;
     const valid = members.filter((m) => m !== null && typeof m === 'object' && unit(m.Cr) && unit(m.Sr) && unit(m.Of));
-    if (valid.length < 2 || valid.length !== members.length) {
+    if (valid.length < MIN_N || valid.length !== members.length) {
       return Object.freeze({
         status: 'missing',
-        reason: valid.length !== members.length ? 'у участника нет Cr/Sr/Of в [0,1]' : 'нужно ≥ 2 участников',
+        reason: valid.length !== members.length ? 'у участника нет Cr/Sr/Of в [0,1]' : `fail-closed: нужно ≥ ${MIN_N} участников`,
         n: members.length,
         formula: FORMULA,
         Gcc: Param.missing('index', [0, 1], TOOL, VERSION, 'нет входа').json(),
