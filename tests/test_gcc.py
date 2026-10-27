@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "python"))
 from ataraxia_dsp.smfk import gcc, smfk_report
-FIXTURE = json.loads((ROOT / "fixtures/smfk_team.json").read_text(encoding="utf-8"))
+FIXTURE = json.loads((ROOT / "fixtures/smfk100.team.json").read_text(encoding="utf-8"))
 MEMBERS = FIXTURE["members"]
 
 def test_gcc_canonical():
