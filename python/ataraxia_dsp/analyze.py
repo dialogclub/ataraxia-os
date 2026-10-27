@@ -30,7 +30,12 @@ def analyze_voice(
         card = dict(CLOSED_CARD)
         card["quality"] = {"fail_closed": True, "reason": "empty_audio"}
         return card
-    freqs, power = stft_power(np.asarray(audio, dtype=float), int(sr))
+    try:
+        freqs, power = stft_power(np.asarray(audio, dtype=float), int(sr))
+    except ValueError as exc:  # NaN/Inf, sr<=0 и т.п.: fail-closed, без подстановок
+        card = dict(CLOSED_CARD)
+        card["quality"] = {"fail_closed": True, "reason": f"invalid_audio: {exc}"}
+        return card
     osc = oscillator_energies(freqs, power)
     hints = spectral_hints or {}
     idx = research_indices({
