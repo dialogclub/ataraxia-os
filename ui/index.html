@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ATMARAKSI OS v0.2 «Инструменты»</title>
+<title>ATMARAKSI OS v0.3 «SESSIO»</title>
 <!--
   CHANGELOG
+  v0.3 «SESSIO» · 04.09.2026 · Спринт 2: 13 доменных агентов L2 (строгий JSON, обязательные инструменты, якоря проверяются дословно), Router, Синтез-рефлектор (k=3, консенсус),
+  Тера-навигатор, Судья (детерминированная рубрика); транспорт Claude API с повторами и откатом по реестру моделей; маскирование PII до L2; ключ только в памяти вкладки.
   v0.2 «Инструменты» · 04.09.2026 · Спринт 1: prosodyTool (DSP), lexisTool, phonoSemTool (VAAL-lite 🔵), groundingClassifier (ЦЗИ-8 🔵),
   scaleScorer (PHQ-9, GAD-7, TAS-20, MBI, SCL-90-R, IPIP-50); экраны «Речь» (спектрограмма, RMS, VAAL, ЛЕКСИС, Heatmap24) и «Тесты»;
   ЦЗИ-8 в профиле; аудио через Web Audio; таймкоды [HH:MM]. 10 из 13 инструментов зелёные.
@@ -25,7 +27,7 @@
     <section class="page" id="page-home" data-active="true" aria-labelledby="home-title">
       <header class="module-head">
         <h1 class="module-title" id="home-title" data-i18n="nav.home">Домой</h1>
-        <div class="meta"><span class="chip blue" id="home-version">v0.2 «Инструменты»</span><span class="chip grey" id="home-harness-chip">харнессы</span></div>
+        <div class="meta"><span class="chip blue" id="home-version">v0.3 «SESSIO»</span><span class="chip grey" id="home-harness-chip">харнессы</span></div>
       </header>
       <div data-states>
         <div class="state empty" data-state="empty" hidden><strong data-i18n="state.empty">Пока пусто</strong><span data-i18n="analysis.empty">Вставьте транскрипт или нажмите «Демо-транскрипт».</span></div>
@@ -51,6 +53,7 @@
         <div class="field"><label for="launch-focus" data-i18n="launch.focus">Фокус-участник</label><input type="text" id="launch-focus" value="К." maxlength="24"></div>
         <div class="field"><label data-i18n="launch.agents">Состав агентов</label><div class="hstack" id="launch-agents"></div></div>
         <div class="field"><label for="launch-model" data-i18n="launch.model">Модель</label><select id="launch-model"></select></div>
+        <div class="field"><label for="launch-names" data-i18n="launch.names">Имена для маскирования</label><input type="text" id="launch-names" placeholder="Иван, Мария — через запятую" autocomplete="off"><span class="caption" data-i18n="launch.names_hint">Перед отправкой в Claude API имена из списка, телефоны, e-mail, карты и ссылки заменяются метками. Автоматического распознавания имён нет.</span></div>
       </div>
       <div class="card">
         <div class="field"><label for="launch-transcript" data-i18n="launch.transcript">Транскрипт</label><textarea id="launch-transcript" data-i18n-placeholder="launch.placeholder" placeholder="Спикер: реплика — по строке на реплику"></textarea></div>
@@ -186,6 +189,7 @@
         <div class="state partial" data-state="partial" hidden><span class="msg"></span></div>
       </div>
       <div class="card table-wrap"><table class="table" id="agents-table"></table></div>
+      <section class="section"><h3 data-i18n="agents.runs">Прогон L2/L3</h3><div class="card table-wrap"><table class="table" id="agents-runs"></table></div></section>
       <section class="section"><h3 data-i18n="agents.tools">Инструменты L1/L3</h3><div class="card table-wrap"><table class="table" id="tools-table"></table></div></section>
       <section class="section"><h3 data-i18n="agents.log">Журнал прогона</h3><div class="card quiet" id="agents-log"></div></section>
     </section>
@@ -240,6 +244,9 @@
       <div class="list">
         <div class="item"><span data-i18n="settings.locale">Язык</span><select id="settings-locale"><option value="ru">Русский</option><option value="uk">Українська</option><option value="en">English</option></select></div>
         <div class="item"><span data-i18n="settings.model">Модель по умолчанию</span><select id="settings-model"></select></div>
+        <div class="item"><span data-i18n="settings.apikey">Ключ Claude API</span><input type="password" id="settings-apikey" autocomplete="off" spellcheck="false" placeholder="не нужен в среде со шлюзом" aria-label="Ключ Claude API" style="min-height:44px;max-width:220px;border:1px solid var(--line-soft);border-radius:10px;padding:0 10px"></div>
+        <div class="item"><span class="caption" data-i18n="settings.apikey_hint">Ключ хранится только в памяти вкладки: не попадает в профиль, экспорт и журнал; закрытие вкладки его стирает.</span></div>
+        <div class="item"><span data-i18n="settings.endpoint">Адрес API</span><input type="text" id="settings-endpoint" autocomplete="off" spellcheck="false" placeholder="https://api.anthropic.com/v1/messages" aria-label="Адрес API" style="min-height:44px;max-width:220px;border:1px solid var(--line-soft);border-radius:10px;padding:0 10px"></div>
         <div class="item"><span data-i18n="settings.export">Экспорт SCP (JSON)</span><button type="button" class="btn secondary small" id="settings-export">JSON</button></div>
         <div class="item"><span data-i18n="settings.import">Импорт SCP</span><label class="btn secondary small" for="settings-import-file">Файл<input type="file" id="settings-import-file" accept=".json" style="display:none"></label></div>
         <div class="item"><span data-i18n="settings.print">Печать A4</span><button type="button" class="btn secondary small" id="settings-print">Печать</button></div>

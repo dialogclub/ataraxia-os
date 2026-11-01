@@ -1,6 +1,8 @@
 // Генератор реестров из компактных таблиц раздела 3 мастер-промпта. Запуск: node scripts/gen-registries.mjs
 // Источник истины — этот файл; JSON в registry/ — производные и коммитятся рядом.
-import { writeFileSync, readdirSync } from 'node:fs';
+import { writeFileSync, readdirSync, readFileSync, mkdirSync, existsSync } from 'node:fs';
+import { SPECS, buildAgentSchema } from '../core/agents/agentSpecs.mjs';
+import { REFLECTOR_SCHEMA, THERA_SCHEMA } from '../core/agents/synthesis.mjs';
 
 const out = (name, data) => writeFileSync(new URL(`../registry/${name}`, import.meta.url), `${JSON.stringify(data, null, 2)}\n`);
 const harnessed = new Set(readdirSync(new URL('../harness/', import.meta.url)).filter((f) => f.endsWith('.harness.json')).map((f) => f.replace('.harness.json', '')));
@@ -12,7 +14,7 @@ const A = (id, domain, label_ru, reads, writes, tools, model_policy, cost_tier) 
   badge_policy: { with_quote: '🟡', with_measure: '🟢', none: '🔵' },
   cost_tier: cost_tier === undefined ? 'L2' : cost_tier, model_policy: model_policy === undefined ? 'default' : model_policy,
   editable_in_ui: domain !== 'system', harness: `harness/${id}.harness.json`,
-  status: harnessed.has(id) ? 'green' : 'hidden_by_harness'
+  status: harnessed.has(`agent.${id}`) ? 'green' : 'hidden_by_harness'
 });
 const agents = [
   A('Router', 'system', 'Интент → контур и состав агентов', ['scp.inputs', 'scp.meta.mode'], ['scp.meta.mode'], [], 'cheap'),
@@ -67,7 +69,17 @@ const agents = [
   A('Motif', 'narrative', 'Мотивы Березкина', ['scp.narrative'], ['scp.narrative.motifs'], []),
   A('Mythodesign', 'narrative', 'Мифодизайн', ['scp.narrative'], ['scp.narrative.mythodesign'], [])
 ];
-out('agents.registry.json', { version: '1.0', note: 'Реестр агентов (3.3). status = hidden_by_harness, пока нет зелёного харнесса типа llm-agent (Спринт 2).', agents });
+// Дополнения Спринта 2: зависимости DAG, область записи в SCP, ссылка на харнесс контрактов, статус живого прогона.
+agents.forEach((a) => {
+  const sp = SPECS[a.id];
+  a.depends_on = sp ? sp.depends_on : [];
+  a.harness = `harness/agent.${a.id}.harness.json`;
+  a.live_eval = ['Router', 'Judge'].includes(a.id) ? 'n/a (детерминированный)' : 'not_run';
+  if (a.id === 'Memory') a.writes = ['scp.memory.reading'];
+  if (a.id === 'Reflector') a.writes = ['scp.synthesis.verdicts', 'scp.synthesis.axes'];
+  if (sp) a.writes = [...a.writes, `scp.frames.l2.${a.id}`];
+});
+out('agents.registry.json', { version: '1.0', note: 'Реестр агентов (3.3). status = green означает зелёный харнесс КОНТРАКТОВ (сценарный двойник модели); live_eval показывает, прогонялся ли агент на живой модели.', agents });
 
 // ---------- Инструменты (3.4) ----------
 const T = (id, label_ru, layer, io, vectors, module) => ({
@@ -87,6 +99,7 @@ const tools = [
   T('fusionEngine', 'Sealed Core фьюжн', 'L1', '4 канала → шкалы с уверенностью, Δ-флаги', ['voice → PHQ-9', 'Brier/AUC на синтетике', 'отсутствие канала не роняет фьюжн']),
   T('stimulusGate', 'Гейт стимуляции', 'L1', 'мигание/звук/час → разрешено/заблокировано', ['15–25 Гц → блок', 'стоп < 100 мс', 'предел SPL 85 дБ'], 'core/engines/stimulusGate.mjs'),
   T('memorySearchTool', 'Память кейсов LOCAL/MCP', 'L1', 'запрос/профиль → top-k, исходы', ['«выгорание, нет смысла» → C002', 'пустой индекс → 0', 'MCP-контракт совместим', '2000 запросов — 0 NaN'], 'core/engines/memorySearchTool.mjs'),
+  T('maskPii', 'Маскирование PII до L2', 'L1', 'текст + список имён → маскированный текст + счётчики (email, телефон, URL, IBAN, карта, имена из списка)', ['таймкоды не затрагиваются', 'идемпотентность', '2000 строк — без исключений', 'имена вне списка не маскируются — NER нет, и это сказано'], 'core/pii.mjs'),
   T('chronometry', 'Хронометраж Башкина', 'L1', 'игровые минуты → биографические дни/годы', ['240 мин → ≈ 40 лет'], 'core/engines/chronometry.mjs'),
   T('gccEngine', 'SMFK-100 Gcc', 'L3', 'участники Cr/Sr/Of → Gcc, geo-mean, σ²', ['фикстура core-team → 0,842491', 'один участник → ⛔', 'дубликаты → Cr·Sr'], 'core/engines/gccEngine.mjs')
 ];
@@ -174,19 +187,39 @@ const parameters = [
 ];
 out('parameters.registry.json', { version: '1.0', note: `Реестр параметров (3.5). Спринт 0: ${parameters.length} записей; целевой объём 300+. Интерфейс строится из реестра.`, parameters });
 
-// ---------- Модели (3.8): реестр, не константы. ID сверены с docs.claude.com 04.09.2026 ----------
+// ---------- Модели (3.8): реестр, не константы. ID сверены с документацией Claude API 01.11.2026 ----------
 out('models.registry.json', {
-  version: '1.0',
-  note: 'Реестр моделей (3.8). Значения сверены с docs.claude.com перед фиксацией. В среде артефактов ключ подставляет шлюз.',
-  default: 'claude-opus-5',
+  version: '1.1',
+  note: 'Реестр моделей (3.8), сверен с каталогом моделей Claude API (контекст 1M; Haiku 5.5 — до 100K токенов по базовой цене). Цепочка отката идёт по полю fallback. Не отправляем temperature/top_p/top_k/budget_tokens — на текущих моделях это 400; глубина мышления — только через effort.',
+  default: 'claude-opus-5-5',
+  api_version: '2026-10-21',
   models: [
-    { id: 'claude-opus-5', label: 'Opus 5', tier: 'strong', use: ['L2', 'L3'], fallback: 'claude-sonnet-5' },
-    { id: 'claude-sonnet-5', label: 'Sonnet 5', tier: 'default', use: ['L2', 'L3', 'Judge'], fallback: 'claude-sonnet-4-6' },
-    { id: 'claude-sonnet-4-6', label: 'Sonnet 4.6', tier: 'default', use: ['L2'], fallback: 'claude-haiku-4-5' },
-    { id: 'claude-haiku-4-5', label: 'Haiku 4.5', tier: 'cheap', use: ['Judge', 'Router'], fallback: '' }
+    { id: 'claude-opus-5-5', label: 'Opus 5.5', tier: 'strong', use: ['L2', 'L3'], fallback: 'claude-sonnet-5-5', effort_default: 'medium' },
+    { id: 'claude-opus-5', label: 'Opus 5', tier: 'strong', use: ['L2', 'L3'], fallback: 'claude-sonnet-5-5', effort_default: 'high' },
+    { id: 'claude-sonnet-5-5', label: 'Sonnet 5.5', tier: 'default', use: ['L2', 'L3', 'Judge'], fallback: 'claude-sonnet-4-6', effort_default: 'high' },
+    { id: 'claude-sonnet-4-6', label: 'Sonnet 4.6', tier: 'default', use: ['L2'], fallback: '', effort_default: 'high' },
+    { id: 'claude-haiku-5-5', label: 'Haiku 5.5', tier: 'cheap', use: ['Judge', 'Router'], fallback: 'claude-sonnet-5-5', effort_default: 'medium' }
   ],
-  policy: { timeout_ms: 90000, retry_on: [429, 500, 502, 503, 529], backoff: 'exponential', fallback_flag: 'откат_с_Opus', l1_never_waits_model: true }
+  policy: { timeout_ms: 90000, retry_on: [429, 500, 502, 503, 504, 529], retries: 2, backoff: 'exponential', fallback_on: ['refusal', 'model_unavailable', 'overloaded'], fallback_flag: 'откат_с_Opus', l1_never_waits_model: true, circuit_breaker: ['auth', 'network'], react_max_rounds: 3, submit_retries: 2, reflector_k: 3 }
 });
+
+// ---------- Промпты: prompts/*.ru.md → registry/prompts.registry.json (правятся в «Агентах», источник — файлы) ----------
+{
+  const dir = new URL('../prompts/', import.meta.url);
+  const preamble = readFileSync(new URL('preamble.ru.md', dir), 'utf8').trim();
+  const tasks = {};
+  [...agents.map((a) => a.id)].forEach((id) => { const f = new URL(`${id.toLowerCase()}.ru.md`, dir); if (existsSync(f)) tasks[id] = readFileSync(f, 'utf8').trim(); });
+  out('prompts.registry.json', { version: '1.0', note: 'Общая преамбула + задача агента. Правило Приложения B: агент не вычисляет, вызывает инструменты, цитирует дословно, отвечает по схеме.', preamble, tasks });
+}
+
+// ---------- Схемы выходов агентов ----------
+{
+  const sdir = new URL('../schemas/agents/', import.meta.url);
+  if (!existsSync(sdir)) mkdirSync(sdir, { recursive: true });
+  Object.keys(SPECS).forEach((id) => writeFileSync(new URL(`${id.toLowerCase()}.out.json`, sdir), `${JSON.stringify({ $id: `atmaraksi.agents.${id}.out`, ...buildAgentSchema(SPECS[id].fields) }, null, 2)}\n`));
+  writeFileSync(new URL('reflector.out.json', sdir), `${JSON.stringify({ $id: 'atmaraksi.agents.Reflector.out', ...REFLECTOR_SCHEMA }, null, 2)}\n`);
+  writeFileSync(new URL('theranavigator.out.json', sdir), `${JSON.stringify({ $id: 'atmaraksi.agents.TheraNavigator.out', ...THERA_SCHEMA }, null, 2)}\n`);
+}
 
 // ---------- Рамки интерпретации (Приложение F) ----------
 const F = (id, author, axes, tool, agent, ui, grade, source) => ({ id, author, axes, tool, agent, ui_encoding: ui, default_grade: grade, source });

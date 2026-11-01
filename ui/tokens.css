@@ -273,3 +273,9 @@ details.json pre{margin:8px 0 0;max-height:280px;overflow:auto;background:var(--
 .vaal-list .sig{font-weight:700;color:var(--ink)}
 .audio-label{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:var(--r-inner);font-weight:600;background:rgba(10,132,255,.12);color:var(--blue);cursor:pointer}
 .audio-label input{display:none}
+
+/* Утверждения L2: строка = бейдж + текст + якоря; без декоративных заливок */
+.claims{gap:12px}
+.claim{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.claim:first-child{border-top:0;padding-top:0}
+.claim-head{display:flex;align-items:center;justify-content:space-between;gap:8px}

@@ -1,4 +1,4 @@
-// ATMARAKSI OS · оболочка v0.1 «Каркас». Интерфейс строится из реестров; L4 ничего не вычисляет — только движки L1/L3.
+// ATMARAKSI OS · оболочка v0.3 «SESSIO». Интерфейс строится из реестров; L4 ничего не вычисляет — только движки L1/L3.
 import { h, clear, present, fmt } from './components/base.mjs';
 import { Badge } from './components/badge.mjs';
 import { DynamicIsland } from './components/island.mjs';
@@ -17,14 +17,20 @@ import { CascadeEngine } from '../core/engines/cascadeEngine.mjs';
 import { StimulusGate, StimulusSession } from '../core/engines/stimulusGate.mjs';
 import { Chronometry } from '../core/engines/chronometry.mjs';
 import { memoryFor } from '../core/engines/memorySearchTool.mjs';
+import { Transcript } from '../core/transcript.mjs';
+import { maskPii } from '../core/pii.mjs';
+import { Toolbox } from '../core/agents/toolbox.mjs';
+import { HttpModelClient, ResilientClient } from '../core/agents/modelClient.mjs';
+import { L2Stage, agentCard, heroCard, indexOfResults, kindText } from './l2.mjs';
+import { DEMO_TRANSCRIPT } from '../core/demo.mjs';
 import { ProsodyTool } from '../core/engines/prosodyTool.mjs';
 import { LexisTool } from '../core/engines/lexisTool.mjs';
 import { PhonoSemTool, SCALE_MAP } from '../core/engines/phonoSemTool.mjs';
 import { GroundingClassifier, LEVELS } from '../core/engines/groundingClassifier.mjs';
 import { ScaleScorer } from '../core/engines/scaleScorer.mjs';
 
-const VERSION = '0.2.0';
-const VERSION_LABEL = 'v0.2 «Инструменты»';
+const VERSION = '0.3.0';
+const VERSION_LABEL = 'v0.3 «SESSIO»';
 const byId = (id) => document.getElementById(id);
 
 // Данные: в single-file сборке лежат в window.__ATM_DATA, иначе грузятся по относительному пути.
@@ -59,22 +65,6 @@ class I18n {
   }
 }
 
-// Демо-транскрипт: синтетический, составлен для демонстрации конвейера. Не данные клиента.
-const DEMO_TRANSCRIPT = [
-  '[10:02] Т.: С чего начнём сегодня?',
-  '[10:02] К.: Не знаю. Я просто устал. Ничего не хочу, даже утром вставать.',
-  '[10:03] Т.: Когда это началось?',
-  '[10:03] К.: Наверное, месяца три назад. На работе всё сыпется, а я делаю вид, что держу.',
-  '[10:05] Т.: Вы сказали «делаю вид». Перед кем?',
-  '[10:05] К.: Перед всеми. Перед женой особенно. Она думает, что я справляюсь.',
-  '[10:07] Т.: А что было бы, если бы она узнала?',
-  '[10:07] К.: Давайте лучше про работу поговорим, там хотя бы понятно, что делать.',
-  '[10:09] Т.: Хорошо. Что понятно про работу?',
-  '[10:09] К.: Что надо уйти. Но я должен тянуть, у нас кредит и мама болеет.',
-  '[10:12] Т.: «Должен» — чьё это слово?',
-  '[10:12] К.: Отца. Он всегда так говорил. Я и не заметил, как стал им.'
-].join('\n');
-
 async function sha256(text) {
   if (globalThis.crypto !== undefined && crypto.subtle !== undefined) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -86,48 +76,11 @@ async function sha256(text) {
   return `fnv1a-${hash.toString(16)}`;
 }
 
-// L0: разбор транскрипта «Спикер: реплика» — спикеры, реплики, псевдо-таймкод по номеру строки.
-class Transcript {
-  constructor(text) {
-    const lines = String(text === undefined ? '' : text).split('\n').map((l) => l.trim()).filter((l) => l !== '');
-    // Формат строки: «[HH:MM] Спикер: реплика» либо «HH:MM:SS Спикер: реплика» либо «Спикер: реплика».
-    this.lines = Object.freeze(lines.map((l, i) => {
-      const tm = l.match(/^\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?\s+(.*)$/);
-      const body = tm ? tm[2] : l;
-      const m = body.match(/^([^:]{1,24}):\s*(.+)$/);
-      return Object.freeze({ n: i + 1, t: tm ? `[${tm[1]}]` : `#${i + 1}`, speaker: m ? m[1].trim() : '?', text: m ? m[2].trim() : body });
-    }));
-    Object.freeze(this);
-  }
-
-  speakers() {
-    const counts = {};
-    this.lines.forEach((l) => { counts[l.speaker] = (counts[l.speaker] === undefined ? 0 : counts[l.speaker]) + 1; });
-    return counts;
-  }
-
-  textOf(speaker) {
-    return this.lines.filter((l) => speaker === undefined || l.speaker === speaker).map((l) => l.text).join(' ');
-  }
-
-  statementsOf(speaker) {
-    return this.lines.filter((l) => speaker === undefined || l.speaker === speaker).map((l) => l.text);
-  }
-
-  lexisLines() {
-    return this.lines.map((l) => ({ speaker: l.speaker, text: l.text, t: l.t }));
-  }
-
-  empty() {
-    return this.lines.length === 0;
-  }
-}
-
 // Конвейер: L0 → L1 (детерминированно) → L2 (⛔ в Спринте 0) → L3 (детерминированный отчёт 🟢/⛔).
 class Pipeline {
   constructor(app) {
     this.app = app;
-    this.state = { cancelled: false, running: false, results: new Map() };
+    this.state = { cancelled: false, running: false, results: new Map(), index: 0 };
     Object.freeze(this);
   }
 
@@ -148,11 +101,14 @@ class Pipeline {
         const hash = await sha256(input.transcript);
         const speakers = tr.speakers();
         app.state.transcript = tr;
+        // PII не попадает в промпты L2 (3.10): маскируем до отправки; L1 работает локально и по исходному тексту.
+        const masked = maskPii(input.transcript, { knownNames: input.names });
+        app.state.masked = new Transcript(masked.text);
         app.state.scp = app.state.scp.with('meta.input_hash', hash, 'tool:intake').with('inputs', [{ kind: 'transcript', hash, ref: 'launch' }], 'tool:intake')
           .with('subject.alias', input.focus, 'tool:intake').with('meta.mode', input.mode, 'tool:intake').with('meta.model', input.model, 'tool:intake');
         return { badge: '🟢', title: 'L0 · Intake', source: 'intake v1.0', verdict: `${tr.lines.length} реплик · спикеры: ${Object.keys(speakers).join(', ')}`,
           params: Object.keys(speakers).map((s) => ({ label: `реплик ${s}`, param: Param.measured(speakers[s], 'n', [0, 9999], 'intake', '1.0', '').json(), kind: 'count' })),
-          json: { hash, speakers, lines: tr.lines.length } };
+          json: { hash, speakers, lines: tr.lines.length, pii: masked.counts }, limit: `в L2 уйдёт текст с маскированием: ${masked.total} замен${masked.total ? ` (${Object.keys(masked.counts).join(', ')})` : ''}; ${masked.names_note}` };
       } },
       { id: 'cascade', layer: 'L1', label: 'cascadeEngine', run: async () => {
         const out = new CascadeEngine(input.form).run(input.cascade);
@@ -225,16 +181,49 @@ class Pipeline {
         return { badge: '🟢', title: 'L1 · Шкалы', source: `scaleScorer v1.0 · ${results.map((r) => r.label).join(', ')}`, verdict: results.map((r) => `${r.label} ${fmt(r.total, 'score')} (${r.band || 'без нормы'})`).join(' · '), params: results.map((r) => ({ label: r.label, param: r.total, kind: 'score' })), next: { label: app.i18n.t('nav.tests'), onClick: () => app.go('tests') }, json: results, limit: flags.length ? `‼ ${flags.join('; ')}` : '' };
       } }
     ];
-    input.agents.forEach((id) => {
+    // --- L2: Router запускает оркестратор; карточки агентов берут результат из l2.state ---
+    const plan = app.l2.plan({ mode: input.mode, hasAudio: app.state.audio !== undefined, selected: input.agents });
+    const base = () => app.l2Base(input);
+    const progress = (p) => {
+      const span = Math.max(1, plan.agents.length);
+      const before = this.state.index + 1;
+      app.island.update({ phase: 'running', layer: p.layer, agent: p.agent, percent: ((before + (p.done / Math.max(1, p.total)) * span) / list.length) * 100, model: input.model === '' ? app.i18n.t('toast.nomodel') : input.model });
+    };
+    list.push({ id: 'router', layer: 'L2', label: 'Router', run: async () => {
+      app.state.scpL1 = app.state.scp;
+      await app.l2.runAll(plan.agents, base(), progress);
+      app.state.scp = app.l2.applyAll(app.state.scpL1);
+      const sum = app.l2.summary();
+      app.state.l2sum = sum;
+      if (sum.model !== '') app.state.scp = app.state.scp.with('meta.model', sum.model, 'system:Budget').with('meta.fallback', sum.fallback, 'system:Budget');
+      const reasons = Array.from(new Set(Array.from(app.l2.state.results.values()).filter((r) => r.status === 'failed' || r.status === 'skipped').map((r) => kindText(r.kind) || r.reason)));
+      return { badge: '🟢', title: 'L2 · Router', source: 'правила по режиму и входам · детерминированно', verdict: `${plan.reason}. Успешно: ${sum.ok} из ${sum.total}${sum.model ? ` · ${sum.model}${sum.fallback ? ' (откат)' : ''}` : ''}`,
+        params: [{ label: 'Агентов успешно', param: Param.measured(sum.ok, 'n', [0, 99], 'Router', '1.0', '').json(), kind: 'count' }, { label: 'Токенов на вход', param: Param.measured(sum.input_tokens, 'tok', [0, 9999999], 'Budget', '1.0', 'оценка по usage ответов').json(), kind: 'count' }, { label: 'Токенов на выход', param: Param.measured(sum.output_tokens, 'tok', [0, 9999999], 'Budget', '1.0', 'оценка по usage ответов').json(), kind: 'count' }],
+        json: { plan, summary: sum }, limit: reasons.join('; ') };
+    } });
+    plan.agents.forEach((id) => {
       const card = app.registry.agents.find((a) => a.id === id);
-      list.push({ id: `agent-${id}`, layer: 'L2', label: id, run: async () => ({ badge: '⛔', title: `L2 · ${id}`, source: `${card.label_ru} · ${card.status}`, verdict: 'Агент не вызван: Claude API не подключён', limit: app.i18n.t('limit.nollm'), json: { reads: card.reads, writes: card.writes, tools_required: card.tools_required } }) });
+      list.push({ id: `agent-${id}`, layer: 'L2', label: id,
+        rerun: async () => { await app.l2.runOne(id, base()); app.state.scp = app.l2.applyAll(app.state.scpL1); app.state.stale = true; },
+        run: async () => agentCard(app.l2.state.results.get(id), card, { onJump: (item) => app.jumpTo(item), onRetry: () => this.retry(`agent-${id}`) }) });
     });
     list.push({ id: 'synthesis', layer: 'L3', label: 'Synthesis', run: async () => {
+      app.state.stale = false;
+      await app.l2.synthesize(base(), progress);
+      const { reflector, thera } = app.l2.state;
+      const index = indexOfResults(Array.from(app.l2.state.results.values()));
       const scp = app.state.scp.data;
-      const measured = scp.evidence.filter((e) => e.badge === '🟢').map((e) => e.claim_id);
-      const verdicts = measured.map((id) => ({ claim_id: id, badge: '🟢', text: `${id} измерен детерминированно` }));
-      app.state.scp = app.state.scp.with('synthesis', { verdicts, axes: [], plan: [], risks: [] }, 'engine:synthesis');
-      return { badge: measured.length ? '🟢' : '⛔', hero: true, title: 'L3 · Детерминированный отчёт', source: 'без Reflector · Спринт 0', verdict: measured.length ? `Измерено ${measured.length}: ${measured.join(', ')}. Интерпретации нет — агенты L2 недоступны.` : 'Нет измерений', next: { label: app.i18n.t('synthesis.title'), onClick: () => app.go('synthesis') }, limit: app.i18n.t('limit.nollm') };
+      // Измерения L1: утверждения агентов (Имя.cN) в список «измерено детерминированно» не входят.
+      const measured = scp.evidence.filter((e) => e.badge === '🟢' && !/^[A-Z][A-Za-z0-9]+\.c\d+$/.test(e.claim_id)).map((e) => e.claim_id);
+      const live = reflector !== undefined && (reflector.status === 'ok' || reflector.status === 'degraded');
+      const verdicts = live ? reflector.verdicts.map((v) => ({ claim_id: v.id, badge: v.badge, text: v.text, refs: v.claim_refs })) : measured.map((id) => ({ claim_id: id, badge: '🟢', text: `${id} измерен детерминированно` }));
+      const axes = live ? reflector.axes.map((a) => ({ axis: a.axis, badge: a.badge, text: a.text, refs: a.claim_refs })) : [];
+      const planOut = thera !== undefined && (thera.status === 'ok' || thera.status === 'degraded') ? thera.plan.map((p) => ({ step: p.step, why: p.why, badge: p.badge, module: p.module, refs: p.claim_refs })) : [];
+      const risks = live ? reflector.contradictions.map((c) => ({ text: `${c.a} ↔ ${c.b}: ${c.note}`, badge: '🔵' })) : [];
+      app.state.scp = app.state.scp.with('synthesis', { verdicts, axes, plan: planOut, risks }, 'engine:synthesis');
+      const card = heroCard(reflector, thera, index, measured, { onRetry: () => this.retry('synthesis') });
+      card.next = { label: app.i18n.t('synthesis.title'), onClick: () => app.go('synthesis') };
+      return card;
     } });
     return list;
   }
@@ -248,10 +237,13 @@ class Pipeline {
     app.bus.emit('run.start', { mode: input.mode, agents: input.agents.length });
     const steps = this.steps(input);
     app.state.steps = steps;
+    app.l2.reset();
+    app.state.stale = false;
     app.setState('analysis', 'loading');
     let done = 0;
     try {
       for (const step of steps) {
+        this.state.index = done;
         if (this.state.cancelled) { app.bus.emit('run.cancel', {}); app.island.update({ phase: 'idle', text: app.i18n.t('analysis.cancelled') }); app.setState('analysis', 'partial', app.i18n.t('analysis.cancelled')); return; }
         app.island.update({ phase: 'running', layer: step.layer, agent: step.label, percent: (done / steps.length) * 100, model: input.model === '' ? app.i18n.t('toast.nomodel') : input.model });
         await this.tick();
@@ -260,8 +252,11 @@ class Pipeline {
         app.renderFeed();
       }
       const missing = Array.from(this.state.results.values()).filter((r) => r.badge === '⛔').length;
-      app.island.update({ phase: 'done', text: `${app.i18n.t('toast.done')} · ${input.agents.length} ${app.i18n.t('toast.agents')} ⛔ · ${app.i18n.t('toast.nomodel')}` });
-      app.toast.show(`${app.i18n.t('toast.done')} · 0/${input.agents.length} ${app.i18n.t('toast.agents')} · ${app.i18n.t('toast.nomodel')}`);
+      const sum = app.state.l2sum === undefined ? { ok: 0, total: 0, model: '', fallback: false } : app.state.l2sum;
+      const tail = sum.model === '' ? (input.model === '' ? app.i18n.t('toast.nomodel') : app.i18n.t('toast.noapi')) : `${sum.model}${sum.fallback ? ` (${app.i18n.t('toast.fallback')})` : ''}`;
+      const doneText = `${app.i18n.t('toast.done')} · ${sum.ok}/${sum.total} ${app.i18n.t('toast.agents')} · ${tail}`;
+      app.island.update({ phase: 'done', text: doneText });
+      app.toast.show(doneText);
       app.setState('analysis', missing ? 'partial' : 'content', `${app.i18n.t('analysis.partial')} · ⛔ ${missing}`);
       app.bus.emit('run.done', { steps: steps.length, missing });
       app.renderSynthesis();
@@ -298,10 +293,18 @@ class Pipeline {
     if (step === undefined) return;
     this.app.island.update({ phase: 'running', layer: step.layer, agent: step.label, percent: 50 });
     await this.tick();
+    try {
+      if (typeof step.rerun === 'function') await step.rerun();
+    } catch (e) {
+      this.state.results.set(id, { id, layer: step.layer, badge: '⛔', title: `${step.layer} · ${step.label}`, source: 'ошибка', verdict: e.message, limit: 'повтор завершился ошибкой; остальные результаты сохранены' });
+      this.app.renderFeed();
+      return;
+    }
     await this.runStep(step);
     this.app.island.update({ phase: 'done', text: `${step.label} · повторено` });
     this.app.renderFeed();
     this.app.renderInspector();
+    if (step.id === 'synthesis' || step.layer === 'L2') this.app.renderSynthesis();
   }
 }
 
@@ -318,11 +321,36 @@ class App {
     this.grounding = new GroundingClassifier();
     this.scorer = new ScaleScorer();
     this.pipeline = new Pipeline(this);
+    this.l2 = new L2Stage({
+      cards: new Map(registry.agents.map((a) => [a.id, a])), models: registry.models, prompts: registry.prompts,
+      toolbox: new Toolbox({ lexis: this.lexis, grounding: this.grounding, cascadeCtor: CascadeEngine, memory: this.memory, phono: this.phono, prosody: this.prosody }),
+      client: () => this.makeClient(), k: 3, concurrency: 4
+    });
     this.toast = new Toast(byId('toast-host'));
     this.sheet = new Sheet('ATMARAKSI OS');
     this.island = new DynamicIsland(() => this.pipeline.cancel(), () => this.commandPalette());
-    this.state = { page: 'home', sub: '', scp: Scp.fresh({ mode: 'session', model: '', created: new Date().toISOString(), input_hash: '', alias: 'К.' }), steps: [], transcript: undefined, agents: new Set(), agentTasks: {}, clinicLocked: false, profileTab: 'overview', memoryMode: 'LOCAL', audio: undefined, prosody: undefined, lexis: undefined, vaal: undefined, grounding: undefined, scales: {}, testsTab: 'phq9' };
+    this.state = { page: 'home', sub: '', scp: Scp.fresh({ mode: 'session', model: '', created: new Date().toISOString(), input_hash: '', alias: 'К.' }), steps: [], transcript: undefined, agents: new Set(), agentTasks: {}, clinicLocked: false, profileTab: 'overview', memoryMode: 'LOCAL', audio: undefined, prosody: undefined, lexis: undefined, vaal: undefined, grounding: undefined, scales: {}, testsTab: 'phq9', masked: undefined, scpL1: undefined, l2sum: undefined, stale: false, apiKey: '', endpoint: '', testClient: undefined, model: '' };
     Object.freeze(this);
+  }
+
+  // Клиент модели: тестовый двойник (крючок UI-харнесса) либо Claude API. Модель не выбрана → undefined (L2 ⛔).
+  // Ключ живёт только в памяти вкладки (state.apiKey): не в SCP, не в экспорте, не в журнале.
+  makeClient() {
+    if (this.state.model === '') return undefined;
+    if (this.state.testClient !== undefined) return new ResilientClient(this.state.testClient, { sleep: async () => {}, retries: 0 });
+    return new ResilientClient(new HttpModelClient({ endpoint: this.state.endpoint, apiKey: this.state.apiKey }), {});
+  }
+
+  setModelClient(inner) {
+    this.state.testClient = inner;
+  }
+
+  // База контекста L2: маскированный транскрипт, каскад, аудио-канал, замечания по каналам L1, правки задач агентов.
+  l2Base(input) {
+    const audio = this.state.audio === undefined ? undefined : { pcm: this.state.audio.pcm, sr: this.state.audio.sr };
+    const notes = [];
+    if (audio === undefined) notes.push('просодика ⛔: нет аудио');
+    return { lines: this.state.masked.lines, focus: input.focus, mode: input.mode, cascade: { ...input.cascade, form: input.form }, audio, selectedModel: input.model, overrides: Object.keys(this.state.agentTasks).length ? this.state.agentTasks : undefined, l1Notes: notes.join('; '), effort: 'medium', cancelled: () => this.pipeline.state.cancelled };
   }
 
   harnessOf(fn) {
@@ -489,6 +517,7 @@ class App {
     const num = (id) => Number(byId(id).value);
     return {
       transcript: byId('launch-transcript').value, focus: byId('launch-focus').value.trim() || 'К.', mode: this.state.modeControl.value(), model: byId('launch-model').value,
+      names: byId('launch-names').value.split(',').map((x) => x.trim()).filter((x) => x.length >= 2),
       agents: Array.from(this.state.agents), cascade: { A: num('launch-A'), D: num('launch-D'), C: num('launch-C'), phi: num('launch-phi') }, form: byId('launch-form').value, game_minutes: num('launch-minutes')
     };
   }
@@ -498,6 +527,7 @@ class App {
     const input = this.launchInput();
     if (new Transcript(input.transcript).empty()) { this.setState('launch', 'error', 'Транскрипт пуст. Вставьте текст или нажмите «Демо-транскрипт».'); return; }
     this.setState('launch', 'content');
+    this.state.model = input.model;
     byId('launch-run').disabled = true;
     byId('launch-run').textContent = this.i18n.t('launch.started');
     window.setTimeout(() => { byId('launch-run').textContent = this.i18n.t('launch.run'); }, 1500);
@@ -514,7 +544,7 @@ class App {
       const r = this.pipeline.state.results.get(step.id);
       if (step.layer !== layer) { layer = step.layer; feed.append(h('div', { class: 'layer-head', text: layer })); }
       if (r === undefined) { feed.append(h('div', { class: 'skeleton', id: `card-${step.id}` }, h('div', { class: 'bar w60' }), h('div', { class: 'bar w80' }))); return; }
-      new ResultCard({ ...r, id: step.id, onRetry: () => this.pipeline.retry(step.id), onJump: (item) => this.jumpTo(item) }).render(feed);
+      new ResultCard({ ...r, id: step.id, onRetry: step.id === 'router' || step.id === 'intake' ? undefined : () => this.pipeline.retry(step.id), onJump: (item) => this.jumpTo(item) }).render(feed);
     });
     const meta = byId('analysis-meta');
     clear(meta);
@@ -529,19 +559,30 @@ class App {
     this.sheet.open(h('div', { class: 'stack' }, tr.lines.map((l) => h('p', { class: l === line ? 'sub' : 'caption', style: l === line ? 'font-weight:700' : '', text: `${l.t} ${l.speaker}: ${l.text}` }))));
   }
 
-  // --- Синтез ---
+  // --- Синтез: герой + оси + план + риски (всё из Reflector/TheraNavigator; без них — ⛔ с причиной) ---
   renderSynthesis() {
     const scp = this.state.scp.data;
     const hero = byId('synthesis-hero');
     clear(hero);
     if (scp.meta.input_hash === '') { this.setState('synthesis', 'empty'); ['synthesis-axes', 'synthesis-plan', 'synthesis-risks'].forEach((id) => { clear(byId(id)); byId(id).append(h('span', { class: 'caption', text: '⛔' })); }); return; }
     const r = this.pipeline.state.results.get('synthesis');
-    if (r !== undefined) new ResultCard({ ...r, id: 'synthesis-hero', onRetry: () => this.pipeline.retry('synthesis') }).render(hero);
-    this.setState('synthesis', 'partial', this.i18n.t('limit.nollm'));
-    const fill = (id, items, empty) => { const el = byId(id); clear(el); if (items.length === 0) el.append(h('span', { class: 'caption', text: `⛔ ${empty}` })); items.forEach((it) => el.append(h('div', { class: 'row' }, h('span', { text: it.text }), h('span', { class: 'cap2', text: it.badge })))); };
-    fill('synthesis-axes', [], 'оси синтеза строит Reflector (Спринт 2)');
-    fill('synthesis-plan', [], 'план строит TheraNavigator (Спринт 2)');
-    fill('synthesis-risks', [], 'риски выдаёт Safety (Спринт 2)');
+    if (r !== undefined) new ResultCard({ ...r, id: 'synthesis-hero', onRetry: () => this.pipeline.retry('synthesis'), onJump: (item) => this.jumpTo(item), limit: this.state.stale ? `${r.limit ? `${r.limit} · ` : ''}после повтора агента синтез устарел — повторите синтез` : r.limit }).render(hero);
+    const { reflector, thera } = this.l2.state;
+    const live = (x) => x !== undefined && (x.status === 'ok' || x.status === 'degraded');
+    const why = (x, fallback) => (x === undefined ? fallback : (x.reason || kindText(x.kind) || fallback));
+    this.setState('synthesis', live(reflector) ? 'content' : 'partial', live(reflector) ? '' : `${this.i18n.t('analysis.partial')} · ${why(reflector, this.i18n.t('limit.nollm'))}`);
+    const fill = (id, items, empty) => {
+      const el = byId(id); clear(el);
+      if (items.length === 0) el.append(h('span', { class: 'caption', text: `⛔ ${empty}` }));
+      items.forEach((it) => el.append(h('div', { class: 'row' }, h('div', { class: 'stack' }, h('span', { text: it.text }), it.sub ? h('span', { class: 'caption', text: it.sub }) : false, it.go ? h('button', { type: 'button', class: 'btn quiet small', text: it.go.label, onClick: it.go.onClick }) : false), h('span', { class: 'cap2', text: it.badge }))));
+    };
+    fill('synthesis-axes', live(reflector) ? reflector.axes.map((a) => ({ text: `${a.axis}: ${a.text}`, sub: `опора: ${a.claim_refs.join(', ')}`, badge: a.badge })) : [], why(reflector, 'оси строит Reflector — он не отработал'));
+    const steps = live(thera) ? thera.plan.map((p) => ({ text: p.step, sub: `${p.why} · опора: ${p.claim_refs.join(', ')}`, badge: p.badge, go: p.module !== 'none' ? { label: p.module, onClick: () => this.go(p.module) } : undefined })) : [];
+    if (live(thera) && thera.next_question) steps.push({ text: `Вопрос к следующей встрече: ${thera.next_question}`, badge: '🔵' });
+    fill('synthesis-plan', steps, why(thera, 'план строит TheraNavigator — он не отработал'));
+    const crisis = scp.clinic !== undefined && scp.clinic.crisis !== undefined && Array.isArray(scp.clinic.crisis.flags) ? scp.clinic.crisis.flags.map((f) => ({ text: `‼ ${f}`, sub: 'флаг шкалы · scaleScorer', badge: '🟢' })) : [];
+    const contra = live(reflector) ? reflector.contradictions.map((c) => ({ text: `${c.a} ↔ ${c.b}`, sub: c.note, badge: '🔵' })) : [];
+    fill('synthesis-risks', [...crisis, ...contra], 'Safety не реализован; противоречий и флагов шкал нет');
   }
 
   // --- Профиль (Persona v12): 6 вкладок, живой Φ-слайдер ---
@@ -673,6 +714,19 @@ class App {
     const meta = byId('agents-meta');
     clear(meta);
     meta.append(h('span', { class: 'chip grey', text: `${this.registry.agents.length} агентов` }), h('span', { class: 'chip grey', text: `${this.registry.tools.length} инструментов` }), h('span', { class: `chip ${this.report.red === 0 ? 'green' : 'red'}`, text: `харнессы 🟢 ${this.report.green} · 🔴 ${this.report.red}` }));
+    const runs = byId('agents-runs');
+    clear(runs);
+    runs.append(h('thead', {}, h('tr', {}, ['Агент', 'Статус', 'Модель', 'Время', 'Вызовов', 'Инструменты', 'Токены', 'Судья'].map((t) => h('th', { text: t })))));
+    const rb = h('tbody');
+    const judgeOf = new Map(this.l2.state.judges.map((j) => [j.agent, j]));
+    const rows = [...this.l2.state.results.values(), ...[this.l2.state.reflector, this.l2.state.thera].filter((x) => x !== undefined)];
+    rows.forEach((r) => {
+      const j = judgeOf.get(r.id);
+      const jv = j !== undefined && j.status === 'ok' && present(j.overall) ? `${Math.round(j.overall.value * 100)} %` : '—';
+      rb.append(h('tr', {}, h('td', {}, h('strong', { text: r.id })), h('td', { text: `${r.status}${r.kind ? ` · ${r.kind}` : ''}` }), h('td', { class: 'caption', text: r.model ? `${r.model}${r.fallback ? ' (откат)' : ''}` : '—' }), h('td', { text: r.latency_ms === undefined ? '—' : `${r.latency_ms} мс` }), h('td', { text: String(r.calls === undefined ? 0 : r.calls) }), h('td', { class: 'caption', text: (r.tools_called || []).map((c) => (typeof c === 'string' ? c : c.name)).join(', ') || '—' }), h('td', { text: r.usage ? `${r.usage.input_tokens || 0} / ${r.usage.output_tokens || 0}` : '—' }), h('td', { text: jv })));
+    });
+    if (rows.length === 0) rb.append(h('tr', {}, h('td', { class: 'caption', colspan: '8', text: 'прогонов L2 нет — запустите анализ' })));
+    runs.append(rb);
     const log = byId('agents-log');
     clear(log);
     const hist = this.bus.history();
@@ -683,8 +737,13 @@ class App {
 
   editAgent(a) {
     const area = h('textarea', { class: 'sub', rows: '5', style: 'width:100%;border:1px solid var(--line-soft);border-radius:10px;padding:10px' });
-    area.value = this.state.agentTasks[a.id] === undefined ? a.label_ru : this.state.agentTasks[a.id];
-    const save = h('button', { type: 'button', class: 'btn', text: 'Сохранить', onClick: () => { this.state.agentTasks[a.id] = area.value.trim() || a.label_ru; this.bus.emit('agent.edit', { id: a.id }); this.sheet.close(); this.renderAgents(); } });
+    const original = this.registry.prompts.tasks[a.id] === undefined ? a.label_ru : this.registry.prompts.tasks[a.id];
+    area.value = this.state.agentTasks[a.id] === undefined ? original : this.state.agentTasks[a.id];
+    const save = h('button', { type: 'button', class: 'btn', text: 'Сохранить', onClick: () => {
+      const text = area.value.trim();
+      if (text === '' || text === original) delete this.state.agentTasks[a.id]; else this.state.agentTasks[a.id] = text;
+      this.bus.emit('agent.edit', { id: a.id }); this.sheet.close(); this.renderAgents();
+    } });
     this.sheet.open(h('div', { class: 'stack' }, h('p', { class: 'caption', text: `${a.id} · читает ${a.reads.join(', ')} · пишет ${a.writes.join(', ')}` }), area, h('p', { class: 'cap2', text: 'Правило промпта: агент не вычисляет; вызывает инструменты; цитирует с таймкодом и спикером; смещённую речь помечает сильным голосом; нет данных → null и ⛔.' }), save));
   }
 
@@ -863,6 +922,8 @@ class App {
   renderSettings() {
     byId('settings-locale').addEventListener('change', (e) => { this.i18n.use(e.target.value); this.renderNav(); this.renderHome(); this.renderMore(); this.renderLaunchLabels(); });
     byId('settings-model').addEventListener('change', (e) => { byId('launch-model').value = e.target.value; });
+    byId('settings-apikey').addEventListener('input', (e) => { this.state.apiKey = e.target.value.trim(); });
+    byId('settings-endpoint').addEventListener('input', (e) => { this.state.endpoint = e.target.value.trim(); });
     byId('settings-export').addEventListener('click', () => this.exportScp());
     byId('settings-import-file').addEventListener('change', (e) => { const f = e.target.files[0]; if (f) f.text().then((t) => this.importScp(t)); e.target.value = ''; });
     byId('settings-print').addEventListener('click', () => { this.renderPrintFooter(); window.print(); });
@@ -962,15 +1023,15 @@ class App {
 }
 
 async function main() {
-  const [agents, tools, parameters, models, frames, ru, uk, en, report, corpus] = await Promise.all([
-    Data.load('registry/agents.registry.json'), Data.load('registry/tools.registry.json'), Data.load('registry/parameters.registry.json'), Data.load('registry/models.registry.json'), Data.load('registry/frames.registry.json'),
+  const [agents, tools, parameters, models, frames, prompts, ru, uk, en, report, corpus] = await Promise.all([
+    Data.load('registry/agents.registry.json'), Data.load('registry/tools.registry.json'), Data.load('registry/parameters.registry.json'), Data.load('registry/models.registry.json'), Data.load('registry/frames.registry.json'), Data.load('registry/prompts.registry.json'),
     Data.load('ui/i18n/ru.json'), Data.load('ui/i18n/uk.json'), Data.load('ui/i18n/en.json'),
     Data.load('harness/report.json').catch(() => ({ green: 0, red: 0, functions: [] })), Data.load('fixtures/memory.cases.json')
   ]);
-  const app = new App({ agents: agents.agents, tools: tools.tools, parameters: parameters.parameters, models, frames: frames.frames }, { ru, uk, en }, report, corpus);
+  const app = new App({ agents: agents.agents, tools: tools.tools, parameters: parameters.parameters, models, frames: frames.frames, prompts }, { ru, uk, en }, report, corpus);
   app.start();
   // Тестовый крючок для UI-харнесса (скриншоты, round-trip); наружу ничего не отправляется.
-  globalThis.__atm = { app, version: VERSION, demo: DEMO_TRANSCRIPT, loadPcm: (pcm, sr, name) => app.loadPcm(pcm, sr, name) };
+  globalThis.__atm = { app, version: VERSION, demo: DEMO_TRANSCRIPT, loadPcm: (pcm, sr, name) => app.loadPcm(pcm, sr, name), setModelClient: (inner) => app.setModelClient(inner), l2: app.l2 };
 }
 
 main().catch((e) => {

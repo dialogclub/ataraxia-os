@@ -11,7 +11,7 @@
 ## Запуск (JS-ядро, без зависимостей, Node ≥ 22)
 
 ```bash
-npm run harness:all   # все харнессы: 10 инструментов + UI (скриншоты в docs/screenshots)
+npm run harness:all   # все харнессы: инструменты L1, агенты L2/L3, рантайм, оркестратор, UI (скриншоты в docs/screenshots)
 npm run harness -- prosodyTool
 npm run check         # node --check · баланс скобок · запретные конструкции · сканер id
 npm run build         # single-file артефакт dist/atmaraksi-os.html (офлайн, file://)
@@ -35,14 +35,21 @@ python3 services/dsp/analyze_synth.py     # DSP-карточка: без consent
 |---|---|
 | `core/` | `Param` (нет голых чисел), `EventBus`, `Scp` (иммутабельный профиль с аудитом) |
 | `core/dsp.mjs` | БПФ, окно Ханна, автокорреляция, Левинсон–Дурбин, LPC-огибающая |
+| `core/agents/` | L2/L3: транспорт Claude API (`HttpModelClient`, `ResilientClient`, сценарный двойник), `AgentRunner` (ReAct ≤ 3, строгая схема, якоря дословно), `Toolbox`, 13 спецификаций агентов, Рефлектор (k = 3), Тера-навигатор, Судья, `L2Orchestrator`, `Router` |
+| `core/pii.mjs`, `core/jsonSchema.mjs`, `core/transcript.mjs` | маскирование PII до L2; валидатор схем; транскрипт с таймкодами |
+| `prompts/` | преамбула и задача каждого агента (русский); правки задач из интерфейса действуют как переопределения |
 | `core/engines/` | `prosodyTool`, `lexisTool`, `phonoSemTool`, `groundingClassifier`, `scaleScorer`, `cascadeEngine`, `stimulusGate`, `chronometry`, `gccEngine`, `memorySearchTool` (LOCAL / ◇ MCP-SWAP) |
 | `harness/` | `Harness` (детерминизм · edge-cases · стресс · golden · custom), раннер, паспорта `*.harness.json`, тесты `*.test.mjs`, `report.json` |
-| `registry/` | агенты (51), инструменты (13, 10 зелёных), параметры (142), модели, рамки интерпретации (35); генератор — `scripts/gen-registries.mjs` |
+| `registry/` | агенты (51, 17 зелёных харнесс-контрактов), инструменты (14), параметры (142), модели (цепочка отката), промпты, рамки интерпретации (35); генератор — `scripts/gen-registries.mjs` |
 | `schemas/` | SCP v1, Param, паспорт харнесса, карточка агента, контракты инструментов; PersonVector, SpectrogramCard, CompatibilityArtifact, SessionReport, JourneyState |
 | `ui/` | токены 4.1, компоненты (`render/update/destroy`, ⛔-состояние, NaN-защита), галерея, оболочка `index.html` + `app.mjs`, словари RU/UA/EN |
 | `scripts/` | `check`, `serve`, `screenshots` (аудит вьюпортов), `build-single` |
 | `fixtures/` | golden «Константин 27.08.2026», синтетический демо-корпус памяти, SMFK-100, golden ЛЕКСИС, golden ЦЗИ-8 (8 × 10), генераторы синтетических сигналов |
 | `python/`, `services/`, `tests/` | Python-референс: СМФК-100 и DSP-карточка с consent-гейтом |
+
+## Агенты L2/L3: что проверено и что нет
+
+Харнессы агентов проверяют **контракт рантайма** на сценарном двойнике модели: валидность схемы, обязательные вызовы инструментов, дословность цитат, происхождение замеров, бейдж по политике карточки, честность чисел, откат и повторы, изоляцию ошибок. **Качество ответов живой модели не измерено** (`live_eval: not_run`): ключа API в среде разработки нет. Без выбранной модели или при отказе API агенты получают ⛔ с причиной, а отчёт собирается из L1. Ключ API вводится в «Настройках» и живёт только в памяти вкладки.
 
 ## Инварианты, проверяемые харнессом
 

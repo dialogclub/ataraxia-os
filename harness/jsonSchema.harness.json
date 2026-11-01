@@ -1,0 +1,57 @@
+{
+  "fn": "jsonSchema",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Judge",
+  "contract": {
+    "input": "схема + значение",
+    "output": "список ошибок с путями"
+  },
+  "determinism": {
+    "runs": 2,
+    "compare": "bytes"
+  },
+  "edge_cases": [
+    "type-union",
+    "enum-null",
+    "required",
+    "additional-false",
+    "nested",
+    "array-bounds",
+    "string-bounds",
+    "number-bounds",
+    "pattern"
+  ],
+  "stress": {
+    "n": 2000,
+    "assert": [
+      "noThrow",
+      "deterministic",
+      "time<2ms"
+    ]
+  },
+  "golden": [
+    {
+      "id": "agent-schema",
+      "expect": {
+        "errors": 0
+      }
+    }
+  ],
+  "eval": {
+    "judge": false,
+    "rubric": null
+  },
+  "guardrails": {
+    "no_ref_oneof": "плоские схемы"
+  },
+  "telemetry": [
+    "duration"
+  ],
+  "ui_contract": {
+    "component": "HarnessStatus",
+    "badge_policy": "🟢"
+  },
+  "status": "green",
+  "version": "1.0.0"
+}

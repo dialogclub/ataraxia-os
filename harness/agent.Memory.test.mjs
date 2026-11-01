@@ -1,0 +1,6 @@
+import { Harness } from './Harness.mjs';
+import { readFileSync } from 'node:fs';
+import { domainAgentChecks } from './agentHarness.mjs';
+
+const passport = JSON.parse(readFileSync(new URL('./agent.Memory.harness.json', import.meta.url), 'utf8'));
+export const harness = new Harness(passport, domainAgentChecks('Memory'));

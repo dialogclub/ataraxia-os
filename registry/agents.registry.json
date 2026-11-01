@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "note": "Реестр агентов (3.3). status = hidden_by_harness, пока нет зелёного харнесса типа llm-agent (Спринт 2).",
+  "note": "Реестр агентов (3.3). status = green означает зелёный харнесс КОНТРАКТОВ (сценарный двойник модели); live_eval показывает, прогонялся ли агент на живой модели.",
   "agents": [
     {
       "id": "Router",
@@ -24,8 +24,10 @@
       "cost_tier": "L2",
       "model_policy": "cheap",
       "editable_in_ui": false,
-      "harness": "harness/Router.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Router.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "n/a (детерминированный)"
     },
     {
       "id": "Reflector",
@@ -35,7 +37,8 @@
         "scp.*"
       ],
       "writes": [
-        "scp.synthesis.verdicts"
+        "scp.synthesis.verdicts",
+        "scp.synthesis.axes"
       ],
       "tools_required": [],
       "prompt_ref": "prompts/reflector.ru.md",
@@ -48,8 +51,10 @@
       "cost_tier": "L3",
       "model_policy": "strong",
       "editable_in_ui": false,
-      "harness": "harness/Reflector.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Reflector.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "TheraNavigator",
@@ -73,8 +78,10 @@
       "cost_tier": "L3",
       "model_policy": "default",
       "editable_in_ui": false,
-      "harness": "harness/TheraNavigator.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.TheraNavigator.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Judge",
@@ -96,8 +103,10 @@
       "cost_tier": "L3",
       "model_policy": "cheap",
       "editable_in_ui": false,
-      "harness": "harness/Judge.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Judge.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "n/a (детерминированный)"
     },
     {
       "id": "Budget",
@@ -121,8 +130,10 @@
       "cost_tier": "L2",
       "model_policy": "cheap",
       "editable_in_ui": false,
-      "harness": "harness/Budget.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Budget.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Memory",
@@ -133,7 +144,8 @@
         "scp.frames"
       ],
       "writes": [
-        "scp.memory.similar"
+        "scp.memory.reading",
+        "scp.frames.l2.Memory"
       ],
       "tools_required": [
         "memorySearchTool"
@@ -148,8 +160,10 @@
       "cost_tier": "L2",
       "model_policy": "cheap",
       "editable_in_ui": false,
-      "harness": "harness/Memory.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Memory.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Safety",
@@ -177,8 +191,10 @@
       "cost_tier": "L2",
       "model_policy": "strong",
       "editable_in_ui": false,
-      "harness": "harness/Safety.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Safety.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Requestor",
@@ -190,7 +206,8 @@
       ],
       "writes": [
         "scp.request.explicit",
-        "scp.request.latent"
+        "scp.request.latent",
+        "scp.frames.l2.Requestor"
       ],
       "tools_required": [
         "lexisTool"
@@ -205,8 +222,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Requestor.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Requestor.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Veritas",
@@ -219,7 +238,8 @@
       ],
       "writes": [
         "scp.request.veracity",
-        "scp.request.displacements"
+        "scp.request.displacements",
+        "scp.frames.l2.Veritas"
       ],
       "tools_required": [
         "lexisTool",
@@ -235,8 +255,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Veritas.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Veritas.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Obstacle",
@@ -247,7 +269,8 @@
         "scp.inputs.transcript"
       ],
       "writes": [
-        "scp.obstacle"
+        "scp.obstacle",
+        "scp.frames.l2.Obstacle"
       ],
       "tools_required": [
         "lexisTool"
@@ -262,8 +285,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Obstacle.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Obstacle.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Insight",
@@ -275,7 +300,8 @@
       ],
       "writes": [
         "scp.intuition",
-        "scp.insight"
+        "scp.insight",
+        "scp.frames.l2.Insight"
       ],
       "tools_required": [
         "lexisTool"
@@ -290,8 +316,13 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Insight.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Insight.harness.json",
+      "status": "green",
+      "depends_on": [
+        "Requestor",
+        "Obstacle"
+      ],
+      "live_eval": "not_run"
     },
     {
       "id": "Libertas",
@@ -302,7 +333,8 @@
         "scp.obstacle"
       ],
       "writes": [
-        "scp.liberty"
+        "scp.liberty",
+        "scp.frames.l2.Libertas"
       ],
       "tools_required": [
         "groundingClassifier"
@@ -317,8 +349,12 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Libertas.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Libertas.harness.json",
+      "status": "green",
+      "depends_on": [
+        "Obstacle"
+      ],
+      "live_eval": "not_run"
     },
     {
       "id": "Qualitas",
@@ -329,7 +365,8 @@
         "scp.insight"
       ],
       "writes": [
-        "scp.quality"
+        "scp.quality",
+        "scp.frames.l2.Qualitas"
       ],
       "tools_required": [],
       "prompt_ref": "prompts/qualitas.ru.md",
@@ -342,8 +379,13 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Qualitas.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Qualitas.harness.json",
+      "status": "green",
+      "depends_on": [
+        "Libertas",
+        "Insight"
+      ],
+      "live_eval": "not_run"
     },
     {
       "id": "Grounding",
@@ -353,7 +395,8 @@
         "scp.inputs.transcript"
       ],
       "writes": [
-        "scp.czi8"
+        "scp.czi8",
+        "scp.frames.l2.Grounding"
       ],
       "tools_required": [
         "groundingClassifier"
@@ -368,8 +411,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Grounding.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Grounding.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "CascadeABC",
@@ -380,7 +425,8 @@
         "scp.drives"
       ],
       "writes": [
-        "scp.cascade"
+        "scp.cascade",
+        "scp.frames.l2.CascadeABC"
       ],
       "tools_required": [
         "cascadeEngine"
@@ -395,8 +441,10 @@
       "cost_tier": "L3",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/CascadeABC.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.CascadeABC.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Drives",
@@ -407,7 +455,8 @@
         "scp.lexis"
       ],
       "writes": [
-        "scp.drives"
+        "scp.drives",
+        "scp.frames.l2.Drives"
       ],
       "tools_required": [
         "lexisTool"
@@ -422,8 +471,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Drives.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Drives.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Persona6",
@@ -449,8 +500,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Persona6.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Persona6.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "ICD11Contour",
@@ -476,8 +529,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/ICD11Contour.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.ICD11Contour.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Cognitome",
@@ -500,8 +555,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Cognitome.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Cognitome.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Lowen",
@@ -527,8 +584,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Lowen.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Lowen.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Reich",
@@ -552,8 +611,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Reich.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Reich.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Somatics",
@@ -579,8 +640,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Somatics.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Somatics.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "PulseMeridian",
@@ -605,8 +668,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/PulseMeridian.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.PulseMeridian.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Risk",
@@ -632,8 +697,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Risk.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Risk.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Wearables",
@@ -658,8 +725,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Wearables.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Wearables.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Fusion",
@@ -685,8 +754,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Fusion.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Fusion.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Graphology",
@@ -709,8 +780,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Graphology.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Graphology.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Drawing",
@@ -733,8 +806,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Drawing.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Drawing.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Breath",
@@ -760,8 +835,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Breath.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Breath.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Stimulus",
@@ -786,8 +863,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Stimulus.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Stimulus.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Mindfulness",
@@ -810,8 +889,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Mindfulness.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Mindfulness.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Abhidharma52",
@@ -834,8 +915,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Abhidharma52.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Abhidharma52.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Semiosphere",
@@ -860,8 +943,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Semiosphere.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Semiosphere.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Cycle8",
@@ -886,8 +971,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Cycle8.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Cycle8.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Berne",
@@ -897,7 +984,8 @@
         "scp.inputs.transcript"
       ],
       "writes": [
-        "scp.frames.berne"
+        "scp.frames.berne",
+        "scp.frames.l2.Berne"
       ],
       "tools_required": [
         "lexisTool"
@@ -912,8 +1000,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Berne.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Berne.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Gottman",
@@ -938,8 +1028,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Gottman.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Gottman.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Vaillant",
@@ -964,8 +1056,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Vaillant.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Vaillant.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Panksepp",
@@ -991,8 +1085,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Panksepp.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Panksepp.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Attachment",
@@ -1017,8 +1113,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Attachment.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Attachment.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "EriksonMarcia",
@@ -1042,8 +1140,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/EriksonMarcia.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.EriksonMarcia.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Intraktom",
@@ -1069,8 +1169,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Intraktom.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Intraktom.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Cashflow",
@@ -1095,8 +1197,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Cashflow.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Cashflow.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Gallup34",
@@ -1121,8 +1225,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Gallup34.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Gallup34.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Belbin",
@@ -1147,8 +1253,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Belbin.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Belbin.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Fincast",
@@ -1171,8 +1279,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Fincast.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Fincast.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Chronotope",
@@ -1182,7 +1292,8 @@
         "scp.lexis.zimbardo"
       ],
       "writes": [
-        "scp.frames.chronotope"
+        "scp.frames.chronotope",
+        "scp.frames.l2.Chronotope"
       ],
       "tools_required": [
         "lexisTool"
@@ -1197,8 +1308,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Chronotope.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Chronotope.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Archetype",
@@ -1209,7 +1322,8 @@
         "scp.memory"
       ],
       "writes": [
-        "scp.narrative.archetypes"
+        "scp.narrative.archetypes",
+        "scp.frames.l2.Archetype"
       ],
       "tools_required": [
         "memorySearchTool?"
@@ -1224,8 +1338,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Archetype.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Archetype.harness.json",
+      "status": "green",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "HeroPath",
@@ -1248,8 +1364,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/HeroPath.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.HeroPath.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Optika",
@@ -1272,8 +1390,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Optika.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Optika.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Motif",
@@ -1296,8 +1416,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Motif.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Motif.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     },
     {
       "id": "Mythodesign",
@@ -1320,8 +1442,10 @@
       "cost_tier": "L2",
       "model_policy": "default",
       "editable_in_ui": true,
-      "harness": "harness/Mythodesign.harness.json",
-      "status": "hidden_by_harness"
+      "harness": "harness/agent.Mythodesign.harness.json",
+      "status": "hidden_by_harness",
+      "depends_on": [],
+      "live_eval": "not_run"
     }
   ]
 }

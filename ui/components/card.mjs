@@ -2,6 +2,7 @@
 import { h, present, fmt, clear } from './base.mjs';
 import { Badge } from './badge.mjs';
 import { EvidenceQuote } from './evidence.mjs';
+import { ClaimList } from './claims.mjs';
 
 export class ResultCard {
   // spec: { id, title, badge, source, verdict, anchors[], params[{label, param, kind}], next:{label, onClick}, json, onRetry, limit, hero, viz(fn el) }
@@ -23,6 +24,7 @@ export class ResultCard {
       s.anchors.forEach((a) => { if (a.quote !== undefined) new EvidenceQuote(a, s.onJump).render(box); else box.append(h('div', { class: 'row' }, h('span', { text: a.label }), h('span', { class: 'value', text: `${fmt(a.param, a.kind)}`, title: a.param && a.param.note }, h('span', { class: 'unit', text: present(a.param) ? a.param.unit : '' })))); });
       card.append(box);
     }
+    if (Array.isArray(s.claims)) new ClaimList({ claims: s.claims, onJump: s.onJump }).render(card);
     if (typeof s.viz === 'function') { const vizHost = h('div'); s.viz(vizHost); card.append(vizHost); }
     if (Array.isArray(s.params) && s.params.length) {
       const list = h('div', { class: 'params' });

@@ -71,6 +71,59 @@ export async function audit(options) {
       const cards = await page.evaluate(() => ({ n: document.querySelectorAll('#analysis-feed .card').length, green: document.querySelectorAll('#analysis-feed .card[data-badge="🟢"]').length, missing: document.querySelectorAll('#analysis-feed .card[data-badge="⛔"]').length, partial: !document.querySelector('#page-analysis [data-state="partial"]').hidden }));
       ok(`${tag}: лента анализа — карточки 🟢/🔵/⛔ и чип частичности`, cards.n > 0 && cards.green >= 5 && cards.missing >= 1 && cards.partial, `${cards.n} карточек · 🟢 ${cards.green} · ⛔ ${cards.missing}`);
       await check('analysis');
+      // Без модели: агенты L2 — ⛔ с причиной, синтез — детерминированный отчёт (инвариант 7).
+      const nomodel = await page.evaluate(() => ({ agentCards: Array.from(document.querySelectorAll('#analysis-feed .card')).filter((c) => /^L2 · (?!Router)/.test(c.querySelector('h3').textContent)).map((c) => c.dataset.badge), axes: document.querySelector('#synthesis-axes').textContent, hero: document.querySelector('#synthesis-hero .card h3').textContent }));
+      ok(`${tag}: без модели — агенты L2 ⛔, синтез детерминированный`, nomodel.agentCards.length >= 10 && nomodel.agentCards.every((b) => b === '⛔') && nomodel.axes.includes('⛔') && nomodel.hero.includes('Детерминированный'), `${nomodel.agentCards.length} агентов ⛔`);
+      // L2/L3 с тестовым двойником модели: проверяется КОНТРАКТ рантайма и интерфейса; живое качество модели не измеряется.
+      await page.evaluate(async () => {
+        const { GoldenClient } = await import('/fixtures/agents/goldenCore.mjs');
+        const a = globalThis.__atm;
+        a.setModelClient(new GoldenClient({ toolbox: a.l2.config.toolbox }));
+        document.getElementById('launch-model').value = 'claude-opus-5-5';
+        const key = document.getElementById('settings-apikey');
+        key.value = 'sk-ant-test-SECRET-123';
+        key.dispatchEvent(new Event('input'));
+        document.getElementById('launch-transcript').value = a.demo;
+        await a.app.launch();
+      });
+      const full = await page.evaluate(() => {
+        const app = globalThis.__atm.app;
+        const feed = document.getElementById('analysis-feed');
+        const agentCards = Array.from(feed.querySelectorAll('.card')).filter((c) => /^L2 · (?!Router)/.test(c.querySelector('h3').textContent));
+        const secret = 'sk-ant-test-SECRET-123';
+        const scp = app.state.scp.data;
+        return { agents: agentCards.length, live: agentCards.filter((c) => c.dataset.badge !== '⛔').length, claims: feed.querySelectorAll('.claim').length, quotes: feed.querySelectorAll('.claim .quote').length, strong: feed.querySelectorAll('.quote.strong').length,
+          hero: document.querySelector('#synthesis-hero .card').dataset.badge, heroTitle: document.querySelector('#synthesis-hero .card h3').textContent, axes: document.querySelectorAll('#synthesis-axes .row').length, plan: document.querySelectorAll('#synthesis-plan .row').length,
+          island: document.querySelector('.island').textContent, model: scp.meta.model, fallback: scp.meta.fallback, explicit: scp.request.explicit, l2frames: Object.keys((scp.frames && scp.frames.l2) || {}).length, unlocked: !document.getElementById('launch-run').disabled,
+          leak: [app.exportText(), JSON.stringify(app.bus.history()), document.documentElement.outerHTML, JSON.stringify(scp)].some((t) => t.includes(secret)) };
+      });
+      ok(`${tag}: L2 — карточки агентов, утверждения с якорями, смещённая речь сильным голосом`, full.agents >= 10 && full.live === full.agents && full.claims >= 12 && full.quotes >= 8 && full.strong >= 1, `${full.live}/${full.agents} агентов · ${full.claims} утверждений · ${full.quotes} цитат · ${full.strong} ‼`);
+      ok(`${tag}: L3 — герой синтеза, оси, план; модель в статусе, откат не помечен`, full.hero !== '⛔' && full.heroTitle.includes('Синтез') && full.axes >= 1 && full.plan >= 1 && full.island.includes('claude-opus-5-5') && full.model === 'claude-opus-5-5' && full.fallback === false, `${full.axes} осей · ${full.plan} шагов плана · ${full.island.slice(0, 60)}`);
+      ok(`${tag}: SCP — запрос заполнен агентами, frames.l2 записаны, кнопка запуска разблокирована`, full.explicit.length > 0 && full.l2frames >= 10 && full.unlocked, `explicit «${full.explicit.slice(0, 30)}» · frames.l2 ${full.l2frames}`);
+      ok(`${tag}: ключ API нигде не утекает (SCP, экспорт, журнал, DOM)`, full.leak === false);
+      await check('synthesis-l2');
+      await page.evaluate(() => globalThis.__atm.app.go('analysis'));
+      await check('analysis-l2');
+      await page.evaluate(() => globalThis.__atm.app.go('agents'));
+      const runs = await page.evaluate(() => ({ rows: document.querySelectorAll('#agents-runs tbody tr').length, judged: Array.from(document.querySelectorAll('#agents-runs tbody tr')).filter((r) => /\d+ %/.test(r.lastElementChild.textContent)).length }));
+      ok(`${tag}: «Агенты» — таблица прогона L2/L3 с оценкой Судьи`, runs.rows >= 15 && runs.judged >= 10, `${runs.rows} строк · Судья оценил ${runs.judged}`);
+      await check('agents-runs');
+      await page.evaluate(() => globalThis.__atm.app.go('analysis'));
+      await page.locator('#card-agent-Veritas button:has-text("Повторить")').click();
+      await page.waitForFunction(() => document.querySelector('.island').textContent.includes('повторено'), undefined, { timeout: 10000 });
+      const again = await page.evaluate(() => { const app = globalThis.__atm.app; return { card: document.getElementById('card-agent-Veritas') !== null, dup: app.state.scp.data.evidence.filter((e) => e.claim_id === 'Veritas.c1').length, stale: app.state.stale, others: document.querySelectorAll('#analysis-feed .card').length }; });
+      ok(`${tag}: повтор одного агента — карточка на месте, якоря не задваиваются, синтез помечен устаревшим`, again.card && again.dup === 1 && again.stale === true && again.others > 10, `Veritas.c1 в evidence ×${again.dup}`);
+      // Отказ API: инструменты L1 дают отчёт 🟢/⛔, кнопка запуска не залипает.
+      await page.evaluate(async () => {
+        const { ScriptedClient } = await import('/core/agents/modelClient.mjs');
+        const a = globalThis.__atm;
+        a.setModelClient(new ScriptedClient(Array.from({ length: 80 }, () => () => ({ error: { kind: 'auth', message: '401' } }))));
+        await a.app.launch();
+      });
+      const down = await page.evaluate(() => ({ cards: Array.from(document.querySelectorAll('#analysis-feed .card')).filter((c) => /^L2 · (?!Router)/.test(c.querySelector('h3').textContent)).map((c) => c.dataset.badge + '|' + c.textContent.includes('Claude API')), green: document.querySelectorAll('#analysis-feed .card[data-badge="🟢"]').length, hero: document.querySelector('#synthesis-hero .card h3').textContent, unlocked: !document.getElementById('launch-run').disabled, toast: document.querySelector('.island').textContent }));
+      ok(`${tag}: отказ API — агенты ⛔ с причиной, L1 🟢 сохранены, синтез детерминированный, запуск разблокирован`, down.cards.length >= 10 && down.cards.every((c) => c.startsWith('⛔|')) && down.cards.filter((c) => c === '⛔|true').length >= 4 && down.green >= 5 && down.hero.includes('Детерминированный') && down.unlocked, `${down.cards.length} агентов ⛔ (с причиной «Claude API»: ${down.cards.filter((c) => c === '⛔|true').length}) · L1 🟢 ${down.green}`);
+      await check('analysis-api-down');
+      await page.evaluate(() => { const a = globalThis.__atm; a.setModelClient(undefined); document.getElementById('launch-model').value = ''; });
       await page.evaluate(() => globalThis.__atm.app.go('profile', 'cascade'));
       await check('profile-cascade');
       await page.evaluate(() => globalThis.__atm.app.go('practice'));

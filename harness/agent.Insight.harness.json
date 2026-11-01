@@ -1,0 +1,88 @@
+{
+  "fn": "agent.Insight",
+  "type": "llm-agent",
+  "layer": "L2",
+  "owner_agent": "Insight",
+  "contract": {
+    "input": "prompts/preamble.ru.md + транскрипт + результаты инструментов",
+    "output": "schemas/agents/insight.out.json"
+  },
+  "determinism": {
+    "runs": 2,
+    "compare": "bytes"
+  },
+  "edge_cases": [
+    "no-required-tool",
+    "fabricated-quote",
+    "invented-number",
+    "retry-exhausted"
+  ],
+  "stress": {
+    "n": 1,
+    "assert": [
+      "noNaN",
+      "inRange"
+    ]
+  },
+  "golden": [
+    {
+      "id": "demo-transcript",
+      "input": "core/demo.mjs",
+      "expect": "fixtures/agents/golden.mjs"
+    }
+  ],
+  "eval": {
+    "judge": true,
+    "rubric": [
+      "точность цитат",
+      "отсутствие домыслов",
+      "полнота полей",
+      "язык",
+      "соответствие бейджа якорю"
+    ]
+  },
+  "guardrails": {
+    "evidence_required": true,
+    "badge_assigned_by_runtime": true,
+    "numbers_only_from_tools": true,
+    "write_scope": [
+      "scp.intuition",
+      "scp.insight",
+      "scp.frames.l2.Insight"
+    ]
+  },
+  "telemetry": [
+    "calls",
+    "rounds",
+    "submit_attempts",
+    "usage",
+    "model",
+    "fallback"
+  ],
+  "ui_contract": {
+    "component": "ResultCard",
+    "badge_policy": "🟢 замер · 🟡 цитата · 🔵 без якоря · ⛔ нет данных"
+  },
+  "tools_required": [
+    "lexisTool"
+  ],
+  "schema_strict": true,
+  "retry_on_invalid": 2,
+  "evidence_required": true,
+  "self_consistency_k": 1,
+  "golden_transcripts": [
+    "demo (синтетический)"
+  ],
+  "rubric": [
+    "citation_accuracy",
+    "anchoring",
+    "completeness",
+    "language",
+    "badge_honesty",
+    "number_honesty"
+  ],
+  "model_regression": false,
+  "model_regression_note": "требует живого ключа API; контракты проверены двойником модели",
+  "status": "green",
+  "version": "1.0.0"
+}

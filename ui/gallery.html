@@ -19,6 +19,7 @@ import { Badge } from './components/badge.mjs';
 import { DynamicIsland } from './components/island.mjs';
 import { SegmentControl, Composer, HarnessStatus, Sheet } from './components/controls.mjs';
 import { EvidenceQuote } from './components/evidence.mjs';
+import { ClaimList } from './components/claims.mjs';
 import { Radar } from './components/radar.mjs';
 import { RingGauge, TrafficScale7 } from './components/gauges.mjs';
 import { CascadeWaterfall, PhiControl } from './components/cascade.mjs';
@@ -56,6 +57,14 @@ section('SegmentControl · HarnessStatus · Composer', [
   ['лист', (el) => el.append(h('button', { type: 'button', class: 'btn secondary', text: 'Открыть лист', onClick: () => new Sheet('Пример листа').open(h('p', { class: 'sub', text: 'Содержимое листа. Esc — закрыть.' })) }))]
 ]);
 
+section('ClaimList', [
+  ['пусто → ⛔', (el) => new ClaimList({ claims: [] }).render(el)],
+  ['одно утверждение с цитатой', (el) => new ClaimList({ claims: [{ id: 'Obstacle.c1', text: 'Внутреннее препятствие: убеждение, что нужно «тянуть».', badge: '🟡', evidence: [{ type: 'quote', quote: 'Но я должен тянуть', speaker: 'К.', t: '[10:09]', ok: true, badge: '🟡' }], flags: [] }] }).render(el)],
+  ['экстремум: замер, ссылка, отклонённый якорь, флаги', (el) => new ClaimList({ claims: [
+    { id: 'CascadeABC.c1', text: 'Каскад даёт B при Φ-пороге.', badge: '🟢', evidence: [{ type: 'measure', tool: 'cascadeEngine', path: 'B', ok: true, badge: '🟢' }], flags: [] },
+    { id: 'Insight.c1', text: 'Озарение опирается на утверждение выше.', badge: '🟡', evidence: [{ type: 'claim', ref: 'Obstacle.c1', ok: true, badge: '🟡' }, { type: 'quote', quote: 'нет такой цитаты', speaker: 'К.', t: '[10:99]', ok: false, reason: 'нет реплики с таким таймкодом' }], flags: ['unsupported_number:7', 'overclaimed_badge:🟢>🔵'] },
+    { id: 'Drives.c1', text: 'Гипотеза без якоря.', badge: '🔵', evidence: [], flags: [] }] }).render(el)]
+]);
 section('EvidenceQuote', [
   ['цитата', (el) => new EvidenceQuote({ quote: 'Я просто устал, ничего не хочу', speaker: 'К.', t: '14:32' }, () => {}).render(el)],
   ['смещённая речь (сильный голос)', (el) => new EvidenceQuote({ quote: 'Давайте лучше про работу поговорим', speaker: 'К.', t: '15:01', strong: true, away_from: 'вопрос о матери' }).render(el)],

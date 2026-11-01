@@ -1,0 +1,79 @@
+{
+  "$id": "atmaraksi.agents.TheraNavigator.out",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "plan",
+    "next_question",
+    "limits"
+  ],
+  "properties": {
+    "plan": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step",
+          "why",
+          "claim_refs",
+          "module"
+        ],
+        "properties": {
+          "step": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 240
+          },
+          "why": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "claim_refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "string",
+              "maxLength": 60
+            }
+          },
+          "module": {
+            "enum": [
+              "launch",
+              "analysis",
+              "profile",
+              "speech",
+              "tests",
+              "body",
+              "practice",
+              "clinic",
+              "memory",
+              "agents",
+              "synthesis",
+              "narrative",
+              "none"
+            ]
+          }
+        }
+      }
+    },
+    "next_question": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 300
+    },
+    "limits": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      }
+    }
+  }
+}

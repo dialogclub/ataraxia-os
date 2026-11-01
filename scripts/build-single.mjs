@@ -36,16 +36,17 @@ const modules = order.map((file) => {
   return `// ---- ${relative(root, file)} ----\nconst ${idOf(file)} = (() => {\n${head}\n${body}\nreturn { ${Array.from(new Set(exportsList)).join(', ')} };\n})();`;
 });
 
-const dataFiles = ['registry/agents.registry.json', 'registry/tools.registry.json', 'registry/parameters.registry.json', 'registry/models.registry.json', 'registry/frames.registry.json', 'harness/report.json', 'fixtures/memory.cases.json']
+const dataFiles = ['registry/agents.registry.json', 'registry/tools.registry.json', 'registry/parameters.registry.json', 'registry/models.registry.json', 'registry/frames.registry.json', 'registry/prompts.registry.json', 'harness/report.json', 'fixtures/memory.cases.json']
   .concat(readdirSync(resolve(root, 'ui/i18n')).map((f) => `ui/i18n/${f}`));
 const data = {};
 dataFiles.forEach((f) => { if (existsSync(resolve(root, f))) data[f] = JSON.parse(readFileSync(resolve(root, f), 'utf8')); });
 
 let html = readFileSync(resolve(root, 'ui/index.html'), 'utf8');
 const css = readFileSync(resolve(root, 'ui/tokens.css'), 'utf8');
-html = html.replace('<link rel="stylesheet" href="tokens.css">', `<style>\n${css}\n</style>`);
+// Функции-подстановщики: в тексте модулей встречаются «$&» и «$1», которые String.replace иначе трактует как шаблон.
+html = html.replace('<link rel="stylesheet" href="tokens.css">', () => `<style>\n${css}\n</style>`);
 const script = `<script>\nwindow.__ATM_DATA = ${JSON.stringify(data).replace(/<\//g, '<\\/')};\n</script>\n<script>\n(() => {\n${modules.join('\n\n').replace(/<\//g, '<\\/')}\n})();\n</script>`;
-html = html.replace('<script type="module" src="app.mjs"></script>', script);
+html = html.replace('<script type="module" src="app.mjs"></script>', () => script);
 html = html.replace('onClick: () => window.open(\'gallery.html\', \'_blank\')', 'onClick: () => window.open(\'gallery.html\', \'_blank\')');
 if (!existsSync(resolve(root, 'dist'))) mkdirSync(resolve(root, 'dist'));
 writeFileSync(resolve(root, 'dist/atmaraksi-os.html'), html);

@@ -173,6 +173,22 @@
       "status": "green"
     },
     {
+      "id": "maskPii",
+      "label_ru": "Маскирование PII до L2",
+      "layer": "L1",
+      "type": "deterministic",
+      "io": "текст + список имён → маскированный текст + счётчики (email, телефон, URL, IBAN, карта, имена из списка)",
+      "test_vectors": [
+        "таймкоды не затрагиваются",
+        "идемпотентность",
+        "2000 строк — без исключений",
+        "имена вне списка не маскируются — NER нет, и это сказано"
+      ],
+      "module": "core/pii.mjs",
+      "harness": "harness/maskPii.harness.json",
+      "status": "green"
+    },
+    {
       "id": "chronometry",
       "label_ru": "Хронометраж Башкина",
       "layer": "L1",
