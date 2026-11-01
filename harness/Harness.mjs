@@ -2,6 +2,9 @@
 // Нет харнесса — нет функции (инвариант 2). Один красный пункт → status: red → функция скрыта в UI.
 
 // Детерминированный ГПСЧ (mulberry32): стресс-прогоны воспроизводимы.
+// Допуск на одиночный выброс времени в стрессе (мс): паузы GC/планировщика; зависание всё равно ловится.
+const STRESS_JITTER_MS = 50;
+
 export class Rng {
   constructor(seed) {
     this.state = { s: seed >>> 0 };
@@ -133,21 +136,27 @@ export class Harness {
       const rng = new Rng(seed === undefined ? 42 : seed);
       let nan = 0;
       let out = 0;
-      let worst = 0;
+      const times = new Float64Array(n);
       for (let i = 0; i < n; i += 1) {
         const input = await gen(rng, i);
         const t0 = performance.now();
         const res = await runFn(input);
-        const dt = performance.now() - t0;
-        worst = Math.max(worst, dt);
+        times[i] = performance.now() - t0;
         const s = scan(res);
         nan += s.nan.length;
         out += s.outOfRange.length;
       }
+      // Время: p99 строго в бюджете; худший прогон — не более 4× бюджета, но не менее 50 мс (пауза GC или
+      // планировщика в общем контейнере не красит харнесс; систематическая медленность и зависание — красят).
+      const sorted = Array.from(times).sort((a, b) => a - b);
+      const p99 = sorted[Math.min(n - 1, Math.ceil(0.99 * n) - 1)];
+      const worst = sorted[n - 1];
+      const worstLimit = Math.max(4 * budgetMs, STRESS_JITTER_MS);
       assert(nan === 0, `NaN: ${nan}`);
       assert(out === 0, `вне диапазона: ${out}`);
-      assert(worst < budgetMs, `худшее время ${worst.toFixed(2)} мс ≥ ${budgetMs} мс`);
-      return `${n} прогонов · 0 NaN · 0 вне диапазона · худшее ${worst.toFixed(2)} мс < ${budgetMs} мс`;
+      assert(p99 < budgetMs, `p99 ${p99.toFixed(2)} мс ≥ ${budgetMs} мс`);
+      assert(worst < worstLimit, `худшее время ${worst.toFixed(2)} мс ≥ ${worstLimit} мс (предел выброса)`);
+      return `${n} прогонов · 0 NaN · 0 вне диапазона · p99 ${p99.toFixed(2)} мс < ${budgetMs} мс · худшее ${worst.toFixed(2)} мс`;
     });
   }
 

@@ -39,6 +39,7 @@ A second complete harness run passed 11/11 with zero red suites. The report comp
 
 - `npm test` now runs 22 infrastructure regression tests and is included in `npm run verify`, including both CI matrix jobs.
 - Async determinism, edge expectations, stress functions and golden values are awaited; rejected promises and explicit false expectations fail a check.
+- Stress timing is judged by the 99th percentile against the budget; a single outlier is tolerated up to max(4 × budget, 50 ms) so GC or scheduler pauses on shared runners do not produce false reds, while systematic slowness or a hang still fails.
 - Empty harnesses, empty fixture sets, fewer than two determinism runs, and invalid stress counts/budgets are rejected.
 - Edge cases now scan declared Param ranges. This exposed a real stimulusGate bug: negative frequency was blocked but still emitted as an out-of-range measured Param. Invalid frequency/loudness now block and return a missing Param; 12 additional invalid-input cases cover negative/too-large numbers, Infinity, NaN, strings and null. Existing supported ranges and configured stimulation thresholds define this validation.
 - On suite import/execution failure, the runner emits a red result and continues the other suites. It validates suite metadata and check/status consistency. At the start of an all-suite run it invalidates the previous report, so a malformed passport cannot leave an old success report looking current.

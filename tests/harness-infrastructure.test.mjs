@@ -43,6 +43,12 @@ test('async golden values are checked', async () => {
   assert.equal((await Harness.golden(async () => ({ x: 2 }), cases).run()).ok, false);
 });
 test('async stress detects non-finite output', async () => assert.equal((await Harness.stress(async () => ({ x: Infinity }), () => ({}), 1, 1000).run()).ok, false));
+test('stress timing: p99 in budget, one outlier under the jitter floor passes, a hang fails', async () => {
+  const spin = (ms) => { const t = performance.now(); while (performance.now() - t < ms) { /* занято */ } return { x: 1 }; };
+  assert.equal((await Harness.stress(() => spin(3), () => ({}), 100, 2).run()).ok, false);
+  assert.equal((await Harness.stress((i) => spin(i === 10 ? 5 : 0), (_, i) => i, 100, 2).run()).ok, true);
+  assert.equal((await Harness.stress((i) => spin(i === 10 ? 60 : 0), (_, i) => i, 100, 2).run()).ok, false);
+});
 test('invalid stress counts and budgets are rejected', () => {
   for (const n of [0, -1, 1.5, NaN]) assert.throws(() => Harness.stress(() => ({}), () => ({}), n, 10));
   for (const budget of [0, -1, Infinity, NaN]) assert.throws(() => Harness.stress(() => ({}), () => ({}), 1, budget));
