@@ -3,7 +3,7 @@
 // aria-live и reduced-motion; JSON round-trip; размер артефакта. Скриншоты — docs/screenshots/.
 import { mkdirSync, existsSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { serve } from './serve.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -11,9 +11,7 @@ const VIEWPORTS = [[440, 956, 'phone-max'], [393, 852, 'phone'], [1280, 800, 'st
 
 async function loadChromium() {
   const require = createRequire(import.meta.url);
-  const candidates = ['playwright', '/opt/node22/lib/node_modules/playwright', '/usr/lib/node_modules/playwright'];
-  for (const c of candidates) { try { return require(c).chromium; } catch { /* следующий кандидат */ } }
-  throw new Error('playwright не найден: npm i -g playwright');
+  return require('playwright').chromium;
 }
 
 export async function audit(options) {
@@ -22,12 +20,13 @@ export async function audit(options) {
   const dir = `${root}docs/screenshots`;
   if (shots && !existsSync(dir)) mkdirSync(dir, { recursive: true });
   const chromium = await loadChromium();
-  const port = 8791 + Math.floor(Math.random() * 100);
-  const server = await serve(port);
-  const browser = await chromium.launch();
+  const server = await serve(0);
+  const port = server.address().port;
+  let browser;
   const findings = [];
   const ok = (name, cond, detail) => findings.push({ name, ok: Boolean(cond), detail: detail === undefined ? '' : detail });
   try {
+    browser = await chromium.launch();
     for (const [w, hgt, tag] of VIEWPORTS) {
       const page = await browser.newPage({ viewport: { width: w, height: hgt }, deviceScaleFactor: 1 });
       const errors = [];
@@ -127,7 +126,7 @@ export async function audit(options) {
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
       const t0 = Date.now();
-      await page.goto(`file://${dist}`, { waitUntil: 'load' });
+      await page.goto(pathToFileURL(dist).href, { waitUntil: 'load' });
       await page.waitForFunction(() => globalThis.__atm !== undefined, undefined, { timeout: 10000 });
       ok('single-file: запускается офлайн (file://)', errors.length === 0, `${Date.now() - t0} мс до первого экрана · ${errors.slice(0, 2).join(' | ')}`);
       if (shots) await page.screenshot({ path: `${dir}/single-file-home.png` });
@@ -136,8 +135,11 @@ export async function audit(options) {
       ok('single-file собран', false, 'dist/atmaraksi-os.html отсутствует — npm run build');
     }
   } finally {
-    await browser.close();
-    server.close();
+    try {
+      if (browser) await browser.close();
+    } finally {
+      await new Promise((resolve) => server.close(resolve));
+    }
   }
   return findings;
 }

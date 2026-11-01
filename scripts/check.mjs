@@ -19,7 +19,7 @@ function walk(dir, out) {
 
 const files = walk(root, []);
 const scripts = files.filter((f) => f.endsWith('.mjs'));
-const htmls = files.filter((f) => f.endsWith('.html') && (f.includes('/ui/') || f.includes('/dist/')));
+const htmls = files.filter((f) => f.endsWith('.html') && (f.replaceAll('\\', '/').includes('/ui/') || f.replaceAll('\\', '/').includes('/dist/')));
 const problems = [];
 
 // Удаление строк, шаблонов, комментариев и regex-литералов посимвольным сканером (для подсчёта скобок).
@@ -104,14 +104,14 @@ function nodeCheck(src, name, idx) {
 
 let idx = 0;
 scripts.forEach((f) => {
-  const name = relative(root, f);
+  const name = relative(root, f).replaceAll('\\', '/');
   const src = readFileSync(f, 'utf8');
   nodeCheck(src, name, idx += 1);
   balance(src, name);
   if (name.startsWith('ui/') || name.startsWith('core/')) forbidden(src, name);
 });
 htmls.forEach((f) => {
-  const name = relative(root, f);
+  const name = relative(root, f).replaceAll('\\', '/');
   const html = readFileSync(f, 'utf8');
   const blocks = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)).map((m) => m[1]).filter((b) => b.trim() !== '');
   blocks.forEach((b) => { nodeCheck(b, `${name}<script>`, idx += 1); balance(b, `${name}<script>`); forbidden(b, `${name}<script>`); });
