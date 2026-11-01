@@ -12,6 +12,8 @@ export const harness = new Harness(passport, [
     { name: 'band-edges', input: { flicker_hz: 15 }, expect: (o, a) => a(o.allowed === false && run({ flicker_hz: 25 }).allowed === false && run({ flicker_hz: 14.99 }).allowed === true && run({ flicker_hz: 25.01 }).allowed === true, 'границы 15/25 включительно') },
     { name: 'nan', input: { flicker_hz: Number.NaN }, expect: (o, a) => a(o.allowed === false, 'NaN частота → блок') },
     { name: 'negative', input: { flicker_hz: -5 }, expect: (o, a) => a(o.allowed === false, 'отрицательная частота → блок') },
+    ...[-1, 60.01, Infinity, NaN, '20', null].map((value) => ({ name: `invalid-frequency-${String(value)}`, input: { flicker_hz: value }, expect: (o, a) => a(!o.allowed && o.flicker_hz.value === null && o.flicker_hz.badge === '⛔', 'некорректная частота → блок и ⛔') })),
+    ...[-1, 120.01, Infinity, NaN, '60', null].map((value) => ({ name: `invalid-loudness-${String(value)}`, input: { spl_db: value }, expect: (o, a) => a(!o.allowed && o.spl_db.value === null && o.spl_db.badge === '⛔', 'некорректная громкость → блок и ⛔') })),
     { name: 'night', input: { flicker_hz: 8, spl_db: 50, hour_local: 3 }, expect: (o, a) => a(o.allowed === true && o.warnings.length === 1, 'ночь — предупреждение, не блок') }
   ]),
   Harness.custom('предел громкости 85 дБ', () => {

@@ -33,10 +33,12 @@ export class StimulusGate {
     if (typeof hz === 'number' && Number.isFinite(hz)) {
       if (hz >= RULES.flicker_block_hz[0] && hz <= RULES.flicker_block_hz[1]) blocks.push(`мигание ${hz} Гц в зоне 15–25 Гц`);
       if (hz < 0) blocks.push('частота мигания отрицательна');
+      if (hz > 60) blocks.push('частота мигания вне поддерживаемого диапазона 0–60 Гц');
     } else if (hz !== undefined) {
       blocks.push('частота мигания не число');
     }
     if (typeof db === 'number' && Number.isFinite(db)) {
+      if (db < 0) blocks.push('громкость вне поддерживаемого диапазона 0–120 дБ');
       if (db > RULES.spl_limit_db) blocks.push(`громкость ${db} дБ выше предела ${RULES.spl_limit_db} дБ`);
       else if (db > RULES.spl_warn_db) warnings.push(`громкость ${db} дБ: рекомендуется ниже ${RULES.spl_warn_db} дБ`);
     } else if (db !== undefined) {
@@ -50,12 +52,12 @@ export class StimulusGate {
       mode: this.mode,
       blocks: Object.freeze(blocks),
       warnings: Object.freeze(warnings),
-      flicker_hz: typeof hz === 'number' && Number.isFinite(hz)
+      flicker_hz: typeof hz === 'number' && Number.isFinite(hz) && hz >= 0 && hz <= 60
         ? Param.measured(hz, 'Hz', [0, 60], TOOL, VERSION, '').json()
-        : Param.missing('Hz', [0, 60], TOOL, VERSION, 'не задано').json(),
-      spl_db: typeof db === 'number' && Number.isFinite(db)
+        : Param.missing('Hz', [0, 60], TOOL, VERSION, hz === undefined ? 'не задано' : 'некорректная частота').json(),
+      spl_db: typeof db === 'number' && Number.isFinite(db) && db >= 0 && db <= 120
         ? Param.measured(db, 'dB', [0, 120], TOOL, VERSION, '').json()
-        : Param.missing('dB', [0, 120], TOOL, VERSION, 'не задано').json(),
+        : Param.missing('dB', [0, 120], TOOL, VERSION, db === undefined ? 'не задано' : 'некорректная громкость').json(),
       version: VERSION
     });
   }

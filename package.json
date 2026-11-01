@@ -14,7 +14,8 @@
     "screens": "node scripts/screenshots.mjs",
     "build": "node scripts/build-single.mjs",
     "serve": "node scripts/serve.mjs",
-    "verify": "npm run check && npm run harness:all && npm run build && npm run screens"
+    "verify": "npm test && npm run check && npm run harness:all && npm run build && npm run screens",
+    "test": "node --test tests/*.test.mjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

@@ -8,6 +8,11 @@ const here = dirname(fileURLToPath(import.meta.url));
 const target = process.argv[2] === undefined ? 'all' : process.argv[2];
 
 // UI-харнесс идёт последним: перед ним пишется промежуточный отчёт, чтобы оболочка на скриншотах видела актуальные статусы.
+if (target === 'all') {
+  writeFileSync(join(here, 'report.json'), JSON.stringify({ generated: new Date().toISOString(), system: 'ATMARAKSI OS', partial: true, green: 0, red: 0, functions: [] }, null, 2));
+  writeFileSync(join(here, 'report.md'), '# Харнессы выполняются: отчёт ещё не завершён\n');
+}
+
 const passports = readdirSync(here)
   .filter((f) => f.endsWith('.harness.json'))
   .map((f) => JSON.parse(readFileSync(join(here, f), 'utf8')))
@@ -28,8 +33,15 @@ if (passports.length === 0) {
 const reports = [];
 for (const passport of passports) {
   if (target === 'all' && passport.type === 'ui') writeReport(reports, true);
-  const mod = await import(pathToFileURL(join(here, `${passport.fn}.test.mjs`)).href);
-  const report = await mod.harness.run();
+  let report;
+  try {
+    const mod = await import(pathToFileURL(join(here, `${passport.fn}.test.mjs`)).href);
+    report = await mod.harness.run();
+    if (report.fn !== passport.fn || report.type !== passport.type || report.layer !== passport.layer || report.version !== passport.version) throw new Error('паспорт отчёта не совпадает с паспортом набора');
+    if (!Array.isArray(report.checks) || report.checks.length === 0 || !['green', 'red'].includes(report.status) || report.checks.some((check) => typeof check.ok !== 'boolean') || (report.status === 'green') !== report.checks.every((check) => check.ok)) throw new Error('некорректный результат харнесса');
+  } catch (error) {
+    report = { fn: passport.fn, type: passport.type, layer: passport.layer, version: passport.version, status: 'red', total_ms: 0, checks: [{ name: 'загрузка и выполнение харнесса', ok: false, detail: error instanceof Error ? error.message : String(error), ms: 0 }] };
+  }
   reports.push(report);
   console.log(`\n${report.status === 'green' ? '🟢' : '🔴'} ${report.fn} · ${report.type} · ${report.layer} · v${report.version} · ${report.total_ms} мс`);
   report.checks.forEach((c) => console.log(`  ${c.ok ? '✓' : '✗'} ${c.name} — ${c.detail} (${c.ms} мс)`));
