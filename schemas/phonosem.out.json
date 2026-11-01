@@ -1,0 +1,6 @@
+{ "$id": "atmaraksi.phonosem.out", "type": "object", "required": ["status", "reason", "version", "lang", "words", "scales", "significant", "blocks", "polarity", "categories", "plutchik", "belyanin", "ttr", "hapax"], "properties": {
+  "status": { "enum": ["ok", "missing"] }, "lang": { "enum": ["ru", "uk", "en", "none"] },
+  "scales": { "type": "array", "minItems": 25, "maxItems": 25, "items": { "type": "object", "required": ["id", "left", "right", "polarity", "deviation", "z", "significant", "value", "pole"], "properties": { "polarity": { "enum": [-1, 0, 1] }, "value": { "$ref": "Param.v1.json" } } } },
+  "blocks": { "type": "object", "required": ["positive", "negative", "neutral"] }, "polarity": { "$ref": "Param.v1.json" },
+  "plutchik": { "type": "object", "additionalProperties": { "$ref": "Param.v1.json" } }, "belyanin": { "type": "object", "additionalProperties": { "$ref": "Param.v1.json" } },
+  "ttr": { "$ref": "Param.v1.json" }, "hapax": { "$ref": "Param.v1.json" } } }

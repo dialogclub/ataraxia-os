@@ -1,0 +1,57 @@
+{
+  "$id": "atmaraksi.Scp.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shared Client Profile v1 — единственный носитель состояния между модулями",
+  "type": "object",
+  "required": ["meta", "subject", "inputs", "signals", "lexis", "request", "czi8", "cascade", "drives", "frames", "clinic", "body", "practice", "narrative", "memory", "synthesis", "evidence", "audit"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["scp_version", "system", "mode", "model", "fallback", "created", "input_hash"],
+      "properties": {
+        "scp_version": { "const": "1.0" },
+        "system": { "const": "ATMARAKSI OS" },
+        "mode": { "enum": ["session", "meeting", "game", "full", "clinic", "body", "practice", "narrative"] },
+        "model": { "type": "string" },
+        "fallback": { "type": "boolean", "description": "откат_с_Opus" },
+        "created": { "type": "string", "format": "date-time" },
+        "input_hash": { "type": "string", "description": "sha256 входа" }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "required": ["alias", "sex", "age_band", "contour", "consent"],
+      "properties": {
+        "alias": { "type": "string", "description": "псевдоним; PII не хранится" },
+        "sex": { "enum": ["m", "f", "x"] },
+        "age_band": { "type": "string" },
+        "contour": { "enum": ["civ", "mil", "civ+mil-overlay"] },
+        "consent": { "type": "object" }
+      }
+    },
+    "inputs": { "type": "array", "items": { "type": "object", "required": ["kind", "hash"], "properties": { "kind": { "enum": ["transcript", "audio", "video-meta", "text", "photo", "drawing", "handwriting", "scales", "wearables-csv", "ppg"] }, "hash": { "type": "string" }, "ref": { "type": "string" } } } },
+    "signals": { "type": "object", "properties": { "prosody": { "type": "object", "additionalProperties": { "$ref": "Param.v1.json" } }, "spectrogram_ref": { "type": "string" }, "ppg": { "type": "object" }, "wearables": { "type": "object" } } },
+    "lexis": { "type": "object" },
+    "request": {
+      "type": "object",
+      "required": ["explicit", "latent", "veracity", "displacements"],
+      "properties": {
+        "explicit": { "type": "string" },
+        "latent": { "type": "string" },
+        "veracity": { "type": "object" },
+        "displacements": { "type": "array", "items": { "type": "object", "required": ["quote", "speaker", "t", "away_from"], "properties": { "quote": { "type": "string" }, "speaker": { "type": "string" }, "t": { "type": "string" }, "away_from": { "type": "string" } } } }
+      }
+    },
+    "obstacle": { "type": "object" }, "intuition": { "type": "object" }, "insight": { "type": "object" }, "liberty": { "type": "object" }, "quality": { "type": "object" },
+    "czi8": { "type": "object", "properties": { "levels": { "type": "object" }, "gap": { "enum": ["K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", ""] }, "liberty_mode": { "enum": ["А", "Б", "В", "Г", ""] } } },
+    "cascade": { "type": "object", "properties": { "A": { "$ref": "Param.v1.json" }, "D": { "$ref": "Param.v1.json" }, "C": { "$ref": "Param.v1.json" }, "phi": { "$ref": "Param.v1.json" }, "B": { "$ref": "Param.v1.json" }, "form": { "enum": ["none", "cbrt"] }, "formula_version": { "type": "string" } } },
+    "drives": { "type": "object", "properties": { "Theromata": { "$ref": "Param.v1.json" }, "Alligantia": { "$ref": "Param.v1.json" }, "Phobon": { "$ref": "Param.v1.json" }, "Dominix": { "$ref": "Param.v1.json" }, "Agonix": { "$ref": "Param.v1.json" } } },
+    "frames": { "type": "object" },
+    "clinic": { "type": "object", "properties": { "mode": { "enum": ["cds", "iia", ""] }, "scales": { "type": "object" }, "grades": { "type": "object" }, "delta_flags": { "type": "array" }, "crisis": { "type": "object", "properties": { "pathway": { "const": "stanley-brown" }, "shown": { "type": "boolean" } } } } },
+    "body": { "type": "object" }, "practice": { "type": "object" }, "narrative": { "type": "object" },
+    "memory": { "type": "object", "required": ["similar"], "properties": { "similar": { "type": "array" } } },
+    "synthesis": { "type": "object", "required": ["verdicts", "axes", "plan", "risks"], "properties": { "verdicts": { "type": "array" }, "axes": { "type": "array" }, "plan": { "type": "array" }, "risks": { "type": "array" } } },
+    "evidence": { "type": "array", "items": { "type": "object", "required": ["claim_id", "type", "ref", "badge"], "properties": { "claim_id": { "type": "string" }, "type": { "enum": ["quote", "measure", "scale"] }, "ref": { "type": "object" }, "badge": { "enum": ["🟢", "🟡", "🔵", "⛔"] } } } },
+    "audit": { "type": "array", "items": { "type": "object", "required": ["who", "what", "when"], "properties": { "who": { "type": "string" }, "what": { "type": "string" }, "when": { "type": "string" } } } }
+  }
+}

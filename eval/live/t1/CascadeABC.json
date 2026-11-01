@@ -1,0 +1,49 @@
+{
+  "summary": "B = 0.3405 (форма none). Сильнее всего B ограничивает Φ-порог 0.65; среди A, D, C самый низкий D (0.78). Драйвы не заданы.",
+  "claims": [
+    {
+      "id": "b_value",
+      "text": "Итоговый индекс каскада B = 0.3405 по форме none, формула B = Φ × (A·D·C).",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "B.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "form"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "phi_limits",
+      "text": "Φ-порог — самый низкий множитель (0.65) и имеет наибольший резерв роста (+0.18), поэтому ограничивает B сильнее остальных.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.note"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "d_lowest_adc",
+      "text": "Среди A, D, C наименьшее значение у D (0.78), A (0.85) и C (0.79) выше.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.D.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.A.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.C.value"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "drives_missing",
+      "text": "Вклад драйвов в каскад недоступен: пять драйвов не заданы.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "drives"}
+      ],
+      "claimed_badge": "⛔"
+    }
+  ],
+  "fields": {
+    "reading": "B = 0.3405 (форма none, версия формулы 1.0). Наименьший множитель — Φ-порог 0.65 (резерв +0.18), он сильнее всего сдерживает B. Среди A, D, C ниже остальных D = 0.78 (резерв +0.10). Это гипотеза для клинициста; входные A, D, C, Φ приходят из инструмента."
+  },
+  "limits": [
+    "Драйвы Theromata, Alligantia, Phobon, Dominix, Agonix не заданы: ⛔.",
+    "Значения A, D, C и Φ не выведены из этого транскрипта в пакете; их источник вне пакета.",
+    "Числа не пересчитывались."
+  ]
+}

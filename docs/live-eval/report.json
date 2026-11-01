@@ -1,0 +1,2548 @@
+{
+  "generated": "2026-11-01",
+  "method": "субагенты Claude Code (алиас sonnet), один выстрел без повтора; HTTP-транспорт не использовался",
+  "transcripts": {
+    "t1": {
+      "pii": {
+        "email": 0,
+        "url": 0,
+        "iban": 0,
+        "card": 0,
+        "phone": 0,
+        "names": 0
+      },
+      "agents": [
+        {
+          "id": "Grounding",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 0,
+            "quote_ok": 0,
+            "measure_total": 8,
+            "measure_ok": 8,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Grounding.gap_k2",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.entry_k1",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.liberty_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.coverage_partial",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.997,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.981,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Requestor",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[4] (modality_must) якорь 2: lexisTool.modality.counts без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 6,
+            "quote_ok": 6,
+            "measure_total": 2,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Requestor.explicit_fatigue",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.explicit_work",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.latent_mask",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.latent_must",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Requestor.modality_must",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.979,
+            "rubric": {
+              "citation_accuracy": 0.875,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Veritas",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[3] (prosody_missing) якорь 1: prosodyTool.f0.mean без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool",
+            "prosodyTool"
+          ],
+          "stats": {
+            "quote_total": 6,
+            "quote_ok": 6,
+            "measure_total": 1,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Veritas.displacement_work",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.self_report_mask",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.minimizing",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Veritas.prosody_missing",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.976,
+            "rubric": {
+              "citation_accuracy": 0.857,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Obstacle",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[3] (modality_only_must) якорь 1: lexisTool.modality.counts без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 2,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Obstacle.internal_must",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.external_load",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.internal_mask",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Obstacle.modality_only_must",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.976,
+            "rubric": {
+              "citation_accuracy": 0.857,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Berne",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 6,
+            "quote_ok": 6,
+            "measure_total": 1,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Berne.script_father",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.karpman_rescuer",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.game_facade",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.must_marker",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "CascadeABC",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[3] (drives_missing) якорь 1: cascadeEngine.drives без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "cascadeEngine"
+          ],
+          "stats": {
+            "quote_total": 0,
+            "quote_ok": 0,
+            "measure_total": 8,
+            "measure_ok": 7,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "CascadeABC.b_value",
+              "badge": "🔵",
+              "flags": [
+                "unsupported_number:0.3405",
+                "overclaimed_badge:🟢>🔵"
+              ],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.phi_limits",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.d_lowest_adc",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "CascadeABC.drives_missing",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.848,
+            "rubric": {
+              "citation_accuracy": 0.875,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.881,
+              "badge_honesty": 0.667,
+              "number_honesty": 0.667
+            }
+          }
+        },
+        {
+          "id": "Drives",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[2] (must_pressure) якорь 1: lexisTool.modality.counts без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 1,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Drives.phobon_mask",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Drives.avoid_exposure",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Drives.must_pressure",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.967,
+            "rubric": {
+              "citation_accuracy": 0.8,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Chronotope",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[1] (no_future) якорь 2: lexisTool.modality.counts без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 3,
+            "measure_ok": 2,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Chronotope.zimbardo_weak",
+              "badge": "🔵",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.past_in_present",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.stuck_state",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Chronotope.no_future",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.976,
+            "rubric": {
+              "citation_accuracy": 0.857,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Archetype",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Archetype.caregiver",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.orphan",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.father_shadow",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Memory",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 1,
+            "quote_ok": 1,
+            "measure_total": 4,
+            "measure_ok": 4,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Memory.c002_closest",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c004_family",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c005_weak",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.997,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.981,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Insight",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 3,
+            "measure_ok": 3,
+            "claim_total": 5,
+            "claim_ok": 5
+          },
+          "claims": [
+            {
+              "id": "Insight.intuit_leave",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.insight_father",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Insight.insight_mask",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 4,
+              "rejected": []
+            },
+            {
+              "id": "Insight.modality_must",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Libertas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 3,
+            "quote_ok": 3,
+            "measure_total": 4,
+            "measure_ok": 4,
+            "claim_total": 2,
+            "claim_ok": 2
+          },
+          "claims": [
+            {
+              "id": "Libertas.gap_k2",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.mode_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.must_frame",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 4,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.999,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.995,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Qualitas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 7,
+            "claim_ok": 7
+          },
+          "claims": [
+            {
+              "id": "Qualitas.own_vs_inherited",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.tolerate_vulnerability",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.hold_own_decision",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.contact_with_feeling",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        }
+      ],
+      "reflector": {
+        "status": "ok",
+        "reason": "",
+        "verdicts": [
+          {
+            "badge": "🟢",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🔵",
+            "flags": []
+          }
+        ],
+        "axes": 3,
+        "flags": []
+      },
+      "thera": {
+        "status": "ok",
+        "reason": "",
+        "steps": 5
+      }
+    },
+    "t2": {
+      "pii": {
+        "email": 1,
+        "url": 0,
+        "iban": 0,
+        "card": 0,
+        "phone": 1,
+        "names": 0
+      },
+      "agents": [
+        {
+          "id": "Veritas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool",
+            "prosodyTool"
+          ],
+          "stats": {
+            "quote_total": 9,
+            "quote_ok": 9,
+            "measure_total": 1,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Veritas.norm_mismatch",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.disp_loss",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.disp_blank",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.disp_close",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.prosody_missing",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Obstacle",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 7,
+            "quote_ok": 7,
+            "measure_total": 2,
+            "measure_ok": 2,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Obstacle.inner_belief",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.inner_must",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.outer_load",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.modality_measure",
+              "badge": "🔵",
+              "flags": [
+                "unsupported_number:0.3333",
+                "overclaimed_badge:🟢>🔵"
+              ],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.917,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 0.75,
+              "number_honesty": 0.75
+            }
+          }
+        },
+        {
+          "id": "Grounding",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 1,
+            "quote_ok": 1,
+            "measure_total": 5,
+            "measure_ok": 5,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Grounding.entry_k3",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.gap_k1",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.liberty_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.k1_hypothesis",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.993,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.957,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Requestor",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[4] (pronoun_measure) якорь 2: путь lexisTool.balance.К..questions.value не найден",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 8,
+            "quote_ok": 8,
+            "measure_total": 2,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Requestor.explicit_unclear",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.norm_vs_frozen",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.closes_topic",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.latent_noticed",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Requestor.pronoun_measure",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.983,
+            "rubric": {
+              "citation_accuracy": 0.9,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "CascadeABC",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "cascadeEngine"
+          ],
+          "stats": {
+            "quote_total": 0,
+            "quote_ok": 0,
+            "measure_total": 8,
+            "measure_ok": 8,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "CascadeABC.b_value",
+              "badge": "🔵",
+              "flags": [
+                "unsupported_number:0.3405",
+                "overclaimed_badge:🟢>🔵"
+              ],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.phi_limits",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.adc_values",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.drives_absent",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.893,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.86,
+              "badge_honesty": 0.75,
+              "number_honesty": 0.75
+            }
+          }
+        },
+        {
+          "id": "Chronotope",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 2,
+            "measure_ok": 2,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Chronotope.zim_weak",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.frozen_time",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.present_mode",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Berne",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Berne.script_strong",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.rescuer_role",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Berne.self_discount",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Drives",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[0] (no_drive_data) якорь 1: утверждение lexisTool: поля драйвов отсутствуют не найдено",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 3,
+            "quote_ok": 3,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 1,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Drives.collapse_fear",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Drives.strong_self",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Drives.no_drive_data",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Archetype",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Archetype.caregiver",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.warrior",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.orphan",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Memory",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 2,
+            "quote_ok": 2,
+            "measure_total": 6,
+            "measure_ok": 6,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Memory.c004",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c002",
+              "badge": "🔵",
+              "flags": [
+                "unsupported_number:0.2109",
+                "overclaimed_badge:🟡>🔵"
+              ],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c005",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.883,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.963,
+              "badge_honesty": 0.667,
+              "number_honesty": 0.667
+            }
+          }
+        },
+        {
+          "id": "Libertas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 3,
+            "measure_ok": 3,
+            "claim_total": 3,
+            "claim_ok": 3
+          },
+          "claims": [
+            {
+              "id": "Libertas.gap_k1_mode_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.no_percept_before_act",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.real_load_limits",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.belief_blocks_feeling",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.999,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.997,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Insight",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[4] (modality_no_support) якорь 1: lexisTool.modality.counts без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 6,
+            "quote_ok": 6,
+            "measure_total": 2,
+            "measure_ok": 1,
+            "claim_total": 4,
+            "claim_ok": 4
+          },
+          "claims": [
+            {
+              "id": "Insight.almost_named",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Insight.doing_vs_stopping",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Insight.strength_is_mothers",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.nobody_asks_ok",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Insight.modality_no_support",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.979,
+            "rubric": {
+              "citation_accuracy": 0.875,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Qualitas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 9,
+            "claim_ok": 9
+          },
+          "claims": [
+            {
+              "id": "Qualitas.pause_and_notice",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.right_to_weakness",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.stay_with_loss",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.being_asked",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.soft_entry_load",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.weak_k1_support",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.999,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        }
+      ],
+      "reflector": {
+        "status": "ok",
+        "reason": "",
+        "verdicts": [
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🔵",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          }
+        ],
+        "axes": 3,
+        "flags": []
+      },
+      "thera": {
+        "status": "ok",
+        "reason": "",
+        "steps": 5
+      }
+    },
+    "t3": {
+      "pii": {
+        "email": 0,
+        "url": 0,
+        "iban": 0,
+        "card": 0,
+        "phone": 0,
+        "names": 0
+      },
+      "agents": [
+        {
+          "id": "Requestor",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 1,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Requestor.explicit_request",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.latent_imperfect",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.latent_fears_shared",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Requestor.modality_must",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Obstacle",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 1,
+            "measure_ok": 1,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Obstacle.fear_failure",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.perfectionism",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.family_belief",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Obstacle.external_pretexts",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Grounding",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 1,
+            "quote_ok": 1,
+            "measure_total": 4,
+            "measure_ok": 4,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Grounding.entry_k4",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.gap_k1",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.mode_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Grounding.body_hint",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.99,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.942,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Veritas",
+          "status": "degraded",
+          "kind": "",
+          "reason": "часть утверждений отброшена: claims[4] (prosody_missing) якорь 1: prosodyTool.f0.mean.value без значения (⛔)",
+          "first_pass": false,
+          "submit_attempts": 3,
+          "tools_called": [
+            "lexisTool",
+            "prosodyTool"
+          ],
+          "stats": {
+            "quote_total": 8,
+            "quote_ok": 8,
+            "measure_total": 1,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Veritas.disp_chain",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.disp_perfect",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.disp_who",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Veritas.mask_plans",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [
+            {
+              "id": "Veritas.prosody_missing",
+              "reason": "якорь не подтверждён"
+            }
+          ],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.982,
+            "rubric": {
+              "citation_accuracy": 0.889,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "CascadeABC",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "cascadeEngine"
+          ],
+          "stats": {
+            "quote_total": 1,
+            "quote_ok": 1,
+            "measure_total": 7,
+            "measure_ok": 7,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "CascadeABC.b_value",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.phi_limits",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.adc_factors",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "CascadeABC.phi_text_link",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.98,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.881,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Drives",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Drives.phobon_failure",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Drives.avoid_wording",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Drives.counter_interest",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 0.996,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.974,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Chronotope",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 3,
+            "measure_ok": 3,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Chronotope.zimbardo_future",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.zimbardo_present",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.frozen_loop",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.year_stagnation",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Chronotope.anokhin_vertical",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Berne",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 7,
+            "quote_ok": 7,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Berne.script_injunction",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.driver_perfect",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Berne.game_if_not",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Berne.karpman_rescuer",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Archetype",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 4,
+            "quote_ok": 4,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Archetype.creator",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.impostor",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Archetype.wanderer",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Memory",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "memorySearchTool"
+          ],
+          "stats": {
+            "quote_total": 1,
+            "quote_ok": 1,
+            "measure_total": 6,
+            "measure_ok": 6,
+            "claim_total": 0,
+            "claim_ok": 0
+          },
+          "claims": [
+            {
+              "id": "Memory.c002_top",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c001_second",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Memory.c005_third",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Memory.anchor_theme",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.993,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.957,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Insight",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "lexisTool"
+          ],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 1,
+            "measure_ok": 1,
+            "claim_total": 7,
+            "claim_ok": 7
+          },
+          "claims": [
+            {
+              "id": "Insight.intuitive_step",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.insight_fear_eval",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 4,
+              "rejected": []
+            },
+            {
+              "id": "Insight.pretexts_chain",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.interest_body",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.must_tone",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Insight.family_belief_hyp",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Libertas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [
+            "groundingClassifier"
+          ],
+          "stats": {
+            "quote_total": 3,
+            "quote_ok": 3,
+            "measure_total": 4,
+            "measure_ok": 4,
+            "claim_total": 2,
+            "claim_ok": 2
+          },
+          "claims": [
+            {
+              "id": "Libertas.gap_k1_mode_a",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.low_coverage",
+              "badge": "🟢",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.body_perception",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.fear_not_plan",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Libertas.own_exit",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 1,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟢",
+          "judge": {
+            "overall": 0.999,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 0.996,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        },
+        {
+          "id": "Qualitas",
+          "status": "ok",
+          "kind": "",
+          "reason": "",
+          "first_pass": true,
+          "submit_attempts": 0,
+          "tools_called": [],
+          "stats": {
+            "quote_total": 5,
+            "quote_ok": 5,
+            "measure_total": 0,
+            "measure_ok": 0,
+            "claim_total": 7,
+            "claim_ok": 7
+          },
+          "claims": [
+            {
+              "id": "Qualitas.act_in_imperfection",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.bear_evaluation_fear",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 2,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.body_interest_anchor",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 4,
+              "rejected": []
+            },
+            {
+              "id": "Qualitas.openness_with_wife",
+              "badge": "🟡",
+              "flags": [],
+              "anchors": 3,
+              "rejected": []
+            }
+          ],
+          "dropped": [],
+          "card_badge": "🟡",
+          "judge": {
+            "overall": 1,
+            "rubric": {
+              "citation_accuracy": 1,
+              "anchoring": 1,
+              "completeness": 1,
+              "language": 1,
+              "badge_honesty": 1,
+              "number_honesty": 1
+            }
+          }
+        }
+      ],
+      "reflector": {
+        "status": "ok",
+        "reason": "",
+        "verdicts": [
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          },
+          {
+            "badge": "🟡",
+            "flags": []
+          }
+        ],
+        "axes": 4,
+        "flags": []
+      },
+      "thera": {
+        "status": "ok",
+        "reason": "",
+        "steps": 5
+      }
+    }
+  }
+}

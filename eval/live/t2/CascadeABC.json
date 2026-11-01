@@ -1,0 +1,48 @@
+{
+  "summary": "Каскад АВС (форма none, версия 1.0): B = 0.3405. Сильнее всего B ограничивает Φ-порог 0.65; среди A, D, C наименьший D 0.78. Значения только из cascadeEngine, не пересчитаны.",
+  "claims": [
+    {
+      "id": "b_value",
+      "text": "Итог каскада B = 0.3405 (index) по форме B = Φ × (A·D·C), без нормализации.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "B.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "form"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "phi_limits",
+      "text": "Φ-порог = 0.65 — наименьший из четырёх множителей и с наибольшим резервом (+0.18). Именно он сильнее всего ограничивает B.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.note"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "adc_values",
+      "text": "Среди A, D, C: A = 0.85, C = 0.79, D = 0.78. Наименьший — D (резерв +0.10).",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.A.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.D.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.C.value"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "drives_absent",
+      "text": "Драйвы Theromata, Alligantia, Phobon, Dominix, Agonix в каскаде не заданы: канал недоступен.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "drives.Phobon.note"}
+      ],
+      "claimed_badge": "⛔"
+    }
+  ],
+  "fields": {
+    "reading": "B = 0.3405 (index, форма none). Ограничивающий фактор — Φ-порог 0.65 (резерв +0.18); среди A 0.85, D 0.78, C 0.79 наименьший D. Гипотеза для клинициста: вклад Φ имеет наибольший запас роста. Драйвы не заданы."
+  },
+  "limits": [
+    "Источник входов A, D, C, Φ в пакете не указан: связь с транскриптом не проверена.",
+    "Драйвы не заданы (⛔), вклад драйвов не оценён."
+  ]
+}

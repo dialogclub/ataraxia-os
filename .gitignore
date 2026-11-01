@@ -1,0 +1,4 @@
+node_modules/
+.check-tmp/
+docs/screenshots/phone-max-*
+docs/screenshots/single-file-*

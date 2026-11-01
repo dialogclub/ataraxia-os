@@ -1,0 +1,2420 @@
+{
+  "version": "1.0",
+  "note": "Реестр параметров (3.5). Спринт 0: 142 записей; целевой объём 300+. Интерфейс строится из реестра.",
+  "parameters": [
+    {
+      "id": "cascade.A",
+      "label_ru": "A — актуальность",
+      "framework": "Каскад АВС",
+      "layer": "L3",
+      "tool": "cascadeEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "waterfall",
+      "export_key": "cascade.A"
+    },
+    {
+      "id": "cascade.D",
+      "label_ru": "D — дефицит",
+      "framework": "Каскад АВС",
+      "layer": "L3",
+      "tool": "cascadeEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "waterfall",
+      "export_key": "cascade.D"
+    },
+    {
+      "id": "cascade.C",
+      "label_ru": "C — контекст",
+      "framework": "Каскад АВС",
+      "layer": "L3",
+      "tool": "cascadeEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "waterfall",
+      "export_key": "cascade.C"
+    },
+    {
+      "id": "cascade.phi",
+      "label_ru": "Φ-порог осознанности",
+      "framework": "Каскад АВС",
+      "layer": "L3",
+      "tool": "cascadeEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gauge",
+      "export_key": "cascade.phi"
+    },
+    {
+      "id": "cascade.B",
+      "label_ru": "B — поведение",
+      "framework": "Каскад АВС",
+      "layer": "L3",
+      "tool": "cascadeEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "waterfall",
+      "export_key": "cascade.B"
+    },
+    {
+      "id": "drives.Theromata",
+      "label_ru": "Драйв Theromata",
+      "framework": "Persona v12",
+      "layer": "L2",
+      "agent": "Drives",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "drives.Theromata"
+    },
+    {
+      "id": "drives.Alligantia",
+      "label_ru": "Драйв Alligantia",
+      "framework": "Persona v12",
+      "layer": "L2",
+      "agent": "Drives",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "drives.Alligantia"
+    },
+    {
+      "id": "drives.Phobon",
+      "label_ru": "Драйв Phobon",
+      "framework": "Persona v12",
+      "layer": "L2",
+      "agent": "Drives",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "drives.Phobon"
+    },
+    {
+      "id": "drives.Dominix",
+      "label_ru": "Драйв Dominix",
+      "framework": "Persona v12",
+      "layer": "L2",
+      "agent": "Drives",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "drives.Dominix"
+    },
+    {
+      "id": "drives.Agonix",
+      "label_ru": "Драйв Agonix",
+      "framework": "Persona v12",
+      "layer": "L2",
+      "agent": "Drives",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "drives.Agonix"
+    },
+    {
+      "id": "czi8.K1",
+      "label_ru": "ЦЗИ-8 контур K1",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K1"
+    },
+    {
+      "id": "czi8.K2",
+      "label_ru": "ЦЗИ-8 контур K2",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K2"
+    },
+    {
+      "id": "czi8.K3",
+      "label_ru": "ЦЗИ-8 контур K3",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K3"
+    },
+    {
+      "id": "czi8.K4",
+      "label_ru": "ЦЗИ-8 контур K4",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K4"
+    },
+    {
+      "id": "czi8.K5",
+      "label_ru": "ЦЗИ-8 контур K5",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K5"
+    },
+    {
+      "id": "czi8.K6",
+      "label_ru": "ЦЗИ-8 контур K6",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K6"
+    },
+    {
+      "id": "czi8.K7",
+      "label_ru": "ЦЗИ-8 контур K7",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K7"
+    },
+    {
+      "id": "czi8.K8",
+      "label_ru": "ЦЗИ-8 контур K8",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.K8"
+    },
+    {
+      "id": "czi8.gap",
+      "label_ru": "Разрыв контура",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "enum",
+      "range": [
+        1,
+        8
+      ],
+      "unit": "K",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "ring",
+      "export_key": "czi8.gap"
+    },
+    {
+      "id": "request.veracity",
+      "label_ru": "Степень достоверности речи",
+      "framework": "Аналитическая рамка",
+      "layer": "L2",
+      "agent": "Veritas",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "traffic",
+      "export_key": "request.veracity"
+    },
+    {
+      "id": "request.displacements.count",
+      "label_ru": "Смещённая речь — число эпизодов",
+      "framework": "Аналитическая рамка",
+      "layer": "L2",
+      "agent": "Veritas",
+      "type": "count",
+      "range": [
+        0,
+        99
+      ],
+      "unit": "n",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "chip",
+      "export_key": "request.displacements.count"
+    },
+    {
+      "id": "prosody.f0",
+      "label_ru": "F0 средняя",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        60,
+        500
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "spectrogram",
+      "export_key": "prosody.f0"
+    },
+    {
+      "id": "prosody.f0_sd",
+      "label_ru": "Вариативность F0",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        0,
+        150
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.f0_sd"
+    },
+    {
+      "id": "prosody.rms",
+      "label_ru": "RMS-огибающая",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "level",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "rel",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "envelope",
+      "export_key": "prosody.rms"
+    },
+    {
+      "id": "prosody.pause_share",
+      "label_ru": "Доля пауз",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.pause_share"
+    },
+    {
+      "id": "prosody.onset_rate",
+      "label_ru": "Темп онсетов",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "rate",
+      "range": [
+        0,
+        12
+      ],
+      "unit": "1/s",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.onset_rate"
+    },
+    {
+      "id": "prosody.hnr",
+      "label_ru": "HNR",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "level",
+      "range": [
+        -10,
+        40
+      ],
+      "unit": "dB",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.hnr"
+    },
+    {
+      "id": "prosody.jitter",
+      "label_ru": "Джиттер",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "ratio",
+      "range": [
+        0,
+        0.1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.jitter"
+    },
+    {
+      "id": "prosody.shimmer",
+      "label_ru": "Шиммер",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "ratio",
+      "range": [
+        0,
+        0.3
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.shimmer"
+    },
+    {
+      "id": "prosody.f1",
+      "label_ru": "Форманта F1",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        200,
+        900
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.f1"
+    },
+    {
+      "id": "prosody.f2",
+      "label_ru": "Форманта F2",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        900,
+        2500
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.f2"
+    },
+    {
+      "id": "prosody.f3",
+      "label_ru": "Форманта F3",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        2500,
+        3500
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.f3"
+    },
+    {
+      "id": "prosody.f4",
+      "label_ru": "Форманта F4",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        3500,
+        5000
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.f4"
+    },
+    {
+      "id": "lexis.pronoun_i",
+      "label_ru": "Доля «я»",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.pronoun_i"
+    },
+    {
+      "id": "lexis.pronoun_we",
+      "label_ru": "Доля «мы»",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.pronoun_we"
+    },
+    {
+      "id": "lexis.pronoun_you",
+      "label_ru": "Доля «ты/вы»",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.pronoun_you"
+    },
+    {
+      "id": "lexis.pronoun_they",
+      "label_ru": "Доля «они»",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.pronoun_they"
+    },
+    {
+      "id": "lexis.modality_must",
+      "label_ru": "Долженствование",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.modality_must"
+    },
+    {
+      "id": "lexis.modality_can",
+      "label_ru": "Возможность",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.modality_can"
+    },
+    {
+      "id": "lexis.speaker_balance",
+      "label_ru": "Спикер-баланс фокуса",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.speaker_balance"
+    },
+    {
+      "id": "lexis.zimbardo.past_negative",
+      "label_ru": "Zimbardo-прокси: past_negative",
+      "framework": "Хронотоп",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "lexis.zimbardo.past_negative"
+    },
+    {
+      "id": "lexis.zimbardo.past_positive",
+      "label_ru": "Zimbardo-прокси: past_positive",
+      "framework": "Хронотоп",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "lexis.zimbardo.past_positive"
+    },
+    {
+      "id": "lexis.zimbardo.present_hedonistic",
+      "label_ru": "Zimbardo-прокси: present_hedonistic",
+      "framework": "Хронотоп",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "lexis.zimbardo.present_hedonistic"
+    },
+    {
+      "id": "lexis.zimbardo.present_fatalistic",
+      "label_ru": "Zimbardo-прокси: present_fatalistic",
+      "framework": "Хронотоп",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "lexis.zimbardo.present_fatalistic"
+    },
+    {
+      "id": "lexis.zimbardo.future",
+      "label_ru": "Zimbardo-прокси: future",
+      "framework": "Хронотоп",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "lexis.zimbardo.future"
+    },
+    {
+      "id": "vaal.polarity",
+      "label_ru": "VAAL полярность",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.polarity"
+    },
+    {
+      "id": "vaal.scale.radiant",
+      "label_ru": "VAAL шкала radiant",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.radiant"
+    },
+    {
+      "id": "vaal.scale.mighty",
+      "label_ru": "VAAL шкала mighty",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.mighty"
+    },
+    {
+      "id": "vaal.scale.kind",
+      "label_ru": "VAAL шкала kind",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.kind"
+    },
+    {
+      "id": "vaal.scale.soft",
+      "label_ru": "VAAL шкала soft",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.soft"
+    },
+    {
+      "id": "vaal.scale.joyful",
+      "label_ru": "VAAL шкала joyful",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.joyful"
+    },
+    {
+      "id": "vaal.scale.brave",
+      "label_ru": "VAAL шкала brave",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.brave"
+    },
+    {
+      "id": "vaal.scale.calm",
+      "label_ru": "VAAL шкала calm",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.calm"
+    },
+    {
+      "id": "vaal.scale.bright",
+      "label_ru": "VAAL шкала bright",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -100,
+        100
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "vaal.scale.bright"
+    },
+    {
+      "id": "plutchik.joy",
+      "label_ru": "Плутчик: joy",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.joy"
+    },
+    {
+      "id": "plutchik.trust",
+      "label_ru": "Плутчик: trust",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.trust"
+    },
+    {
+      "id": "plutchik.fear",
+      "label_ru": "Плутчик: fear",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.fear"
+    },
+    {
+      "id": "plutchik.surprise",
+      "label_ru": "Плутчик: surprise",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.surprise"
+    },
+    {
+      "id": "plutchik.sadness",
+      "label_ru": "Плутчик: sadness",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.sadness"
+    },
+    {
+      "id": "plutchik.disgust",
+      "label_ru": "Плутчик: disgust",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.disgust"
+    },
+    {
+      "id": "plutchik.anger",
+      "label_ru": "Плутчик: anger",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.anger"
+    },
+    {
+      "id": "plutchik.anticipation",
+      "label_ru": "Плутчик: anticipation",
+      "framework": "Плутчик",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "radar",
+      "export_key": "plutchik.anticipation"
+    },
+    {
+      "id": "memory.top1_score",
+      "label_ru": "Похожий кейс — score",
+      "framework": "Архив 11 000",
+      "layer": "L1",
+      "tool": "memorySearchTool",
+      "type": "index",
+      "range": [
+        -1,
+        1
+      ],
+      "unit": "cos",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "memory.top1_score"
+    },
+    {
+      "id": "chrono.days",
+      "label_ru": "Биографическое время",
+      "framework": "Хронометраж Башкина",
+      "layer": "L1",
+      "tool": "chronometry",
+      "type": "duration",
+      "range": [
+        0,
+        36525
+      ],
+      "unit": "days",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "timeline",
+      "export_key": "chrono.days"
+    },
+    {
+      "id": "chrono.years",
+      "label_ru": "Биографический возраст",
+      "framework": "Хронометраж Башкина",
+      "layer": "L1",
+      "tool": "chronometry",
+      "type": "duration",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "years",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "timeline",
+      "export_key": "chrono.years"
+    },
+    {
+      "id": "smfk.Gcc",
+      "label_ru": "Gcc групповой",
+      "framework": "SMFK-100",
+      "layer": "L3",
+      "tool": "gccEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gauge",
+      "export_key": "smfk.Gcc"
+    },
+    {
+      "id": "smfk.geo_CrSr",
+      "label_ru": "Geo-mean Cr·Sr",
+      "framework": "SMFK-100",
+      "layer": "L3",
+      "tool": "gccEngine",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "smfk.geo_CrSr"
+    },
+    {
+      "id": "smfk.sigma2_Of",
+      "label_ru": "Дисперсия Of",
+      "framework": "SMFK-100",
+      "layer": "L3",
+      "tool": "gccEngine",
+      "type": "index",
+      "range": [
+        0,
+        0.25
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "smfk.sigma2_Of"
+    },
+    {
+      "id": "gate.flicker_hz",
+      "label_ru": "Частота мигания",
+      "framework": "PNEUMA",
+      "layer": "L1",
+      "tool": "stimulusGate",
+      "type": "freq",
+      "range": [
+        0,
+        60
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gate",
+      "export_key": "gate.flicker_hz"
+    },
+    {
+      "id": "gate.spl_db",
+      "label_ru": "Громкость",
+      "framework": "PNEUMA",
+      "layer": "L1",
+      "tool": "stimulusGate",
+      "type": "level",
+      "range": [
+        0,
+        120
+      ],
+      "unit": "dB",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gate",
+      "export_key": "gate.spl_db"
+    },
+    {
+      "id": "gate.stop_ms",
+      "label_ru": "Латентность стопа",
+      "framework": "PNEUMA",
+      "layer": "L1",
+      "tool": "stimulusGate",
+      "type": "duration",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "ms",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "gate.stop_ms"
+    },
+    {
+      "id": "clinic.phq9",
+      "label_ru": "PHQ-9",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        27
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.phq9"
+    },
+    {
+      "id": "clinic.gad7",
+      "label_ru": "GAD-7",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        21
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.gad7"
+    },
+    {
+      "id": "clinic.pcl5",
+      "label_ru": "PCL-5",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        80
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.pcl5"
+    },
+    {
+      "id": "clinic.tas20",
+      "label_ru": "TAS-20",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        20,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.tas20"
+    },
+    {
+      "id": "clinic.mbi_exhaustion",
+      "label_ru": "MBI истощение",
+      "framework": "Маслач",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        54
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.mbi_exhaustion"
+    },
+    {
+      "id": "body.health_score",
+      "label_ru": "Health Score",
+      "framework": "Pulse OS",
+      "layer": "L1",
+      "tool": "ppgTool",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gauge",
+      "export_key": "body.health_score"
+    },
+    {
+      "id": "body.hr",
+      "label_ru": "ЧСС",
+      "framework": "PPG",
+      "layer": "L1",
+      "tool": "ppgTool",
+      "type": "rate",
+      "range": [
+        30,
+        220
+      ],
+      "unit": "bpm",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "body.hr"
+    },
+    {
+      "id": "body.rmssd",
+      "label_ru": "RMSSD",
+      "framework": "PPG",
+      "layer": "L1",
+      "tool": "ppgTool",
+      "type": "duration",
+      "range": [
+        0,
+        200
+      ],
+      "unit": "ms",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "body.rmssd"
+    },
+    {
+      "id": "body.sdnn",
+      "label_ru": "SDNN",
+      "framework": "PPG",
+      "layer": "L1",
+      "tool": "ppgTool",
+      "type": "duration",
+      "range": [
+        0,
+        200
+      ],
+      "unit": "ms",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "body.sdnn"
+    },
+    {
+      "id": "body.breath_rate",
+      "label_ru": "ЧД",
+      "framework": "PPG",
+      "layer": "L1",
+      "tool": "ppgTool",
+      "type": "rate",
+      "range": [
+        4,
+        40
+      ],
+      "unit": "1/min",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "body.breath_rate"
+    },
+    {
+      "id": "body.3a.CR",
+      "label_ru": "3A-FORMULA ось CR",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.CR"
+    },
+    {
+      "id": "body.3a.RC",
+      "label_ru": "3A-FORMULA ось RC",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.RC"
+    },
+    {
+      "id": "body.3a.FN",
+      "label_ru": "3A-FORMULA ось FN",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.FN"
+    },
+    {
+      "id": "body.3a.VB",
+      "label_ru": "3A-FORMULA ось VB",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.VB"
+    },
+    {
+      "id": "body.3a.SM",
+      "label_ru": "3A-FORMULA ось SM",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.SM"
+    },
+    {
+      "id": "body.3a.PS",
+      "label_ru": "3A-FORMULA ось PS",
+      "framework": "3A-FORMULA",
+      "layer": "L2",
+      "agent": "Risk",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "body.3a.PS"
+    },
+    {
+      "id": "lowen.schizoid",
+      "label_ru": "Лоуэн: schizoid",
+      "framework": "Лоуэн",
+      "layer": "L2",
+      "agent": "Lowen",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "lowen.schizoid"
+    },
+    {
+      "id": "lowen.oral",
+      "label_ru": "Лоуэн: oral",
+      "framework": "Лоуэн",
+      "layer": "L2",
+      "agent": "Lowen",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "lowen.oral"
+    },
+    {
+      "id": "lowen.psychopathic",
+      "label_ru": "Лоуэн: psychopathic",
+      "framework": "Лоуэн",
+      "layer": "L2",
+      "agent": "Lowen",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "lowen.psychopathic"
+    },
+    {
+      "id": "lowen.masochistic",
+      "label_ru": "Лоуэн: masochistic",
+      "framework": "Лоуэн",
+      "layer": "L2",
+      "agent": "Lowen",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "lowen.masochistic"
+    },
+    {
+      "id": "lowen.rigid",
+      "label_ru": "Лоуэн: rigid",
+      "framework": "Лоуэн",
+      "layer": "L2",
+      "agent": "Lowen",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "lowen.rigid"
+    },
+    {
+      "id": "reich.segment1",
+      "label_ru": "Райх: сегмент 1",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment1"
+    },
+    {
+      "id": "reich.segment2",
+      "label_ru": "Райх: сегмент 2",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment2"
+    },
+    {
+      "id": "reich.segment3",
+      "label_ru": "Райх: сегмент 3",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment3"
+    },
+    {
+      "id": "reich.segment4",
+      "label_ru": "Райх: сегмент 4",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment4"
+    },
+    {
+      "id": "reich.segment5",
+      "label_ru": "Райх: сегмент 5",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment5"
+    },
+    {
+      "id": "reich.segment6",
+      "label_ru": "Райх: сегмент 6",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment6"
+    },
+    {
+      "id": "reich.segment7",
+      "label_ru": "Райх: сегмент 7",
+      "framework": "Райх",
+      "layer": "L2",
+      "agent": "Reich",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "bodymap",
+      "export_key": "reich.segment7"
+    },
+    {
+      "id": "panksepp.SEEKING",
+      "label_ru": "Панксепп: SEEKING",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.SEEKING"
+    },
+    {
+      "id": "panksepp.RAGE",
+      "label_ru": "Панксепп: RAGE",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.RAGE"
+    },
+    {
+      "id": "panksepp.FEAR",
+      "label_ru": "Панксепп: FEAR",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.FEAR"
+    },
+    {
+      "id": "panksepp.LUST",
+      "label_ru": "Панксепп: LUST",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.LUST"
+    },
+    {
+      "id": "panksepp.CARE",
+      "label_ru": "Панксепп: CARE",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.CARE"
+    },
+    {
+      "id": "panksepp.PANIC",
+      "label_ru": "Панксепп: PANIC",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.PANIC"
+    },
+    {
+      "id": "panksepp.PLAY",
+      "label_ru": "Панксепп: PLAY",
+      "framework": "Панксепп",
+      "layer": "L2",
+      "agent": "Panksepp",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "radar",
+      "export_key": "panksepp.PLAY"
+    },
+    {
+      "id": "ocean.O",
+      "label_ru": "Big Five O",
+      "framework": "OCEAN",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "ocean.O"
+    },
+    {
+      "id": "ocean.C",
+      "label_ru": "Big Five C",
+      "framework": "OCEAN",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "ocean.C"
+    },
+    {
+      "id": "ocean.E",
+      "label_ru": "Big Five E",
+      "framework": "OCEAN",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "ocean.E"
+    },
+    {
+      "id": "ocean.A",
+      "label_ru": "Big Five A",
+      "framework": "OCEAN",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "ocean.A"
+    },
+    {
+      "id": "ocean.N",
+      "label_ru": "Big Five N",
+      "framework": "OCEAN",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "ocean.N"
+    },
+    {
+      "id": "prosody.centroid",
+      "label_ru": "Спектральный центроид",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "freq",
+      "range": [
+        0,
+        5000
+      ],
+      "unit": "Hz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.centroid"
+    },
+    {
+      "id": "prosody.tilt",
+      "label_ru": "Наклон спектра",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        -60,
+        60
+      ],
+      "unit": "dB/kHz",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.tilt"
+    },
+    {
+      "id": "prosody.voiced_share",
+      "label_ru": "Доля вокализованных кадров",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "percent",
+      "range": [
+        0,
+        100
+      ],
+      "unit": "%",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.voiced_share"
+    },
+    {
+      "id": "prosody.proxy.agitation",
+      "label_ru": "Прокси: возбуждение/агитация",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.agitation"
+    },
+    {
+      "id": "prosody.proxy.flat_affect",
+      "label_ru": "Прокси: уплощённый аффект",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.flat_affect"
+    },
+    {
+      "id": "prosody.proxy.restraint",
+      "label_ru": "Прокси: сдержанность",
+      "framework": "ХРОНОС",
+      "layer": "L1",
+      "tool": "prosodyTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "prosody.proxy.restraint"
+    },
+    {
+      "id": "lexis.modality_ratio",
+      "label_ru": "Доля долженствования",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "gauge",
+      "export_key": "lexis.modality_ratio"
+    },
+    {
+      "id": "lexis.initiative",
+      "label_ru": "Инициативность (прокси)",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "lexis.initiative"
+    },
+    {
+      "id": "lexis.heatmap24",
+      "label_ru": "Активность по часам",
+      "framework": "ЛЕКСИС",
+      "layer": "L1",
+      "tool": "lexisTool",
+      "type": "count",
+      "range": [
+        0,
+        9999
+      ],
+      "unit": "n",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "heatmap",
+      "export_key": "lexis.heatmap24"
+    },
+    {
+      "id": "vaal.ttr",
+      "label_ru": "TTR",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "vaal.ttr"
+    },
+    {
+      "id": "vaal.hapax",
+      "label_ru": "Hapax legomena",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "ratio",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "vaal.hapax"
+    },
+    {
+      "id": "vaal.category.агрессивность",
+      "label_ru": "Контент-анализ: агрессивность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.агрессивность"
+    },
+    {
+      "id": "vaal.category.тревожность",
+      "label_ru": "Контент-анализ: тревожность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.тревожность"
+    },
+    {
+      "id": "vaal.category.депрессивность",
+      "label_ru": "Контент-анализ: депрессивность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.депрессивность"
+    },
+    {
+      "id": "vaal.category.демонстративность",
+      "label_ru": "Контент-анализ: демонстративность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.демонстративность"
+    },
+    {
+      "id": "vaal.category.рациональность",
+      "label_ru": "Контент-анализ: рациональность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.рациональность"
+    },
+    {
+      "id": "vaal.category.эмоциональность",
+      "label_ru": "Контент-анализ: эмоциональность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.эмоциональность"
+    },
+    {
+      "id": "vaal.category.социальность",
+      "label_ru": "Контент-анализ: социальность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.социальность"
+    },
+    {
+      "id": "vaal.category.витальность",
+      "label_ru": "Контент-анализ: витальность (z)",
+      "framework": "VAAL+",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        -10,
+        10
+      ],
+      "unit": "z",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "vaal.category.витальность"
+    },
+    {
+      "id": "belyanin.светлый",
+      "label_ru": "Белянин: светлый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.светлый"
+    },
+    {
+      "id": "belyanin.тёмный",
+      "label_ru": "Белянин: тёмный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.тёмный"
+    },
+    {
+      "id": "belyanin.весёлый",
+      "label_ru": "Белянин: весёлый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.весёлый"
+    },
+    {
+      "id": "belyanin.печальный",
+      "label_ru": "Белянин: печальный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.печальный"
+    },
+    {
+      "id": "belyanin.красивый",
+      "label_ru": "Белянин: красивый",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.красивый"
+    },
+    {
+      "id": "belyanin.сложный",
+      "label_ru": "Белянин: сложный",
+      "framework": "Белянин",
+      "layer": "L1",
+      "tool": "phonoSemTool",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "share",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "belyanin.сложный"
+    },
+    {
+      "id": "czi8.liberty_mode",
+      "label_ru": "Модус свободы воли А/Б/В/Г",
+      "framework": "ЦЗИ-8",
+      "layer": "L1",
+      "tool": "groundingClassifier",
+      "type": "enum",
+      "range": [
+        0,
+        3
+      ],
+      "unit": "mode",
+      "badge_policy": "🔵",
+      "evidence_required": false,
+      "ui_encoding": "chip",
+      "export_key": "czi8.liberty_mode"
+    },
+    {
+      "id": "clinic.scl90_gsi",
+      "label_ru": "SCL-90-R GSI",
+      "framework": "Клиника",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "index",
+      "range": [
+        0,
+        4
+      ],
+      "unit": "index",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.scl90_gsi"
+    },
+    {
+      "id": "clinic.mbi_dp",
+      "label_ru": "MBI деперсонализация",
+      "framework": "Маслач",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        30
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.mbi_dp"
+    },
+    {
+      "id": "clinic.mbi_pa",
+      "label_ru": "MBI личные достижения",
+      "framework": "Маслач",
+      "layer": "L1",
+      "tool": "scaleScorer",
+      "type": "score",
+      "range": [
+        0,
+        48
+      ],
+      "unit": "балл",
+      "badge_policy": "🟢",
+      "evidence_required": false,
+      "ui_encoding": "traffic",
+      "export_key": "clinic.mbi_pa"
+    },
+    {
+      "id": "narrative.hero_stage",
+      "label_ru": "Стадия пути героя",
+      "framework": "Кэмпбелл/Мёрдок",
+      "layer": "L2",
+      "agent": "HeroPath",
+      "type": "enum",
+      "range": [
+        1,
+        17
+      ],
+      "unit": "stage",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "timeline",
+      "export_key": "narrative.hero_stage"
+    },
+    {
+      "id": "narrative.tension",
+      "label_ru": "Партитура напряжения",
+      "framework": "Intraktom",
+      "layer": "L2",
+      "agent": "Intraktom",
+      "type": "index",
+      "range": [
+        0,
+        1
+      ],
+      "unit": "index",
+      "badge_policy": "🟡",
+      "evidence_required": true,
+      "ui_encoding": "timeline",
+      "export_key": "narrative.tension"
+    }
+  ]
+}

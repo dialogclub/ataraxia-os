@@ -1,0 +1,48 @@
+{
+  "summary": "По cascadeEngine B = 0.3405 (форма none): A = 0.85, D = 0.78, C = 0.79, Φ = 0.65. Сильнее всего ограничивает Φ-порог: самое низкое значение и наибольший резерв.",
+  "claims": [
+    {
+      "id": "b_value",
+      "text": "Итог каскада B по форме none, версия формулы 1.0.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "B.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "formula_version"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "phi_limits",
+      "text": "Φ-порог (0.65) — самый низкий из четырёх факторов, с наибольшим резервом (+0.18): сильнее всего ограничивает B.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.phi.note"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "adc_factors",
+      "text": "Среди A, D, C следующий по ограничению — D (0.78); A (0.85) и C (0.79) выше.",
+      "evidence": [
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.D.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.A.value"},
+        {"type": "measure", "tool": "cascadeEngine", "path": "contributions.C.value"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "phi_text_link",
+      "text": "Гипотеза: низкий Φ-порог согласуется с речью об отсрочках, но связь не измерена.",
+      "evidence": [
+        {"type": "quote", "quote": "Каждый раз нахожу причину подождать.", "speaker": "К.", "t": "[11:01]"}
+      ],
+      "claimed_badge": "🔵"
+    }
+  ],
+  "fields": {
+    "reading": "B = Φ × (A·D·C) = 0.3405 (форма none). Ограничивающий фактор — Φ-порог 0.65 (резерв +0.18); далее D 0.78 (резерв +0.10), C 0.79 (+0.09), A 0.85 (+0.06). Связь с речью об отсрочках — гипотеза."
+  },
+  "limits": [
+    "Драйвы Theromata, Alligantia, Phobon, Dominix, Agonix не заданы в инструменте (⛔), вклад драйвов не оценивался.",
+    "Числа взяты из cascadeEngine без пересчёта; интерпретация — гипотеза для клинициста."
+  ]
+}

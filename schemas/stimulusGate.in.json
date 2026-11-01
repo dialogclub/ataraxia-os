@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.stimulusGate.in", "type": "object", "properties": { "flicker_hz": { "type": "number" }, "spl_db": { "type": "number" }, "hour_local": { "type": "integer", "minimum": 0, "maximum": 23 } } }

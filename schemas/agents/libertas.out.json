@@ -1,0 +1,147 @@
+{
+  "$id": "atmaraksi.agents.Libertas.out",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "claims",
+    "fields",
+    "limits"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280
+    },
+    "claims": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]{1,24}$"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 400
+          },
+          "evidence": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "quote",
+                    "measure",
+                    "claim"
+                  ]
+                },
+                "quote": {
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "speaker": {
+                  "type": "string",
+                  "maxLength": 24
+                },
+                "t": {
+                  "type": "string",
+                  "maxLength": 12
+                },
+                "tool": {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "path": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "ref": {
+                  "type": "string",
+                  "maxLength": 60
+                }
+              }
+            }
+          },
+          "claimed_badge": {
+            "enum": [
+              "🟢",
+              "🟡",
+              "🔵",
+              "⛔"
+            ]
+          }
+        }
+      }
+    },
+    "fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "options",
+        "recommended_mode"
+      ],
+      "properties": {
+        "options": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "text"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "А",
+                  "Б",
+                  "В",
+                  "Г"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 300
+              }
+            }
+          }
+        },
+        "recommended_mode": {
+          "enum": [
+            "А",
+            "Б",
+            "В",
+            "Г",
+            null
+          ]
+        }
+      }
+    },
+    "limits": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      }
+    }
+  }
+}

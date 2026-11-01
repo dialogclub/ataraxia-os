@@ -1,0 +1,7 @@
+{ "$id": "atmaraksi.lexis.out", "type": "object", "required": ["status", "reason", "version", "focus", "scope_words", "words_total", "turns_total", "pronouns", "modality", "zimbardo", "balance", "heatmap"], "properties": {
+  "status": { "enum": ["ok", "missing"] },
+  "pronouns": { "type": "object", "properties": { "i": { "$ref": "Param.v1.json" }, "we": { "$ref": "Param.v1.json" }, "you": { "$ref": "Param.v1.json" }, "they": { "$ref": "Param.v1.json" } } },
+  "modality": { "type": "object", "properties": { "must": { "$ref": "Param.v1.json" }, "can": { "$ref": "Param.v1.json" }, "ratio": { "$ref": "Param.v1.json" } } },
+  "zimbardo": { "type": "object", "description": "🔵 лексические прокси", "additionalProperties": { "$ref": "Param.v1.json" } },
+  "balance": { "type": "object", "additionalProperties": { "type": "object", "properties": { "share": { "$ref": "Param.v1.json" }, "questions": { "$ref": "Param.v1.json" }, "initiative": { "$ref": "Param.v1.json" } } } },
+  "heatmap": { "type": "object", "required": ["hours", "stamped", "badge"], "properties": { "hours": { "type": "array", "minItems": 24, "maxItems": 24 }, "badge": { "enum": ["🟢", "⛔"] } } } } }

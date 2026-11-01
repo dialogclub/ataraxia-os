@@ -1,0 +1,23 @@
+{
+  "$id": "atmaraksi.AgentCard.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Карточка агента (Приложение B)",
+  "type": "object",
+  "required": ["id", "domain", "label_ru", "reads", "writes", "tools_required", "prompt_ref", "output_schema", "badge_policy", "cost_tier", "model_policy", "editable_in_ui", "harness", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "domain": { "enum": ["system", "core", "body", "practice", "love", "social", "narrative"] },
+    "label_ru": { "type": "string" },
+    "reads": { "type": "array", "items": { "type": "string" } },
+    "writes": { "type": "array", "items": { "type": "string" } },
+    "tools_required": { "type": "array", "items": { "type": "string" } },
+    "prompt_ref": { "type": "string" },
+    "output_schema": { "type": "string" },
+    "badge_policy": { "type": "object", "required": ["with_quote", "with_measure", "none"] },
+    "cost_tier": { "enum": ["L2", "L3"] },
+    "model_policy": { "enum": ["default", "cheap", "strong"] },
+    "editable_in_ui": { "type": "boolean" },
+    "harness": { "type": "string" },
+    "status": { "enum": ["green", "red", "hidden_by_harness"] }
+  }
+}

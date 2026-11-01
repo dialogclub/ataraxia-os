@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.grounding.in", "type": "object", "required": ["statements"], "properties": { "statements": { "type": "array", "items": { "type": "string" } } } }

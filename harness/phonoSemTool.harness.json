@@ -1,0 +1,17 @@
+{
+  "fn": "phonoSemTool",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Persona6",
+  "contract": { "input": "schemas/phonosem.in.json", "output": "schemas/phonosem.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "digits-only", "ru", "uk", "en", "single-letter"],
+  "stress": { "n": 1000, "assert": ["noNaN", "inRange[-100,100]", "time<20ms"] },
+  "golden": [{ "id": "soft-vs-rough", "input": "«мама милая…» vs «хрящ щетка…»", "expect": { "scale[нежный–грубый]": "soft > rough" } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "badge": "🔵 реконструкция PHON", "channel_missing": "badge:⛔" },
+  "telemetry": ["lang", "words", "letters"],
+  "ui_contract": { "component": "Radar", "badge_policy": "🔵" },
+  "status": "green",
+  "version": "1.0.0"
+}

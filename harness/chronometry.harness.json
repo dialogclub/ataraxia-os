@@ -1,0 +1,17 @@
+{
+  "fn": "chronometry",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Cashflow",
+  "contract": { "input": "schemas/chronometry.in.json", "output": "schemas/chronometry.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "zero", "negative", "nan"],
+  "stress": { "n": 1000, "assert": ["noNaN", "inRange", "time<1ms"] },
+  "golden": [{ "id": "240min", "input": { "game_minutes": 240 }, "expect": { "years": [39, 41] } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "channel_missing": "badge:⛔" },
+  "telemetry": ["duration"],
+  "ui_contract": { "component": "TimelineScore", "badge_policy": "🟢" },
+  "status": "green",
+  "version": "1.0.0"
+}

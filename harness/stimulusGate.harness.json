@@ -1,0 +1,17 @@
+{
+  "fn": "stimulusGate",
+  "type": "stimulus",
+  "layer": "L1",
+  "owner_agent": "Safety",
+  "contract": { "input": "schemas/stimulusGate.in.json", "output": "schemas/stimulusGate.out.json" },
+  "determinism": { "runs": 2, "compare": "bytes" },
+  "edge_cases": ["empty", "band-edges", "nan", "negative", "night"],
+  "stress": { "n": 2000, "assert": ["noNaN", "inRange", "time<2ms", "band15-25alwaysBlocked"] },
+  "golden": [{ "id": "stop-latency", "expect": { "ms": [0, 100] } }],
+  "eval": { "judge": false, "rubric": null },
+  "guardrails": { "no_bypass_api": true, "stop_ms": 100, "spl_limit_db": 85 },
+  "telemetry": ["decision", "blocks", "stop_ms"],
+  "ui_contract": { "component": "GatePanel", "badge_policy": "🟢" },
+  "status": "green",
+  "version": "1.0.0"
+}

@@ -1,0 +1,1601 @@
+{
+  "generated": "2026-11-01T19:16:28.748Z",
+  "system": "ATMARAKSI OS",
+  "partial": false,
+  "green": 32,
+  "red": 0,
+  "functions": [
+    {
+      "fn": "agent.Archetype",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🔵 · карточка 🔵 · вызовов модели 1",
+          "ms": 9.1
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/archetype.out.json актуален",
+          "ms": 0.3
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: narrative.archetypes, frames.l2.Archetype",
+          "ms": 2.2
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 0.8 · якоря ⛔ · полнота 1",
+          "ms": 2.3
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "655 знаков JSON, идентично",
+          "ms": 1.5
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Archetype.c1: 🔵 unsupported_number:17",
+          "ms": 0.7
+        }
+      ],
+      "total_ms": 16.1
+    },
+    {
+      "fn": "agent.Berne",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 2.7
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/berne.out.json актуален",
+          "ms": 0.2
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: frames.berne, frames.l2.Berne",
+          "ms": 1.9
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 1.8
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "846 знаков JSON, идентично",
+          "ms": 3.2
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1.5
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 2.7
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Berne.c1: 🔵 unsupported_number:17",
+          "ms": 1.5
+        }
+      ],
+      "total_ms": 15.5
+    },
+    {
+      "fn": "agent.CascadeABC",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟢 c2🟢 · карточка 🟢 · вызовов модели 2",
+          "ms": 0.9
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/cascadeabc.out.json актуален",
+          "ms": 0.2
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: cascade.reading, frames.l2.CascadeABC",
+          "ms": 1
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 0.994 · якоря 1 · полнота 1",
+          "ms": 0.6
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "1067 знаков JSON, идентично",
+          "ms": 1.2
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: cascadeEngine",
+          "ms": 0.7
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "CascadeABC.c1: 🔵 unsupported_number:17",
+          "ms": 1.3
+        }
+      ],
+      "total_ms": 5.9
+    },
+    {
+      "fn": "agent.Chronotope",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 1.1
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/chronotope.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: frames.chronotope, frames.l2.Chronotope",
+          "ms": 1.3
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 1.1
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "899 знаков JSON, идентично",
+          "ms": 3.2
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 2.2
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Chronotope.c1: 🔵 unsupported_number:17",
+          "ms": 1.5
+        }
+      ],
+      "total_ms": 11.5
+    },
+    {
+      "fn": "agent.Drives",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 1.1
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/drives.out.json актуален",
+          "ms": 0.2
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: drives.reading, frames.l2.Drives",
+          "ms": 1.4
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 1.1
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "919 знаков JSON, идентично",
+          "ms": 2.5
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 2.1
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Drives.c1: 🔵 unsupported_number:17",
+          "ms": 1.3
+        }
+      ],
+      "total_ms": 10.7
+    },
+    {
+      "fn": "agent.Grounding",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟢 · карточка 🟢 · вызовов модели 2",
+          "ms": 1.3
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/grounding.out.json актуален",
+          "ms": 0.2
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: czi8.reading, frames.l2.Grounding",
+          "ms": 1.2
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 0.997 · якоря 1 · полнота 1",
+          "ms": 1.1
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "897 знаков JSON, идентично",
+          "ms": 2
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: groundingClas",
+          "ms": 0.8
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Grounding.c1: 🔵 unsupported_number:17",
+          "ms": 0.8
+        }
+      ],
+      "total_ms": 7.4
+    },
+    {
+      "fn": "agent.Insight",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 4.4
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/insight.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "3 записей: intuition, insight, frames.l2.Insight",
+          "ms": 2.6
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 2.8
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "1003 знаков JSON, идентично",
+          "ms": 4.9
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 2.5
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 3.9
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Insight.c1: 🔵 unsupported_number:17",
+          "ms": 2.4
+        }
+      ],
+      "total_ms": 23.6
+    },
+    {
+      "fn": "agent.Judge",
+      "type": "deterministic",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "2 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.3
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "failed · skipped · no-claims · overclaimed · fabricated",
+          "ms": 0.4
+        },
+        {
+          "name": "golden: 13 агентов, итог рубрики ≥ 0,7, оценка скрыта от клиента",
+          "ok": true,
+          "detail": "мин 0.8 (Archetype) · среднее 0.977",
+          "ms": 11.9
+        },
+        {
+          "name": "язык: латиница сверх терминов методологии снижает оценку, термины — нет",
+          "ok": true,
+          "detail": "с терминами 1 · английский 0",
+          "ms": 0.4
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.11 мс < 5 мс · худшее 0.41 мс",
+          "ms": 34.2
+        }
+      ],
+      "total_ms": 47.2
+    },
+    {
+      "fn": "agent.Libertas",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 1.6
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/libertas.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: liberty, frames.l2.Libertas",
+          "ms": 1.8
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 1.9
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "1070 знаков JSON, идентично",
+          "ms": 3.4
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: groundingClas",
+          "ms": 1.9
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 1.9
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Libertas.c1: 🔵 unsupported_number:17",
+          "ms": 1.5
+        }
+      ],
+      "total_ms": 14.1
+    },
+    {
+      "fn": "agent.Memory",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟢 · карточка 🟢 · вызовов модели 2",
+          "ms": 1.3
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/memory.out.json актуален",
+          "ms": 0.2
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: memory.reading, frames.l2.Memory",
+          "ms": 0.9
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 0.995 · якоря 1 · полнота 1",
+          "ms": 0.8
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "922 знаков JSON, идентично",
+          "ms": 1.4
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: memorySearchT",
+          "ms": 0.7
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Memory.c1: 🔵 unsupported_number:17",
+          "ms": 1.2
+        }
+      ],
+      "total_ms": 6.5
+    },
+    {
+      "fn": "agent.Obstacle",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 c2🔵 · карточка 🟡 · вызовов модели 2",
+          "ms": 1
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/obstacle.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: obstacle, frames.l2.Obstacle",
+          "ms": 1.2
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 0.917 · якоря 1 · полнота 1",
+          "ms": 1.2
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "991 знаков JSON, идентично",
+          "ms": 3.3
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "degraded; повторов 3; отброшено 1",
+          "ms": 1.7
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Obstacle.c1: 🔵 unsupported_number:17",
+          "ms": 1.3
+        }
+      ],
+      "total_ms": 10.8
+    },
+    {
+      "fn": "agent.Qualitas",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 1",
+          "ms": 2.7
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/qualitas.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "2 записей: quality, frames.l2.Qualitas",
+          "ms": 4.4
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря ⛔ · полнота 1",
+          "ms": 4.2
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "926 знаков JSON, идентично",
+          "ms": 5.7
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Qualitas.c1: 🔵 unsupported_number:17",
+          "ms": 2.4
+        }
+      ],
+      "total_ms": 19.5
+    },
+    {
+      "fn": "agent.Reflector",
+      "type": "llm-agent",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden k=3: вердикты и оси, бейдж = слабейшая ссылка, 3 из 3 голосов",
+          "ok": true,
+          "detail": "вердикты 🟡🟡 · оси 🟡🟡🔵",
+          "ms": 10
+        },
+        {
+          "name": "консенсус: вердикт из одной выборки — 🔵 «нестабильно», устойчивые сохраняются",
+          "ok": true,
+          "detail": "устойчивых 2, нестабильных 1 (1 из 3)",
+          "ms": 8.7
+        },
+        {
+          "name": "ссылка на несуществующее утверждение отклоняется",
+          "ok": true,
+          "detail": "ответ не прошёл проверки: verdicts[0]: ссылка Ghost.c9 не найдена среди утверждений",
+          "ms": 6.7
+        },
+        {
+          "name": "число в тексте вердикта вне утверждений понижает бейдж до 🔵",
+          "ok": true,
+          "detail": "v1: 🔵 unsupported_number",
+          "ms": 9.7
+        },
+        {
+          "name": "нет утверждений → синтез пропущен, модель не вызывается",
+          "ok": true,
+          "detail": "skipped ×2, вызовов 0",
+          "ms": 0.5
+        },
+        {
+          "name": "нет API (auth) на синтезе: одна попытка, без повторов выборок",
+          "ok": true,
+          "detail": "failed/auth, 1 вызов вместо 3",
+          "ms": 10.4
+        },
+        {
+          "name": "k=1: один вызов, нестабильных нет",
+          "ok": true,
+          "detail": "k=1 → 1 вызов",
+          "ms": 7.1
+        }
+      ],
+      "total_ms": 53.1
+    },
+    {
+      "fn": "agent.Requestor",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 c2🟡 c3🟢 · карточка 🟢 · вызовов модели 2",
+          "ms": 0.9
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/requestor.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "3 записей: request.explicit, request.latent, frames.l2.Requestor",
+          "ms": 1.4
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 1
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "1445 знаков JSON, идентично",
+          "ms": 1.8
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1.1
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "degraded; повторов 3; отброшено 2",
+          "ms": 2.4
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Requestor.c1: 🔵 unsupported_number:17",
+          "ms": 0.9
+        }
+      ],
+      "total_ms": 9.6
+    },
+    {
+      "fn": "agent.Router",
+      "type": "deterministic",
+      "layer": "L0",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×7",
+          "ok": true,
+          "detail": "session · meeting · game · unknown-agents · empty-selection · no-audio · orphan",
+          "ms": 0.3
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.01 мс < 2 мс · худшее 0.08 мс",
+          "ms": 7
+        }
+      ],
+      "total_ms": 7.5
+    },
+    {
+      "fn": "agent.TheraNavigator",
+      "type": "llm-agent",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: план со ссылками, бейдж = слабейшая ссылка, вопрос для встречи",
+          "ok": true,
+          "detail": "2 шага · модули analysis, profile",
+          "ms": 6.9
+        },
+        {
+          "name": "ссылка на несуществующее утверждение отклоняется",
+          "ok": true,
+          "detail": "ответ не прошёл проверки: plan[0]: ссылка Ghost.c1 не найдена среди утверждений",
+          "ms": 6.9
+        },
+        {
+          "name": "модуль вне перечня отклоняется схемой",
+          "ok": true,
+          "detail": "ответ не прошёл проверки: схема: $.plan[0].module: значение вне перечня [\"launch",
+          "ms": 7.1
+        },
+        {
+          "name": "выдуманное число в шаге плана понижает бейдж",
+          "ok": true,
+          "detail": "🔵 unsupported_number",
+          "ms": 6.8
+        }
+      ],
+      "total_ms": 27.7
+    },
+    {
+      "fn": "agent.Veritas",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "golden: статус ok, бейджи утверждений и карточки, инструменты вызваны",
+          "ok": true,
+          "detail": "c1🟡 · карточка 🟡 · вызовов модели 2",
+          "ms": 0.9
+        },
+        {
+          "name": "схема выхода в schemas/agents совпадает с реестром полей",
+          "ok": true,
+          "detail": "schemas/agents/veritas.out.json актуален",
+          "ms": 0.1
+        },
+        {
+          "name": "SCP: запись только в поля карточки (+ frames.l2)",
+          "ok": true,
+          "detail": "3 записей: request.veracity, request.displacements, frames.l2.Veritas",
+          "ms": 1.3
+        },
+        {
+          "name": "Судья: рубрика (якоря, бейджи, числа, язык)",
+          "ok": true,
+          "detail": "итог 1 · якоря 1 · полнота 1",
+          "ms": 0.9
+        },
+        {
+          "name": "детерминизм ×2 (результаты без времён совпадают)",
+          "ok": true,
+          "detail": "1029 знаков JSON, идентично",
+          "ms": 2.2
+        },
+        {
+          "name": "агент, «посчитавший сам» (без обязательных инструментов), проваливает проверку",
+          "ok": true,
+          "detail": "провал: ответ не прошёл проверки: сначала вызови обязательные инструменты: lexisTool",
+          "ms": 1.2
+        },
+        {
+          "name": "выдуманная цитата не принимается и не попадает в отчёт",
+          "ok": true,
+          "detail": "failed; повторов 3; отброшено 0",
+          "ms": 1.8
+        },
+        {
+          "name": "выдуманное число понижает бейдж до 🔵 и помечается флагом",
+          "ok": true,
+          "detail": "Veritas.c1: 🔵 unsupported_number:17",
+          "ms": 0.9
+        }
+      ],
+      "total_ms": 9.3
+    },
+    {
+      "fn": "agentOrchestrator",
+      "type": "llm-agent",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "DAG: Insight после Requestor и Obstacle, Libertas после Obstacle, Qualitas последним",
+          "ok": true,
+          "detail": "порядок первых вызовов: Requestor → Veritas → Obstacle → Grounding → CascadeABC → Drives → Chronotope → Berne → Archetype → Memory → Insight → Libertas → Qualitas",
+          "ms": 6.5
+        },
+        {
+          "name": "полный отчёт: 13 агентов ok, бейджи по политике, итоговые вызовы модели",
+          "ok": true,
+          "detail": "13/13 ok · вызовов модели 24",
+          "ms": 5.5
+        },
+        {
+          "name": "ошибка одного агента не прячет результаты остальных",
+          "ok": true,
+          "detail": "Veritas failed/bad_request; ok: 12",
+          "ms": 5.7
+        },
+        {
+          "name": "все вышестоящие провалились → зависимые пропускаются (skipped), а не работают вслепую",
+          "ok": true,
+          "detail": "Insight/Libertas/Qualitas → skipped",
+          "ms": 5.7
+        },
+        {
+          "name": "нет API (auth): каждый агент ⛔ с причиной, к модели доходит не больше параллелизма",
+          "ok": true,
+          "detail": "вызовов модели: 4; failed 10, skipped 3",
+          "ms": 1
+        },
+        {
+          "name": "повтор одного агента: вызывается только он, остальные результаты не затронуты",
+          "ok": true,
+          "detail": "доп. вызовов 2 (инструмент + submit), все — Veritas",
+          "ms": 10.4
+        },
+        {
+          "name": "самосогласованность: Рефлектор вызывается k=3 раза",
+          "ok": true,
+          "detail": "Reflector ×3, TheraNavigator ×1",
+          "ms": 9.3
+        },
+        {
+          "name": "SCP: запись всех агентов, evidence[] с якорями, audit по авторам, JSON round-trip",
+          "ok": true,
+          "detail": "evidence 15 · аудит 44 записей",
+          "ms": 11.4
+        },
+        {
+          "name": "слойное правило: запись вне полей карточки — ошибка",
+          "ok": true,
+          "detail": "request.latent вне области → исключение",
+          "ms": 1.1
+        },
+        {
+          "name": "Судья скрыт от клиента и не ломается на failed/skipped",
+          "ok": true,
+          "detail": "оценок 13; n/a: 1",
+          "ms": 6.3
+        },
+        {
+          "name": "цепочки моделей из реестра: без циклов, стартовая первой, откат по fallback",
+          "ok": true,
+          "detail": "claude-opus-5-5 → claude-sonnet-5-5 → claude-sonnet-4-6",
+          "ms": 0.3
+        }
+      ],
+      "total_ms": 63.2
+    },
+    {
+      "fn": "agentRuntime",
+      "type": "llm-agent",
+      "layer": "L2",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "ReAct: ≤ 3 раундов инструментов; четвёртый отклоняется, ответ всё равно принимается",
+          "ok": true,
+          "detail": "раундов 4, лимит 3 обозначен ошибкой инструмента",
+          "ms": 2.7
+        },
+        {
+          "name": "невалидный submit_result: не более 2 повторов, затем провал; на 2-й попытке — успех",
+          "ok": true,
+          "detail": "провал после 3 попыток; успех со 2-й (повторов 1)",
+          "ms": 2.3
+        },
+        {
+          "name": "ответ текстом без submit_result: напоминание, затем принято",
+          "ok": true,
+          "detail": "напоминание отправлено, затем ok",
+          "ms": 1.4
+        },
+        {
+          "name": "самооценка бейджа: без якоря claimed_badge 🟢 → 🔵 + флаг; с цитатой 🟢 → 🟡; Судья снижает честность",
+          "ok": true,
+          "detail": "c1 🟡, c4 🔵, честность бейджей 0.5",
+          "ms": 2.6
+        },
+        {
+          "name": "якорь-замер на несуществующий путь и на невызванный инструмент отклоняется",
+          "ok": true,
+          "detail": "c3 отброшен в обоих случаях (degraded)",
+          "ms": 4.5
+        },
+        {
+          "name": "недоступный агенту и неизвестный инструменты возвращают is_error",
+          "ok": true,
+          "detail": "все tool_result в одном сообщении: 2 ошибки, 1 успех",
+          "ms": 1.2
+        },
+        {
+          "name": "история только дописывается; блоки ассистента (в т.ч. thinking) возвращаются без правок",
+          "ok": true,
+          "detail": "префикс 1 сообщений неизменен; thinking возвращён как есть",
+          "ms": 1.3
+        },
+        {
+          "name": "запрос: effort и система передаются, forced tool_choice не используется",
+          "ok": true,
+          "detail": "tools: lexisTool, submit_result",
+          "ms": 1.1
+        },
+        {
+          "name": "429 дважды → успех; паузы 1000 и 2000 мс; retry-after приоритетнее",
+          "ok": true,
+          "detail": "паузы 1000,2000 · retry-after 7000",
+          "ms": 1.9
+        },
+        {
+          "name": "529 ×3 на основной модели → откат на следующую; флаг fallback",
+          "ok": true,
+          "detail": "откат claude-opus-5-5 → claude-sonnet-5-5",
+          "ms": 0.9
+        },
+        {
+          "name": "отказ модели (refusal) → немедленный откат без повторов",
+          "ok": true,
+          "detail": "модель claude-sonnet-5-5, пауз 0",
+          "ms": 0.8
+        },
+        {
+          "name": "auth: провал без повторов; предохранитель — следующий вызов не доходит до модели",
+          "ok": true,
+          "detail": "вызовов модели: 1 на два запуска",
+          "ms": 0.3
+        },
+        {
+          "name": "network: 2 попытки, затем предохранитель",
+          "ok": true,
+          "detail": "попыток 2, клиент помечен недоступным",
+          "ms": 0.3
+        },
+        {
+          "name": "timeout повторяется; bad_request и truncated — без повторов",
+          "ok": true,
+          "detail": "timeout +1 повтор; bad_request/truncated — 1 вызов",
+          "ms": 2
+        },
+        {
+          "name": "вся цепочка перегружена: 3 модели × 3 попытки, затем провал overloaded",
+          "ok": true,
+          "detail": "вызовов 9; пауз 6",
+          "ms": 0.7
+        },
+        {
+          "name": "HttpModelClient: форма запроса — версия API, ключ, effort; без temperature/top_p/top_k/thinking",
+          "ok": true,
+          "detail": "версия 2026-10-21; тело: model, max_tokens, messages, system, tools, output_config",
+          "ms": 1
+        },
+        {
+          "name": "HttpModelClient: классификация ошибок и разбор refusal/max_tokens/сети/таймаута",
+          "ok": true,
+          "detail": "8 кодов HTTP + retry-after + refusal + max_tokens + сеть + таймаут + пустой ответ",
+          "ms": 22.7
+        },
+        {
+          "name": "PII не попадает в промпт агента: маска применяется до L2 (проверка пользовательского сообщения)",
+          "ok": true,
+          "detail": "телефон, email и имя из списка заменены метками",
+          "ms": 3.2
+        }
+      ],
+      "total_ms": 50.9
+    },
+    {
+      "fn": "cascadeEngine",
+      "type": "deterministic",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.4
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · phi-zero · all-ones · out-of-range · nan-input · cbrt-form",
+          "ms": 0.2
+        },
+        {
+          "name": "монотонность по каждому аргументу",
+          "ok": true,
+          "detail": "4 аргумента × 21 шаг, неубывание",
+          "ms": 0.7
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · p99 0.02 мс < 5 мс · худшее 0.41 мс",
+          "ms": 34.7
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "konstantin-2026-08-27=0.34",
+          "ms": 0.3
+        }
+      ],
+      "total_ms": 36.3
+    },
+    {
+      "fn": "chronometry",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×4",
+          "ok": true,
+          "detail": "empty · zero · negative · nan",
+          "ms": 0.1
+        },
+        {
+          "name": "обратимость минуты ↔ годы",
+          "ok": true,
+          "detail": "120 мин → 19.71 лет → 120.000000 мин",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.01 мс < 1 мс · худшее 0.05 мс",
+          "ms": 4.7
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "240min=39.43",
+          "ms": 0.1
+        }
+      ],
+      "total_ms": 5.2
+    },
+    {
+      "fn": "gccEngine",
+      "type": "deterministic",
+      "layer": "L3",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.5
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · single · two · identical · one-invalid · extremes",
+          "ms": 0.5
+        },
+        {
+          "name": "фикстура: Gcc_formula совпадает с claimed-разрывом",
+          "ok": true,
+          "detail": "Gcc = 0.842491 🟢 · заявлено артефактом 0.928 🔵 (расхождение задокументировано, не усредняется)",
+          "ms": 0
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.04 мс < 2 мс · худшее 0.08 мс",
+          "ms": 15.3
+        },
+        {
+          "name": "golden ×1",
+          "ok": true,
+          "detail": "smfk100.core-team.v1=0.842491",
+          "ms": 0.1
+        }
+      ],
+      "total_ms": 16.4
+    },
+    {
+      "fn": "groundingClassifier",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 2.5
+        },
+        {
+          "name": "edge-cases ×4",
+          "ok": true,
+          "detail": "empty · unclassifiable · single · all-levels",
+          "ms": 1.9
+        },
+        {
+          "name": "golden 8 × 10: точность ≥ 90 %",
+          "ok": true,
+          "detail": "80/80 = 100 %",
+          "ms": 2.9
+        },
+        {
+          "name": "монотонность: добавление K3-высказываний не уменьшает долю K3",
+          "ok": true,
+          "detail": "K3 растёт с 0 до 0.40",
+          "ms": 9.4
+        },
+        {
+          "name": "устойчивость к перестановке",
+          "ok": true,
+          "detail": "профиль и разрыв инвариантны",
+          "ms": 1.9
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.20 мс < 20 мс · худшее 0.98 мс",
+          "ms": 70.5
+        }
+      ],
+      "total_ms": 89.1
+    },
+    {
+      "fn": "jsonSchema",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "2 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×9",
+          "ok": true,
+          "detail": "type-union · enum-null · required · additional-false · nested · array-bounds · string-bounds · number-bounds · pattern",
+          "ms": 0.2
+        },
+        {
+          "name": "все золотые ответы агентов проходят схемы своих агентов",
+          "ok": true,
+          "detail": "13 схем × золотой ответ — 0 ошибок",
+          "ms": 2.4
+        },
+        {
+          "name": "summarize усекает длинный список ошибок",
+          "ok": true,
+          "detail": "e0; e1; e2; …ещё 7",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · p99 0.01 мс < 2 мс · худшее 0.35 мс",
+          "ms": 7.3
+        }
+      ],
+      "total_ms": 10.2
+    },
+    {
+      "fn": "lexisTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 1
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · no-speakers · mixed-ru-ua · en · no-timestamps · punctuation-only",
+          "ms": 0.8
+        },
+        {
+          "name": "golden: доли посчитаны вручную",
+          "ok": true,
+          "detail": "я %=80 · они %=20 · мы %=0 · доля К.=70 · доля Т.=30 · вопросы Т.=1 · час 10=2 · час 22=1",
+          "ms": 0.2
+        },
+        {
+          "name": "устойчивость к перестановке реплик",
+          "ok": true,
+          "detail": "местоимения и карта не зависят от порядка",
+          "ms": 0.2
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.17 мс < 20 мс · худшее 0.55 мс",
+          "ms": 76.1
+        },
+        {
+          "name": "golden ×3",
+          "ok": true,
+          "detail": "i=80 · they=20 · must=71.42857142857143",
+          "ms": 0.4
+        }
+      ],
+      "total_ms": 78.7
+    },
+    {
+      "fn": "maskPii",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "2 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.3
+        },
+        {
+          "name": "edge-cases ×9",
+          "ok": true,
+          "detail": "empty · email · phone · url · iban · card · timecode-survives · names-list · no-ner-note",
+          "ms": 0.3
+        },
+        {
+          "name": "идемпотентность: повторное маскирование ничего не меняет",
+          "ok": true,
+          "detail": "[ИМЯ1], [PHONE], [EMAIL], [URL]",
+          "ms": 0
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · p99 0.02 мс < 5 мс · худшее 0.44 мс",
+          "ms": 17
+        }
+      ],
+      "total_ms": 17.6
+    },
+    {
+      "fn": "memorySearchTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.4
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "empty-query · empty-index · filters · mixed-ru-ua · mcp-unplugged",
+          "ms": 0.4
+        },
+        {
+          "name": "◇ MCP-SWAP: один и тот же контракт",
+          "ok": true,
+          "detail": "поля ответа: hits,mode,query,reason,total,version",
+          "ms": 0.2
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · p99 0.07 мс < 50 мс · худшее 0.64 мс",
+          "ms": 62.2
+        },
+        {
+          "name": "golden: «выгорание, нет смысла» → C002 первым",
+          "ok": true,
+          "detail": "C002 score=0.6183 · далее C001=0.0698, C005=0.0654",
+          "ms": 0.2
+        }
+      ],
+      "total_ms": 63.4
+    },
+    {
+      "fn": "phonoSemTool",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 5.4
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · digits-only · ru · uk · en · single-letter",
+          "ms": 3.2
+        },
+        {
+          "name": "таблица PHON: 33 RU + 26 EN + 4 UA букв × 25 шкал, значения в [−2, 2]",
+          "ok": true,
+          "detail": "63 букв × 25 шкал",
+          "ms": 0.4
+        },
+        {
+          "name": "«мягкий» vs «грубый» различаются по шкале нежный–грубый и по полярности",
+          "ok": true,
+          "detail": "нежный–грубый: 70 vs -78 · полярность 21 vs -31",
+          "ms": 1.4
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.96 мс < 20 мс · худшее 1.37 мс",
+          "ms": 557.1
+        }
+      ],
+      "total_ms": 567.5
+    },
+    {
+      "fn": "prosodyTool",
+      "type": "dsp",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 687.2
+        },
+        {
+          "name": "edge-cases ×6",
+          "ok": true,
+          "detail": "empty · single-frame · silence · clipping · sr-48000 · nan-samples",
+          "ms": 619.6
+        },
+        {
+          "name": "44,1 vs 48 кГц: одинаковые F0/паузы/HNR (допуск)",
+          "ok": true,
+          "detail": "F0 150.00/150.00 Гц · HNR 30.0/29.2 дБ",
+          "ms": 430.8
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 8.08 мс < 120 мс · худшее 11.06 мс",
+          "ms": 3560.6
+        },
+        {
+          "name": "golden ×10",
+          "ok": true,
+          "detail": "tone150=149.99919884405682 · silence=100 · noise=-11.096515857626912 · jitter2=0.0204 · shimmer4=0.04 · vowel-f1=503 · vowel-f2=1514 · vowel-f3=2504 · vowel-f4=3802 · spectrogram-peak=7",
+          "ms": 1461.8
+        }
+      ],
+      "total_ms": 6760
+    },
+    {
+      "fn": "scaleScorer",
+      "type": "deterministic",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.8
+        },
+        {
+          "name": "edge-cases ×5",
+          "ok": true,
+          "detail": "unknown-scale · incomplete · out-of-range · proprietary · ranking-invalid",
+          "ms": 0.1
+        },
+        {
+          "name": "эталонные ключи и границы",
+          "ok": true,
+          "detail": "PHQ9 нули=0 · PHQ9 максимум=27 · GAD7 максимум=21 · TAS20 все 3 (с реверсом)=60 · TAS20 все 5 → реверс даёт 5 обратных=80 · MBI EE все 3=27 · MBI PA все 3=24 · SCL90 GSI все 4=4 · SCL90 PST нули=0 · IPIP E % при всех 3=50 · IPIP N % при всех 5 (реверс 8 из 10)=20",
+          "ms": 0.8
+        },
+        {
+          "name": "границы диапазонов и флаг кризиса",
+          "ok": true,
+          "detail": "9 границ PHQ-9 · флаг item9 · GAD-7 = 10 → умеренная",
+          "ms": 0.2
+        },
+        {
+          "name": "Gallup-34: домены из импортированного рейтинга",
+          "ok": true,
+          "detail": "топ-5: Исполнение 2 · Влияние 1 · Отношения 1 · Стратегия 1",
+          "ms": 0.1
+        },
+        {
+          "name": "стресс n=1000",
+          "ok": true,
+          "detail": "1000 прогонов · 0 NaN · 0 вне диапазона · p99 0.02 мс < 5 мс · худшее 0.21 мс",
+          "ms": 9.5
+        },
+        {
+          "name": "golden ×6",
+          "ok": true,
+          "detail": "phq9-zeros=0 · phq9-max=27 · tas20-all3=60 · mbi-ee=27 · scl90-gsi=4 · ipip-mid=50",
+          "ms": 0.2
+        }
+      ],
+      "total_ms": 11.7
+    },
+    {
+      "fn": "stimulusGate",
+      "type": "stimulus",
+      "layer": "L1",
+      "version": "1.0.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "детерминизм ×2",
+          "ok": true,
+          "detail": "3 входов × 2 прогонов, байт-в-байт",
+          "ms": 0.2
+        },
+        {
+          "name": "edge-cases ×17",
+          "ok": true,
+          "detail": "empty · band-edges · nan · negative · invalid-frequency--1 · invalid-frequency-60.01 · invalid-frequency-Infinity · invalid-frequency-NaN · invalid-frequency-20 · invalid-frequency-null · invalid-loudness--1 · invalid-loudness-120.01 · invalid-loudness-Infinity · invalid-loudness-NaN · invalid-loudness-60 · invalid-loudness-null · night",
+          "ms": 0.3
+        },
+        {
+          "name": "предел громкости 85 дБ",
+          "ok": true,
+          "detail": "85 ✓ · 85,1 ✗ · 80 ⚠",
+          "ms": 0
+        },
+        {
+          "name": "гейт непроходим программно",
+          "ok": true,
+          "detail": "нет методов обхода; правила заморожены; режим pro блокирует 15–25 Гц",
+          "ms": 0.2
+        },
+        {
+          "name": "стресс n=2000",
+          "ok": true,
+          "detail": "2000 прогонов · 0 NaN · 0 вне диапазона · p99 0.01 мс < 2 мс · худшее 0.55 мс",
+          "ms": 11.2
+        },
+        {
+          "name": "аварийный стоп < 100 мс (×100)",
+          "ok": true,
+          "detail": "100 стопов · худшая 0.008 мс < 100 мс",
+          "ms": 0.5
+        }
+      ],
+      "total_ms": 12.4
+    },
+    {
+      "fn": "ui",
+      "type": "ui",
+      "layer": "L4",
+      "version": "0.3.0",
+      "status": "green",
+      "checks": [
+        {
+          "name": "статический сканер (node --check · скобки · запреты · id)",
+          "ok": true,
+          "detail": "✓ node --check · баланс скобок · запретные конструкции · id-сканер — чисто",
+          "ms": 4293.5
+        },
+        {
+          "name": "сборка single-file",
+          "ok": true,
+          "detail": "dist/atmaraksi-os.html · 454 КБ · 39 модулей · 11 файлов данных",
+          "ms": 90.5
+        },
+        {
+          "name": "рендер 440×956 · 393×852 · 1280×800 + сценарий (скриншоты в docs/screenshots)",
+          "ok": true,
+          "detail": "194 проверок ✓",
+          "ms": 20395.9
+        }
+      ],
+      "total_ms": 24779.9
+    }
+  ]
+}

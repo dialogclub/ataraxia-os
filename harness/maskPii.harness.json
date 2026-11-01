@@ -1,0 +1,58 @@
+{
+  "fn": "maskPii",
+  "type": "deterministic",
+  "layer": "L1",
+  "owner_agent": "Safety",
+  "contract": {
+    "input": "текст + knownNames",
+    "output": "маскированный текст + счётчики"
+  },
+  "determinism": {
+    "runs": 2,
+    "compare": "bytes"
+  },
+  "edge_cases": [
+    "empty",
+    "email",
+    "phone",
+    "url",
+    "iban",
+    "card",
+    "timecode-survives",
+    "names-list",
+    "no-ner-note"
+  ],
+  "stress": {
+    "n": 2000,
+    "assert": [
+      "noThrow",
+      "idempotent",
+      "time<5ms"
+    ]
+  },
+  "golden": [
+    {
+      "id": "mixed",
+      "expect": {
+        "total": 4
+      }
+    }
+  ],
+  "eval": {
+    "judge": false,
+    "rubric": null
+  },
+  "guardrails": {
+    "no_ner": "имена вне списка не маскируются — честная пометка",
+    "timecodes_preserved": true
+  },
+  "telemetry": [
+    "duration"
+  ],
+  "ui_contract": {
+    "component": "Badge",
+    "badge_policy": "🟢"
+  },
+  "status": "green",
+  "version": "1.0.0"
+}

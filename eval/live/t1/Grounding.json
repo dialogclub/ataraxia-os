@@ -1,0 +1,51 @@
+{
+  "summary": "По инструменту разрыв контура на K2 (Чувство), модус свободы воли А: вернуться к восприятию и чувству. Точка входа K1 (Восприятие). Классифицировано 3 из 6 высказываний, оценка ориентировочная.",
+  "claims": [
+    {
+      "id": "gap_k2",
+      "text": "Разрыв контура приходится на K2 (Чувство): доля K2 равна нулю при ненулевых K1.",
+      "evidence": [
+        {"type": "measure", "tool": "groundingClassifier", "path": "gap"},
+        {"type": "measure", "tool": "groundingClassifier", "path": "levels.K2.value"}
+      ],
+      "claimed_badge": "🔵"
+    },
+    {
+      "id": "entry_k1",
+      "text": "Точка входа K1 (Восприятие): первый контур с ненулевой долей, делит её с K4 и K6.",
+      "evidence": [
+        {"type": "measure", "tool": "groundingClassifier", "path": "levels.K1.value"},
+        {"type": "measure", "tool": "groundingClassifier", "path": "levels.K4.value"},
+        {"type": "measure", "tool": "groundingClassifier", "path": "levels.K6.value"}
+      ],
+      "claimed_badge": "🟢"
+    },
+    {
+      "id": "liberty_a",
+      "text": "Модус свободы воли А (вернуться к восприятию и чувству) — реконструкция инструмента, не измерение.",
+      "evidence": [
+        {"type": "measure", "tool": "groundingClassifier", "path": "liberty_mode"},
+        {"type": "measure", "tool": "groundingClassifier", "path": "liberty_label"}
+      ],
+      "claimed_badge": "🔵"
+    },
+    {
+      "id": "coverage_partial",
+      "text": "Половина высказываний не классифицирована, поэтому профиль неполный.",
+      "evidence": [
+        {"type": "measure", "tool": "groundingClassifier", "path": "unclassified"}
+      ],
+      "claimed_badge": "🟢"
+    }
+  ],
+  "fields": {
+    "entry_level": "K1",
+    "gap": "K2",
+    "liberty_mode": "А"
+  },
+  "limits": [
+    "Классифицировано 3 из 6 высказываний фокус-участника; разрыв — первый контур с долей меньше 5 %.",
+    "Уровни определены по словарям маркеров, модусы свободы воли — реконструкция (🔵).",
+    "Точка входа выбрана как первый контур с ненулевой долей; в инструменте она явно не задана."
+  ]
+}

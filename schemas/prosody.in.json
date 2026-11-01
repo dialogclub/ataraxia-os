@@ -1,0 +1,1 @@
+{ "$id": "atmaraksi.prosody.in", "type": "object", "required": ["pcm", "sr"], "properties": { "pcm": { "type": "array", "items": { "type": "number" }, "description": "моно PCM в [-1, 1]" }, "sr": { "type": "integer", "minimum": 8000, "maximum": 96000 } } }

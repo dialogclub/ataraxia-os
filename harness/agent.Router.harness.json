@@ -1,0 +1,53 @@
+{
+  "fn": "agent.Router",
+  "type": "deterministic",
+  "layer": "L0",
+  "owner_agent": "Router",
+  "contract": {
+    "input": "режим, выбор клинициста, наличие аудио",
+    "output": "состав агентов + объяснение для Dynamic Island"
+  },
+  "determinism": {
+    "runs": 2,
+    "compare": "bytes"
+  },
+  "edge_cases": [
+    "unknown-agents",
+    "empty-selection",
+    "meeting",
+    "game",
+    "no-audio"
+  ],
+  "stress": {
+    "n": 1000,
+    "assert": [
+      "noNaN",
+      "time<2ms"
+    ]
+  },
+  "golden": [
+    {
+      "id": "session-13",
+      "expect": {
+        "agents": 13
+      }
+    }
+  ],
+  "eval": {
+    "judge": false,
+    "rubric": null
+  },
+  "guardrails": {
+    "llm_classifier": "⛔ не подключён, только правила",
+    "always_explains": true
+  },
+  "telemetry": [
+    "duration"
+  ],
+  "ui_contract": {
+    "component": "DynamicIsland",
+    "badge_policy": "🟢"
+  },
+  "status": "green",
+  "version": "1.0.0"
+}
