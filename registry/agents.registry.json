@@ -54,7 +54,7 @@
       "harness": "harness/agent.Reflector.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "TheraNavigator",
@@ -81,7 +81,7 @@
       "harness": "harness/agent.TheraNavigator.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Judge",
@@ -163,7 +163,7 @@
       "harness": "harness/agent.Memory.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Safety",
@@ -225,7 +225,7 @@
       "harness": "harness/agent.Requestor.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Veritas",
@@ -258,7 +258,7 @@
       "harness": "harness/agent.Veritas.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Obstacle",
@@ -288,7 +288,7 @@
       "harness": "harness/agent.Obstacle.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Insight",
@@ -322,7 +322,7 @@
         "Requestor",
         "Obstacle"
       ],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Libertas",
@@ -354,7 +354,7 @@
       "depends_on": [
         "Obstacle"
       ],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Qualitas",
@@ -385,7 +385,7 @@
         "Libertas",
         "Insight"
       ],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Grounding",
@@ -414,7 +414,7 @@
       "harness": "harness/agent.Grounding.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "CascadeABC",
@@ -444,7 +444,7 @@
       "harness": "harness/agent.CascadeABC.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Drives",
@@ -474,7 +474,7 @@
       "harness": "harness/agent.Drives.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Persona6",
@@ -1003,7 +1003,7 @@
       "harness": "harness/agent.Berne.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Gottman",
@@ -1311,7 +1311,7 @@
       "harness": "harness/agent.Chronotope.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "Archetype",
@@ -1341,7 +1341,7 @@
       "harness": "harness/agent.Archetype.harness.json",
       "status": "green",
       "depends_on": [],
-      "live_eval": "not_run"
+      "live_eval": "contract_n3 (docs/live-eval/report.md)"
     },
     {
       "id": "HeroPath",

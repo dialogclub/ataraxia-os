@@ -74,7 +74,7 @@ agents.forEach((a) => {
   const sp = SPECS[a.id];
   a.depends_on = sp ? sp.depends_on : [];
   a.harness = `harness/agent.${a.id}.harness.json`;
-  a.live_eval = ['Router', 'Judge'].includes(a.id) ? 'n/a (детерминированный)' : 'not_run';
+  a.live_eval = ['Router', 'Judge'].includes(a.id) ? 'n/a (детерминированный)' : (SPECS[a.id] !== undefined || ['Reflector', 'TheraNavigator'].includes(a.id)) ? 'contract_n3 (docs/live-eval/report.md)' : 'not_run';
   if (a.id === 'Memory') a.writes = ['scp.memory.reading'];
   if (a.id === 'Reflector') a.writes = ['scp.synthesis.verdicts', 'scp.synthesis.axes'];
   if (sp) a.writes = [...a.writes, `scp.frames.l2.${a.id}`];
