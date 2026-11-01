@@ -1,0 +1,79 @@
+{
+  "verdicts": [
+    {
+      "id": "knot_not_plan",
+      "text": "Гипотеза: узел не в нехватке плана, а в страхе оценки и стандарте «идеального»; одиннадцать версий плана тревогу не сняли.",
+      "claim_refs": ["Obstacle.fear_failure", "Obstacle.perfectionism", "Insight.insight_fear_eval", "Insight.pretexts_chain", "Libertas.fear_not_plan", "Qualitas.act_in_imperfection"]
+    },
+    {
+      "id": "pretexts_chain",
+      "text": "Внешние обстоятельства вероятнее поводы, чем главное препятствие: цепочка отсрочек смещает речь от самого шага; долженствование преобладает (гипотеза).",
+      "claim_refs": ["Obstacle.external_pretexts", "Veritas.disp_chain", "Berne.game_if_not", "Chronotope.frozen_loop", "Requestor.modality_must"]
+    },
+    {
+      "id": "phobon_reading",
+      "text": "Чтение через Phobon (страх провала и разоблачения) — гипотеза; контрпример живого интереса не позволяет считать его безусловной доминантой.",
+      "claim_refs": ["Drives.phobon_failure", "Drives.avoid_wording", "Drives.counter_interest"]
+    },
+    {
+      "id": "k1_gap_mode_a",
+      "text": "Инструмент даёт разрыв на K1 и модус А (реконструкция методологии), но основа узкая; модус надёжен лишь как гипотеза. Телесный контакт уже возникал спонтанно.",
+      "claim_refs": ["Grounding.gap_k1", "Grounding.mode_a", "Libertas.low_coverage", "Libertas.body_perception"]
+    },
+    {
+      "id": "own_exit",
+      "text": "Гипотеза: К. уже почти назвал выход сам — подать заявление в понедельник и рассказать жене о страхах, а не только о планах.",
+      "claim_refs": ["Insight.intuitive_step", "Libertas.own_exit", "Qualitas.openness_with_wife", "Requestor.latent_fears_shared"]
+    }
+  ],
+  "axes": [
+    {
+      "axis": "сознание",
+      "text": "Точка входа K4 «Потребность», разрыв на K1; Φ-порог ограничивает B сильнее всех факторов. Страх быть признанным «не таким умным» — гипотеза озарения.",
+      "claim_refs": ["Grounding.entry_k4", "Grounding.gap_k1", "CascadeABC.phi_limits", "Insight.insight_fear_eval"]
+    },
+    {
+      "axis": "тело",
+      "text": "Спонтанно замечены хроническое напряжение плеч и их расслабление при контакте с самим делом; это ресурс и точка входа для модуса А (гипотезы). Просодика недоступна.",
+      "claim_refs": ["Libertas.body_perception", "Insight.interest_body", "Qualitas.body_interest_anchor", "Grounding.body_hint"]
+    },
+    {
+      "axis": "социальное поле",
+      "text": "Роль Спасателя команды при Жертве оценки, семейная установка отца и запрос на разговор о страхах с женой, а не только о планах (гипотезы).",
+      "claim_refs": ["Berne.karpman_rescuer", "Obstacle.family_belief", "Requestor.latent_fears_shared", "Veritas.mask_plans"]
+    },
+    {
+      "axis": "нарратив",
+      "text": "Странник на пороге и Творец при разрыве образа «умного» и страха разоблачения (Самозванец); шаг отодвигается, время «замороженное» (гипотезы).",
+      "claim_refs": ["Archetype.wanderer", "Archetype.creator", "Archetype.impostor", "Chronotope.frozen_loop", "Chronotope.year_stagnation"]
+    }
+  ],
+  "contradictions": [
+    {
+      "a": "Grounding.gap_k1",
+      "b": "Libertas.body_perception",
+      "note": "Разрыв на K1 (восприятие) расходится со спонтанным контактом с телом; возможно, восприятие включается лишь при вопросе терапевта."
+    },
+    {
+      "a": "Drives.phobon_failure",
+      "b": "Drives.counter_interest",
+      "note": "Phobon назван доминирующим, но живой интерес и расслабление при работе над названием говорят против безусловной доминанты."
+    },
+    {
+      "a": "Grounding.entry_k4",
+      "b": "Libertas.low_coverage",
+      "note": "Доля K4 равна 1 при 2 из 2, но охват — 2 из 7 высказываний; вывод опирается на малую выборку."
+    },
+    {
+      "a": "Chronotope.zimbardo_future",
+      "b": "Chronotope.frozen_loop",
+      "note": "Лексический прокси даёт будущее 0.5, а по содержанию будущее остаётся условием, а не действием; прокси не измеряет действие."
+    }
+  ],
+  "limits": [
+    "Просодика недоступна: нет аудио.",
+    "Инструменты не вызывались; числа взяты только из текста утверждений.",
+    "Разрыв K1 и модус А опираются на 2 из 7 высказываний; реконструкция методологии.",
+    "Инструмент вертикали времени Анохина не вызывался; большинство утверждений — гипотезы."
+  ]
+}
